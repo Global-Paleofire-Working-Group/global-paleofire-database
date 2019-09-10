@@ -1,0 +1,345 @@
+h1{
+    text-align: center;
+    font-size:24px;
+    padding-bottom: 0px;
+    margin-top:15px;
+    margin-bottom:0px;
+}
+
+
+.form_paleofire input, .form_paleofire textarea, .form_paleofire select {
+    padding: 9px;
+    border: solid 1px #E5E5E5;
+    outline: 0;
+    width: 300px;
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    /*box-shadow: rgba(238,238,238, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(238,238,238, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(238,238,238, 0.1) 0px 0px 8px;*/
+    }
+   
+.form_paleofire textarea {
+    width: 400px;
+    max-width: 400px;
+    height: 150px;
+    line-height: 150%;
+    }
+
+.form_paleofire input[type="checkbox"] {
+    width: 30px;
+    }
+   
+.form_paleofire label {
+    margin-left: 10px;
+    color: #999999;
+    display: block;
+    width: 150px;
+    float: left;
+    font-size: 12px;
+    }
+
+.cadre {
+   
+    margin-top:10px;
+    
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+ 
+}
+
+legend {
+    margin-left: 100px;
+    font-size: 18px;
+    width: 200px;
+    text-align: center;
+    padding: 0;
+    border-style:none;
+}
+   
+/*.submit input, .button a, .submit a {
+    width: auto;
+    padding: 9px 15px;
+    background: #617798;
+    border: 0;
+    font-size: 14px;
+    color: #FFFFFF;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    margin-left:25px;
+    text-decoration: none;
+}*/
+
+
+
+form.register{
+    width:100%;
+    margin: 20px auto 0px auto;
+    height:530px;
+    background-color:#fff;
+    padding:5px;
+    -moz-border-radius:20px;
+    -webkit-border-radius:20px;
+}
+form p{
+    font-size: 10pt;
+    clear:both;
+    margin: 0;
+    color:gray;
+    padding:4px;
+}
+
+
+form.register fieldset.row_large
+{
+    width:95%;
+    padding:5px;
+    float:left;
+    border-top:1px solid #F5F5F5;
+    margin-bottom:15px;
+}
+
+form.register fieldset.row_button
+{
+    width:95%;
+    padding:5px;
+    text-align: right;
+    border: 0px;
+    margin-bottom:15px;
+}
+
+form.register fieldset.row_large label{
+    width:300px;
+    float: left;
+    text-align: left;
+    margin-right: 6px;
+    margin-top:2px;
+}
+
+form.register fieldset.row2
+{
+    border-top:1px solid #F1F1F1;
+    border-right:1px solid #F1F1F1;
+    height:150px;
+    padding:5px;
+    float:left;
+}
+
+
+
+form.register fieldset.row3
+{
+    border-top:1px solid #F1F1F1;
+    padding:5px;
+    float:left;
+    margin-bottom:15px;
+    width:310px;
+}
+form.register fieldset.row3 label{
+    width:70px;
+
+}
+
+form.register fieldset.row4
+{
+    border-top:1px solid #F1F1F1;
+    border-right:1px solid #F1F1F1;
+    padding:5px;
+    float:left;
+    clear:both;
+    width:500px;
+}
+form.register .errorbox{
+    float:left;
+    border: 1px solid #F1F1F1;
+    width:95%;
+    font-size:9px;
+    color: red;
+    padding:5px;
+    background: #FDFEFA url(../Images/bg_infobox.gif) repeat-x top left;
+}
+form.register legend
+{
+    color: #0f46da;
+    padding:2px;
+    margin-left: 14px;
+    font-weight:bold;
+    font-size: 14px;
+    font-weight:100;
+}
+form.register label{
+    color:#444;
+    width:160px;
+    float: left;
+    text-align: right;
+    margin-right: 6px;
+    margin-top:2px;
+}
+
+form.register label.optional{
+    float: left;
+    text-align: right;
+    margin-right: 6px;
+    margin-top:2px;
+    color: #A3A3A3;
+}
+form.register label.obinfo{
+    float:right;
+    padding:3px;
+    font-style:italic;
+}
+form.register input{
+    width: 140px;
+    color: #505050;
+    float: left;
+    margin-right: 5px;
+}
+form.register input.long{
+    width: 247px;
+    color: #505050;
+}
+form.register input.short{
+    width: 40px;
+    color: #505050;
+}
+form.register input[type=radio]
+{
+    float:left;
+    width:15px;
+}
+form.register label.gender{
+    margin-top:-1px;
+    margin-bottom:2px;
+    width:34px;
+    float:left;
+    text-align:left;
+    line-height:19px;
+}
+form.register input[type=text]
+{
+    border: 1px solid #E1E1E1;
+    height: 18px;
+}
+form.register input[type=password]
+{
+    border: 1px solid #E1E1E1;
+    height: 18px;
+}
+
+form.register input[type=text].year
+{
+    border: 1px solid #E1E1E1;
+    height: 18px;
+    width:30px;
+}
+form.register input[type=checkbox] {
+    width:14px;
+    margin-top:4px;
+}
+
+form.register input[type=button]{
+    width: 100px;
+    border-color: #36caff  #0f46da #1c3285;
+    color:#1c3285;
+}
+
+
+form.register select
+{
+    border: 1px solid #E1E1E1;
+    width: 140px;
+    float:left;
+    margin-bottom:3px;
+    color: #505050;
+    margin-right:5px;
+}
+form.register select.date
+{
+    width: 40px;
+}
+input:focus, select:focus, texteara:focus{
+    border-color:#cccccc;
+    box-shadow:0 1px 1px rgba(0, 0, 0, 0.075)inset, 0 0 8px #bbbbbb;
+    outline: 0 none;
+}
+
+
+
+
+
+/*button {
+    background: #f2f2f2; /* Old browsers */
+    /*background: -moz-linear-gradient(top, #f2f2f2 0%, #e8e8e8 100%); /* FF3.6+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f2f2), color-stop(100%,#e8e8e8)); /* Chrome,Safari4+ */
+    /*background: -webkit-linear-gradient(top, #f2f2f2 0%,#e8e8e8 100%); /* Chrome10+,Safari5.1+ */
+    /*background: -o-linear-gradient(top, #f2f2f2 0%,#e8e8e8 100%); /* Opera 11.10+ */
+    /*background: -ms-linear-gradient(top, #f2f2f2 0%,#e8e8e8 100%); /* IE10+ */
+    /*background: linear-gradient(top, #f2f2f2 0%,#e8e8e8 100%); /* W3C */
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#e8e8e8',GradientType=0 ); /* IE6-9 */
+    /*-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    -moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 1); 
+    border-color: #eeeced #eeeced #9b9b9b;
+    border-style: solid;
+    border-width: 1px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    padding:3px 20px;
+    font-weight:bold;
+    text-shadow:0px 1px 0px #fff;
+    cursor:pointer;
+}*/
+
+/*button:hover {
+    background:#f5f5f5;
+}*/
+
+/*button:focus, 
+button:active {
+    background:#e8e8e8;
+}*/
+
+/*button.action {
+    background: #fa765f; /* Old browsers */
+    /*background: -moz-linear-gradient(top, #36caff 0%, #4666e1 100%); /* FF3.6+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#36caff), color-stop(100%,#4666e1)); /* Chrome,Safari4+ */
+    /*background: -webkit-linear-gradient(top, #36caff 0%,#4666e1 100%); /* Chrome10+,Safari5.1+ */
+    /*background: -o-linear-gradient(top, #36caff 0%,#4666e1 100%); /* Opera 11.10+ */
+    /*background: -ms-linear-gradient(top, #36caff 0%,#4666e1 100%); /* IE10+ */
+    /*background: linear-gradient(top, #36caff 0%,#4666e1 100%); /* W3C */
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#36caff', endColorstr='#e15d46',GradientType=0 ); /* IE6-9 */
+    /*-webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 179, 166, 1);
+    -moz-box-shadow: inset 0px 1px 0px 0px rgba(255, 179, 166, 1);
+    box-shadow: inset 0px 1px 0px 0px rgba(255, 179, 166, 1); 
+    border-color: #36caff  #0f46da #1c3285;
+    color:#1c3285;
+    text-shadow:0px 1px 0px #36caff;
+}*/
+/*
+button.action:hover {
+    background:#36caff;
+}
+
+button.action:focus, 
+button.action:active {
+    background:#4666e1;
+}*/
+
+.msg {
+    border-radius: 5px;
+    width: 90%;
+    margin-top: 2px;
+    padding: 5px;
+    font-size: small;
+    margin-left: 0 auto 15px;
+}
+
+.error {
+    background-color: #CC0000;
+    color: #ffffff;
+}

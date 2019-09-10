@@ -1,0 +1,9 @@
+/.idea/
+/config.php
+/old_db/
+/nbproject/
+/Pages/EDA/save_database.php
+/Pages/EDA/send_Log.php
+/Pages/Admin/validate_DB.php
+/Models/PaleofireExcelWriter.xlsx
+/Library/cryptography.php

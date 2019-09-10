@@ -1,0 +1,116 @@
+<?php
+
+define("MAINTENANCE", FALSE);
+
+//define("ENVIRONNEMENT", "DEV-LOCAL");
+//define("ENVIRONNEMENT", "SERVEUR-DEV");
+define("ENVIRONNEMENT", "SERVEUR-PROD");
+
+if (ENVIRONNEMENT == "SERVEUR-PROD"){
+	define('REP_LIB', $_SERVER["DOCUMENT_ROOT"] . "/Library/");
+	define('REP_MODELS', $_SERVER["DOCUMENT_ROOT"] . "/Models/");
+	define('REP_HTML', $_SERVER["DOCUMENT_ROOT"] . "/views/");
+	define('REP_PAGES', $_SERVER["DOCUMENT_ROOT"] . "/Pages/");
+	define('REP_TMP_ZIP', "");
+	define("REP_LOG", "/var/www/paleofire_dynamics/log/");
+	define("REP_CHARCOALS_IMPORT", "/var/www/paleofire_dynamics/uploaded_data/charcoals_import/");
+	define("GLOBAL_RACINE","/");
+	define("REP_OLD_BD", "/var/www/paleofire/old_db/");
+
+	define("GLOBAL_RACINE_PALEOFIRE", "/");
+
+	define("BDD_IN_PROGRESS_GCD_HOSTNAME", "localhost");
+	define("BDD_IN_PROGRESS_GCD_DATABASE", "gcd_paleofire_in_progress");
+	define("BDD_IN_PROGRESS_GCD_LOGIN", "");
+	define("BDD_IN_PROGRESS_GCD_PASSWORD", "");
+	//define("BDD_IN_PROGRESS_GCD_LOGIN", "");
+	//define("BDD_IN_PROGRESS_GCD_PASSWORD", "");
+
+
+	define("BDD_GCD_HOSTNAME", "localhost");
+	define("BDD_GCD_DATABASE", "gcd_paleofire");
+	define("BDD_GCD_LOGIN", "");
+	define("BDD_GCD_PASSWORD", "");
+
+	define("BDD_USER_HOSTNAME", "localhost");
+	define("BDD_USER_DATABASE", "gcd_paleofire_users");
+	define("BDD_USER_LOGIN", "");
+	define("BDD_USER_PASSWORD", "");
+	define("BDD_USER_USERTABLE", "gcd_paleofire_users.paleofire_user");
+	define("BDD_USER_ROLETABLE", "gcd_paleofire_users.paleofire_role");
+	define("BDD_USER_PERMTABLE", "gcd_paleofire_users.paleofire_permission");
+
+
+
+	define("GOOGLE_API_KEY", "");
+
+} else if (ENVIRONNEMENT == "DEV-LOCAL"){
+	error_reporting(E_ALL);
+	ini_set('display_errors','On');
+
+	define('REP_LIB', $_SERVER["DOCUMENT_ROOT"] . "/Library/");
+	define('REP_MODELS', $_SERVER["DOCUMENT_ROOT"] . "/Models/");
+	define('REP_HTML', $_SERVER["DOCUMENT_ROOT"] . "/views/");
+	define('REP_PAGES', $_SERVER["DOCUMENT_ROOT"] . "/Pages/");
+	define('REP_TMP_ZIP', "/var/tmp/");
+	define("REP_LOG", "/var/www/paleofire_dynamics/log/");
+	define("REP_CHARCOALS_IMPORT", "/var/www/paleofire_dynamics/uploaded_data/charcoals_import/");
+	define("GLOBAL_RACINE","/");
+	define("REP_OLD_BD", "/var/www/paleofire/old_db/");
+
+	define("GLOBAL_RACINE_PALEOFIRE", "/");
+
+	define("BDD_GCD_HOSTNAME", "localhost");
+	define("BDD_GCD_DATABASE", "gcd_paleofire");
+	define("BDD_GCD_LOGIN", "");
+	define("BDD_GCD_PASSWORD", "");
+
+	define("BDD_IN_PROGRESS_GCD_HOSTNAME", "localhost");
+	define("BDD_IN_PROGRESS_GCD_DATABASE", "gcd_paleofire");
+	define("BDD_IN_PROGRESS_GCD_LOGIN", "");
+	define("BDD_IN_PROGRESS_GCD_PASSWORD", "");
+
+	define("BDD_USER_HOSTNAME", "localhost");
+	define("BDD_USER_DATABASE", "gcd_paleofire_webapp");
+	define("BDD_USER_LOGIN", "");
+	define("BDD_USER_PASSWORD", "");
+	define("BDD_USER_USERTABLE", "gcd_paleofire_webapp.paleofire_user");
+	define("BDD_USER_ROLETABLE", "gcd_paleofire_webapp.paleofire_role");
+	define("BDD_USER_PERMTABLE", "gcd_paleofire_webapp.paleofire_permission");
+
+	define("GOOGLE_API_KEY", "");
+} else if (ENVIRONNEMENT == "SERVEUR-DEV"){
+	define('REP_LIB', $_SERVER["DOCUMENT_ROOT"] . "/Library/");
+	define('REP_MODELS', $_SERVER["DOCUMENT_ROOT"] . "/Models/");
+	define('REP_HTML', $_SERVER["DOCUMENT_ROOT"] . "/views/");
+	define('REP_PAGES', $_SERVER["DOCUMENT_ROOT"] . "/Pages/");
+	define('REP_TMP_ZIP', "/var/tmp/");
+	define("REP_LOG", "/var/www/paleofire_dynamics/log/");
+	define("REP_CHARCOALS_IMPORT", "/var/www/paleofire_dynamics/uploaded_data/charcoals_import/");
+	define("GLOBAL_RACINE","/");
+	define("REP_OLD_BD", "/var/www/paleofire/old_db/");
+
+	define("GLOBAL_RACINE_PALEOFIRE", "/");
+
+	define("BDD_GCD_HOSTNAME", "localhost");
+	define("BDD_GCD_DATABASE", "gcd_paleofire");
+	define("BDD_GCD_LOGIN", "");
+	define("BDD_GCD_PASSWORD", "");
+
+	define("BDD_IN_PROGRESS_GCD_HOSTNAME", "localhost");
+	define("BDD_IN_PROGRESS_GCD_DATABASE", "gcd_paleofire");
+	define("BDD_IN_PROGRESS_GCD_LOGIN", "");
+	define("BDD_IN_PROGRESS_GCD_PASSWORD", "");
+
+	define("BDD_USER_HOSTNAME", "localhost");
+	define("BDD_USER_DATABASE", "gcd_paleofire_webapp");
+	define("BDD_USER_LOGIN", "");
+	define("BDD_USER_PASSWORD", "");
+	define("BDD_USER_USERTABLE", "gcd_paleofire_webapp.paleofire_user");
+	define("BDD_USER_ROLETABLE", "gcd_paleofire_webapp.paleofire_role");
+	define("BDD_USER_PERMTABLE", "gcd_paleofire_webapp.paleofire_permission");
+
+	define("GOOGLE_API_KEY", "");
+}
+
+require_once REP_LIB . 'scripts.php';

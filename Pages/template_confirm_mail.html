@@ -1,0 +1,93 @@
+<!--  
+ fichier Pages/template_confirm_mail.html
+ le modèle du fichier qui est envoyé à l'utilisateur pour confirmer son enregistrement
+-->
+<!DOCTYPE HTML>
+    <html>
+        <head>
+            <title>Global Charcoal Database</title>  
+            <style type="text/css">
+body {
+    background-color: #F9F9F7;
+    font-size: 11px;
+    font-family: Helvetica, sans-serif;
+    color: #000000;
+    line-height: 18px;
+}
+
+ #splash {
+    background: #000 url('http://Paleofire.org/images/paleofire.jpg') no-repeat;
+    height: 92px;
+}
+
+h1
+{
+    position: absolute;
+    font-size: 20px;
+    letter-spacing: -1px;
+    top: 30px;
+}
+
+h1 a {
+    text-decoration : none;
+    color:#fff;
+}
+
+h2
+{
+    position: absolute;
+    font-size: 12px;
+    font-weight: normal;
+    top: 51px;
+}
+
+h2 a {
+    color:#fff;
+    text-decoration: underline;
+}
+
+#logo_gpwg
+{
+    float:right;
+    margin-top:3px;
+}
+.mailpaleo{
+    height:92px;
+    background-image: url('http://Paleofire.org/images/paleofire.jpg');
+    background-repeat: no-repeat;
+    background-color: #000;
+    background-position:260px 0px;
+    
+    color: #fff;
+    position:relative;
+    height: 92px;
+}
+
+#tpaleo{
+    width:700px;    
+}
+            </style>
+        </head>
+        <body>
+            <table id="tpaleo">
+                <tr class="mailpaleo">
+                    <td>
+                        <h1><a href="http://paleofire.org/index.php">Global Charcoal Database</a></h1>
+                        <h2>by the <a href="http://gpwg.paleofire.org">Global Paleofire Working Group</a></h2>
+                    </td>
+                    <td>
+                        <div id="logo_gpwg"><a href="http://gpwg.paleofire.org" title="GPWG"><img src="http://paleofire.org/images/logo/gpwg_petit.png"></a></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br>
+                        <p>To register on Global Charcoal Database (www.paleofire.org), please click on the following link to confirm your email : <b><a href="$url">Confirm mail</a></b></p>
+                        <br>
+                        <p>Thanks for your future contributions</p> 
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </html>
+    
