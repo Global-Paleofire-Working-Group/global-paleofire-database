@@ -6,7 +6,7 @@ This website was mainly developed by Amandine Charbonnier and Céline Bon. The C
 
  - Olivier Blarquez (GPWG)
  - Daniele Colombaroli (GPWG)
- - Sylvie Damy
+ - Sylvie Damy (University of Franche-Comté)
  - Anne-Laure Daniau (GPWG)
  - Jennifer Marlon (GPWG)
  - Mitchel Power (GPWG)
