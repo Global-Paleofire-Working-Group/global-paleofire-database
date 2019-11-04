@@ -1,8 +1,8 @@
 <?php
-/* 
- * fichier Pages/CDA/sample_view.php 
- *  
- */ 
+/*
+ * fichier Pages/CDA/sample_view.php
+ *
+ */
 
 if (isset($_SESSION['started'])) {
     require './Models/Site.php';
@@ -42,7 +42,7 @@ if (isset($_SESSION['started'])) {
         ?>
         <div class="menuline"> </div>
         <table id="tableviewobject">
-            <thead>            
+            <thead>
                 <tr>
                     <td class="subtitle">Sample</td>
                     <td><?php echo $sample->getName(); ?></td>
@@ -52,7 +52,7 @@ if (isset($_SESSION['started'])) {
             <tbody>
                 <tr>
                     <td class="subtitle">Core</td>
-                    <td><a href='index.php?p=CDA/core_view&gcd_menu=CDA&core_id=<?php echo $core_id; ?>'><?php echo $core_name; ?></a></td>
+                    <td><a href='index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id=<?php echo $core_id; ?>'><?php echo $core_name; ?></a></td>
                     <td class="subtitle">Site</td>
                     <td><?php echo $site_name; ?></td>
                     <td> </td>
@@ -139,7 +139,7 @@ if (isset($_SESSION['started'])) {
                                                 <td>
                                                     Data source
                                                 </td>
-                                            </tr>                
+                                            </tr>
                                             <tr>
                                                 <td>
                                                     <?php echo CharcoalUnits::getFieldValueFromWhere(CharcoalUnits::NAME, sql_equal(CharcoalUnits::ID, $charcoal->_charcoal_charcoal_units_id)); ?>
@@ -270,7 +270,7 @@ if (isset($_SESSION['started'])) {
                                                     ?>
                                                 </td>
 
-                                                <td><a href='index.php?p=CDA/core_view&gcd_menu=CDA&core_id=<?php echo $core_id; ?>'><?php echo $core_name; ?></a></td>
+                                                <td><a href='index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id=<?php echo $core_id; ?>'><?php echo $core_name; ?></a></td>
                                             </tr>
                                             <tr>
                                                 <td class="subtitle">
@@ -347,7 +347,7 @@ if (isset($_SESSION['started'])) {
             <tfoot>
                 <tr>
                     <td colspan="5"></td>
-                </tr>          
+                </tr>
             </tfoot>
         </table>
         <?php

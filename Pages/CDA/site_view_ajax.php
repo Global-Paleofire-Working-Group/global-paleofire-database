@@ -1,6 +1,6 @@
 <?php
-/* 
- * fichier Pages/CDA/site_view_ajax.php 
+/*
+ * fichier Pages/CDA/site_view_ajax.php
  * ajout/suppression d'une publication, page appelée depuis la visualisation d'un site
  */
 
@@ -26,30 +26,30 @@ if ((isset($_SESSION['gcd_user_role'])) && (($_SESSION['gcd_user_role'] == WebAp
                 if ($erreur != NULL && count($erreur) > 0){
                     echo '<div class="alert alert-danger"><strong>Error !</strong>Error occurs while recording</div>';
                     logError("site_view_ajax - site->save return error" . $erreur);
-                } else {          
+                } else {
                     echo '<div class="alert alert-success"><strong>Success !</strong>The publication has been linked.</div>';
 
                 };
             } else if ($action == "rem"){
                 // suppression du lien entre une publication et un site
                 $erreur = $site->removeReferencePubli($id_publi);
-                if (empty($erreur)){          
+                if (empty($erreur)){
                     echo '<div class="alert alert-success"><strong>Success !</strong>The publication has been unlinked.</div>';
                 } else {
                     echo '<div class="alert alert-danger"><strong>Error !</strong>Error occurs while removing the publication</div>';
                     logError("site_view_ajax - site->remove publication return error" . $erreur);
                 }
             }
-        } else { 
+        } else {
             echo '<div class="alert alert-danger"><strong>Error !</strong>Site id and/or publication id are unknown</div>';
             logError("site_view_ajax - unknown ids");
         }
-    }else { 
+    }else {
         echo '<div class="alert alert-danger"><strong>Error !</strong>Site id and/or publication id are unknown</div>';
         logError("site_view_ajax - unset ids");
     }
     echo '<div class="btn-toolbar" role="toolbar" align="right">
-        <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/site_view&gcd_menu=CDA&site_id='.$id_site.'">
+        <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/site_view_proxy_fire&gcd_menu=CDA&site_id='.$id_site.'">
             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
             Go back to site page
         </a>

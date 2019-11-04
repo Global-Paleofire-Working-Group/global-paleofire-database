@@ -1,7 +1,7 @@
 <?php
-/* 
+/*
  * fichier \Models\Sample.php
- * 
+ *
  */
 
 require_once 'ObjectPaleofire.php';
@@ -9,6 +9,7 @@ require_once 'Depth.php';
 require_once 'EstimatedAge.php';
 require_once 'Charcoal.php';
 require_once 'DateInfo.php';
+require_once (REP_MODELS."ProxyFireData.php");
 
 /**
  * Class Sample
@@ -33,7 +34,7 @@ class Sample extends ObjectPaleofire {
     private $_temp_contrib_imported_id;
     public $_gcd_access_id;
     public $_temp_author_imported_id;
-    
+
     public static $_allSamplesByCGD_ACCESS_ID = null;
 
     /**
@@ -77,7 +78,7 @@ class Sample extends ObjectPaleofire {
         $estimated_age->_age_model = $this->_sample_age_model;
         $this->_list_estimated_age[] = $estimated_age;
     }
-    
+
     public function addDateInfo(DateInfo $date_info) {
         $this->_list_date_infos[] = $date_info;
     }
@@ -180,7 +181,7 @@ class Sample extends ObjectPaleofire {
             if ($this->_sample_age_model != NULL) {
                 if (gettype($this->_sample_age_model) == "object")
                     $column_values[self::ID_AGE_MODEL] = $this->_sample_age_model->getIdValue();
-                else 
+                else
                     $column_values[self::ID_AGE_MODEL] = $this->_sample_age_model;
             } else {
                 $insert_errors[] = "The id of age model can't be empty !";
@@ -245,8 +246,8 @@ class Sample extends ObjectPaleofire {
         return $insert_errors;
 
     }
-    
-    
+
+
     public function save($avecTransaction = true) {
         $insert_errors = array();
 
@@ -271,7 +272,7 @@ class Sample extends ObjectPaleofire {
         if ($this->_sample_age_model != NULL) {
             if (gettype($this->_sample_age_model) == "object")
                 $column_values[self::ID_AGE_MODEL] = $this->_sample_age_model->getIdValue();
-            else 
+            else
                 $column_values[self::ID_AGE_MODEL] = $this->_sample_age_model;
         } else {
             $insert_errors[] = "The id of age model can't be empty !";
@@ -319,7 +320,7 @@ class Sample extends ObjectPaleofire {
                 }
             }*/
 
-            
+
             foreach ($this->_list_estimated_age as $estimated_age) {
                 $estimated_age->_sample_id = $this->getIdValue();
                 if ($estimated_age->_depth != NULL){
@@ -327,7 +328,7 @@ class Sample extends ObjectPaleofire {
                     $errors = $estimated_age->_depth->save();
                 }
                 $insert_errors = array_merge($insert_errors, $errors);
-                
+
                 $errors = $estimated_age->save();
                 if (isset($column_values[self::GCD_ACCESS_ID])) {
                     $errors = addValueToEachValuesInArray($column_values[self::GCD_ACCESS_ID], $errors);
@@ -353,10 +354,10 @@ class Sample extends ObjectPaleofire {
         return $insert_errors;
 
     }
-    
-    
-    
-    
+
+
+
+
 
     public function createTemporaryData() {
         $column_values = array();
@@ -394,10 +395,10 @@ class Sample extends ObjectPaleofire {
             $this->_sample_core_id = $values[self::ID_CORE];
             // inutile pour l'import des données
             //$this->_default_depth = Depth::getObjectPaleofireFromWhere(sql_equal(Depth::ID_SAMPLE_WHEN_DEFAULT, $values[self::ID]));
-            
+
             //$this->_sample_age_model = AgeModel::getObjectPaleofireFromId($values[self::ID_AGE_MODEL]);
             $this->_sample_age_model = AgeModel::getAgeModelByID($values[self::ID_AGE_MODEL]);
-            
+
             $this->_list_depths = Depth::getObjectsPaleofireFromWhere(sql_equal(Depth::ID_RELATED_SAMPLE, $values[self::ID]));
             $this->_list_estimated_age = EstimatedAge::getObjectsPaleofireFromWhere(sql_equal(EstimatedAge::ID_SAMPLE, $values[self::ID]));
             $this->_list_date_infos = DateInfo::getObjectsPaleofireFromWhere(sql_equal(DateInfo::ID_SAMPLE, $values[self::ID]));
@@ -439,7 +440,7 @@ AND ID_AGE_MODEL =" . $age_model_id . "";
     }
 
     public static function getSampleFromDepthAvg($depth_value) {
-        $query = "SELECT t_site.ID_SITE,t_sample.ID_SAMPLE,t_depth.DEPTH_VALUE FROM t_site 
+        $query = "SELECT t_site.ID_SITE,t_sample.ID_SAMPLE,t_depth.DEPTH_VALUE FROM t_site
 JOIN t_core ON t_core.ID_SITE = t_site.ID_SITE
 JOIN t_sample ON t_core.ID_CORE = t_sample.ID_CORE
 JOIN t_depth ON t_sample.ID_SAMPLE=t_depth.ID_SAMPLE
@@ -448,7 +449,7 @@ WHERE t_depth.DEPTH_VALUE = " . $depth_value . ";";
 
     public static function getFuncSamplesBySite($func) {
         ($func == "MAX") ? $order_by = "DESC" : $order_by = "ASC";
-        $query = "SELECT " . $func . "( countsample.nb_samples ) AS result_func, ID_SITE FROM (            
+        $query = "SELECT " . $func . "( countsample.nb_samples ) AS result_func, ID_SITE FROM (
 SELECT COUNT(t_sample.ID_SAMPLE) as nb_samples, t_site.ID_SITE
             FROM t_sample
             INNER JOIN t_core ON t_sample.ID_CORE = t_core.ID_CORE
@@ -480,7 +481,7 @@ WHERE t_site.ID_SITE =" . $id_site . ";";
         freeResult($res);
         return $result_func_value;
     }
-    
+
     /**
      * @return null|\object_paleofire
      */

@@ -90,7 +90,7 @@ if (isset($_SESSION['started'])) {
         ?>
                 <tr>
                     <td>
-                        <a href="http://localhost/Paleofire/index.php?p=CDA/core_view&gcd_menu=CDA&core_id=<?php echo $id; ?>"><?php echo $core['core_name']; ?></a>
+                        <a href="http://localhost/Paleofire/index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id=<?php echo $id; ?>"><?php echo $core['core_name']; ?></a>
                     </td>
                     <td>
         <?php echo $core['coring_date']; ?>
@@ -104,7 +104,7 @@ if (isset($_SESSION['started'])) {
                     <td>
                         <a href="index.php?p=CDA/sample_list&gcd_menu=CDA&core_id=<?php echo $id; ?>">core's samples </a><?php echo " (" . $core['nb_samples'] . ")" ?>
                     </td>
-                </tr>            
+                </tr>
         <?php
     }
     ?>

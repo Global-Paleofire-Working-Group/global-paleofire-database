@@ -1,8 +1,8 @@
 <?php
-/* 
- * fichier Pages/ADA/add_date_info.php 
- * 
- */ 
+/*
+ * fichier Pages/ADA/add_date_info.php
+ *
+ */
 if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR) || $_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))) {
     require_once './Models/Site.php';
     require_once './Models/DateInfo.php';
@@ -15,7 +15,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     require_once './Models/CalibrationMethod.php';
     require_once './Library/PaleofireHtmlTools.php';
     require_once './Library/data_securisation.php';
-    
+
     $id = null;
     if (isset($_GET["id_age"])){
         $new_obj = new DateInfo();
@@ -36,27 +36,27 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     }else {
         $new_obj = new DateInfo();
     }
-    
+
     if (isset($_POST['submitAdd'])) {
         $errors = null;
-        
+
         //vérifie que les valeurs site et core sont correctes
         if (!testPost(Site::ID)) $errors[] = "A site must be selected";
         else if (!Site::idExistsInDatabase($_POST[Site::ID])) $errors[] = "Site undefined";
-        
+
         if (!testPost(Core::ID)) $errors[] = "A core must be selected";
         else if (!Core::idExistsInDatabase($_POST[Core::ID])) $errors[] = "Core undefined";
-        
+
         if (!testPost(AgeModel::ID)) $errors[] = "An age model must be selected";
         else if (!AgeModel::idExistsInDatabase($_POST[AgeModel::ID])) $errors[] = "Age model undefined";
-        
+
         // test et création du sample
         $sample = null;
         $depth = null;
         $age = null;
         $depth_type = null;
         $age_model_id = null;
-        
+
         // le date info name va être généré automatiquement
         /*if (testPost(Sample::NAME)) {
             $sample_name = $_POST[Sample::NAME];
@@ -67,7 +67,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         } else {
             $errors[] = "Date info name missing";
         }*/
-        
+
         // test et création de la profondeur
         if (testPost(Depth::NAME) && testPost(DepthType::ID)) {
             $depth_value = $_POST[Depth::NAME];
@@ -87,7 +87,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         } else {
             $errors[] = "Depht value or depth type missing";
         }
-        
+
         if (testPost(Age::NAME)) {
             $age_value = $_POST[Age::NAME];
             if ($age_value == "") { $errors[] = "Age value must be filled"; }
@@ -107,8 +107,8 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         }        if (testPost(Age::AGE_NEGATIVE_ERROR)){
             if (!is_numeric($_POST[Age::AGE_NEGATIVE_ERROR])) $errors[] = "Age error value must be a number";
             else if ($_POST[Age::AGE_NEGATIVE_ERROR] < 0) $errors[] = "Age error value must be a positive number";
-        }        
-        
+        }
+
         if (empty($errors)){
             $age_model_id = $_POST[AgeModel::ID];
             // on créé le nom à partir du core et de la profondeur moyenne
@@ -122,7 +122,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
             $sample->addDepth($depth);
             $sample->_default_depth = $depth;
         }
-        
+
         // test et création de l'age
         if (testPost(Age::NAME)) {
             $age_value = $_POST[Age::NAME];
@@ -131,16 +131,16 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
             if (testPost(Age::AGE_POSITIVE_ERROR)) $age->_age_positive_error = $_POST[Age::AGE_POSITIVE_ERROR];
             if (testPost(AgeUnits::ID) && AgeUnits::idExistsInDatabase($_POST[AgeUnits::ID]))
                 $age->_age_units_id = $_POST[AgeUnits::ID];
-            if (testPost(CalibrationMethod::ID) && CalibrationMethod::idExistsInDatabase($_POST[CalibrationMethod::ID])) 
+            if (testPost(CalibrationMethod::ID) && CalibrationMethod::idExistsInDatabase($_POST[CalibrationMethod::ID]))
                 $age->_age_calibration_method_id = $_POST[CalibrationMethod::ID];
-            if (testPost(CalibrationVersion::ID) && CalibrationVersion::idExistsInDatabase($_POST[CalibrationVersion::ID])) 
+            if (testPost(CalibrationVersion::ID) && CalibrationVersion::idExistsInDatabase($_POST[CalibrationVersion::ID]))
                 $age->_age_calibration_version_id = $_POST[CalibrationVersion::ID];
             $age->_age_model_id = $age_model_id;
             $new_obj->addHasAge($age);
         } else {
             $errors[] = "Age value missing";
         }
-        
+
         // ajout de données à dateinfo
         if (testPost(DateInfo::NAME)){
             $new_obj->_date_lab_number = $_POST[DateInfo::NAME];
@@ -153,16 +153,16 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         if (testPost(DateInfo::ID_MAT_DATED)){
             $new_obj->_mat_dated_id = $_POST[DateInfo::ID_MAT_DATED];
         }
-        
+
         // ajout d'un date comment
         if (testPost(DateComment::ID)){
             $new_obj->addDateComment($_POST[DateComment::ID]);
         }
-        
+
         if (empty($errors)) {
             // on démarre la transaction
             beginTransaction();
-            
+
             // si il existe un sample on rattache la date info au sample existant
             $samplesMemeName = Sample::getAllIdName(Sample::NAME . " = '".$sample_name ."'");
             if (count($samplesMemeName) > 0) {
@@ -172,14 +172,14 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                 $errors = $sample->create(false);
                 if (!empty($errors)) array_unshift($errors, "Error while recording sample");
             }
-           
+
             // on tente d'enregistrer la date info
             if (empty($errors)){
                 $new_obj->_sample_id = $sample->getIdValue();
                 $errors = $new_obj->create(false);
                 if (!empty($errors)) array_unshift($errors, "Error while recording date_info");
             }
-            
+
             //si c'est un contributeur qui entre la données, cette dernière sera mise en attente de validation par un administrateur
             //si c'est un administrateur qui entre la données, cette dernière sera automatiquemenbt validée
             //CBO // 31/10/2017 // gestion des status à reprendre
@@ -191,44 +191,44 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
             } */
 
             // on termine la transaction
-            if (empty($errors)){                           
-             
+            if (empty($errors)){
+
                 commit();
             } else {
                 rollBack();
             }
-            
+
         }
-        
+
         if (empty($errors)){
 
-                    
+
             echo '<div class="alert alert-success"><strong>Success !</strong> Thanks for your contribution.</div>';
         } else {
             echo '<div class="alert alert-danger"><strong>Error recording !</strong></br>'.implode('</br>', $errors)."</div>";
         }
         if (isset($param_id_core) && $param_id_core != null){
             echo '<div class="btn-toolbar" role="toolbar" align="left">
-                <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/core_view&gcd_menu=CDA&core_id='.$param_id_core.'">
+                <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id='.$param_id_core.'">
                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                     Go back to core page
                 </a>
             </div>';
         }
     }
-    
+
     if ((((!isset($_POST['submitAdd'])) || !empty($errors)))&&(!isset($_POST['deleteAdd']))) {
         // si on arrive sur la page la première fois
         // ou si le formulaire a été soumis mais que des erreurs empêchent l'enregistement
         // le formulaire est affiché
-    
+
     if ($id != null){
         echo '<h1>Edit date info</h1>';
     } else {
         echo '<h1>Add a new date info</h1>';
     }
     ?>
-             
+
             <!-- Formulaire de saisie d'une date info-->
             <form action="" class="form_paleofire" name="formAddSite" method="post" id="formAddSite" >
                 <!-- Cadre pour les métadonnées d'une date info !-->
@@ -250,7 +250,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                                 foreach($listeSiteEtCore as $id_site => $site){
                                     echo '<option value = "' . $id_site . '">' . $site[0] . '</option>';
                                 }
-                            } 
+                            }
                         ?>
                         </select>
                     </p>
@@ -287,7 +287,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                         ?>
                     </p>
                 </fieldset>
-                
+
                 <!-- Cadre pour l'age !-->
                 <fieldset class="cadre">
                     <legend>Age</legend>
@@ -325,7 +325,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                         ?>
                     </p>
                 </fieldset>
-                
+
                 <!-- Cadre pour la date info !-->
                 <fieldset class="cadre">
                     <legend>Date info</legend>
@@ -358,10 +358,10 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                         ?>
                     </p>
                 </fieldset>
-                
+
                 <!-- Boutons du formulaire !-->
                 <p class="submit">
-                    <?php 
+                    <?php
                         if ($id == null){
                             echo '<input type = "submit" name = "submitAdd" value = "Add" class="btn btn-default"/>';
                         } else {
@@ -370,31 +370,31 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                         /* CBU 31/10/2017 la suppression sera faite au niveau du tableau des dates infos
                         if (isset($_SESSION['gcd_user_role']) && ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)){
                            echo "<input type = 'submit' name = 'deleteAdd' value = 'Delete' />";
-                        } 
+                        }
                         */
                         //<input type = 'button' name = 'cancelAdd' onclick=\"redirection('index.php?p=".$redirection."')\" value = 'Cancel' class="btn btn-default"/>
                     ?>
-                </p> 
+                </p>
             </form>
             <?php
-        } 
+        }
 }
-    
+
 
     function testPost($post_var) {
-        return (isset($_POST[$post_var])) 
-                    && $_POST[$post_var] != NULL 
-                    && $_POST[$post_var] != 'NULL' 
+        return (isset($_POST[$post_var]))
+                    && $_POST[$post_var] != NULL
+                    && $_POST[$post_var] != 'NULL'
                     && trim(delete_antiSlash($_POST[$post_var])) != "";
     }
-    
+
     ?>
 <script type="text/javascript">
-    <?php        
+    <?php
         if (isset($listeSiteEtCore)){
             echo 'var tabCore = '. json_encode($listeSiteEtCore).';';
         }
-        
+
     ?>
     $('#ID_SITE').change(
     function(){
@@ -406,8 +406,8 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         }
         $('#ID_CORE').change();
     });
-    
-    $('#ID_CORE').change(function(){    
+
+    $('#ID_CORE').change(function(){
         var url = "/Pages/ADA/add_date_info_ajax.php";
         url += "?action=agemodel&core=" + $('#ID_CORE').val();
         var selectAgemodel = $('#ID_AGE_MODEL').empty();
@@ -420,8 +420,8 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
             console.log( "Request Failed: " + err );
         });
     });
-    
-    <?php 
+
+    <?php
         if (isset($_POST[SITE::ID])){
             echo "$('#ID_SITE').change();";
         }
@@ -438,5 +438,3 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     ?>
 </script>
 <?php
-
-    

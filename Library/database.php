@@ -14,9 +14,8 @@ function queryToExecute($query, $msg = "") {
     if (!$result) {
         logError("queryToExecute => " . $msg . "- $query - (" . $bdd_gcd->errno . ") " . $bdd_gcd->error);
     }/*else {
-        logAction("queryToExecute => " . $msg . "- $query - ");
-      } */
-    //var_dump($result->fetch_fields());
+         logAction("queryToExecute => " . $msg . "- $query - ");
+    }*/
     return $result;
 }
 
@@ -117,7 +116,7 @@ function commit() {
     $result = $bdd_gcd->commit();
     if (!$result) {
         logError("commit");
-    } 
+    }
 }
 
 function getLastCreatedId() {
@@ -306,7 +305,7 @@ function insertIntoTableAllValues($table_name, $values) {
 }
 
 /**
- * Recupere l'ensemble des objets selon les paramètres 
+ * Recupere l'ensemble des objets selon les paramètres
  * @param $table_name nom de la table pour laquelle effectuer le SELECT ALL
  * @return bool|\mysqli_result
  * @result résultat de la requête SELECT ALL sur la table
@@ -324,7 +323,7 @@ function getFieldsFromTables($fields, $table_names, $where_clauses = NULL, $arra
     $query.= orderByClause($array_order_by);
 
     $query.= ";";
-    
+
     return queryToExecute($query, "$query -");
 }
 
@@ -346,7 +345,7 @@ function insertIntoTable($table_name, $column_values = array()) {
             $clause_values[] = $value;
         }
         $query = "INSERT INTO $table_name (" . implode(',', $field_labels) . ") VALUES (" . implode(',', $clause_values) . ");";
-        
+
         unset($field_labels);
         unset($clause_values);
     }
@@ -373,7 +372,7 @@ function updateObjectWithWhereClause($table_name, $sets, $where_clause) {
     foreach ($sets as $field => $value) {
         $updates.=$field;
         $updates.=" = ";
-        
+
         if (is_null($value))
             $updates.= "NULL";
         else

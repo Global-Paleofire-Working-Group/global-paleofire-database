@@ -1,8 +1,8 @@
 <?php
 
-/* 
+/*
  * fichier \Models\ObjectPaleofire.php
- * 
+ *
  */
 
 include_once 'DatabaseTable.php';
@@ -17,7 +17,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
     //Liste des champs de la table qui permettent de recuperer l'id dans la table
     private $_fields_to_get_id;
     private $_name_value;
-    
+
     const TABLE_NAME = null;
     const ID = null;
     const NAME = null;
@@ -54,6 +54,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
             $id = $this->getDatabaseId($where_clauses);
             $this->_id_value = $id;
         }
+
         return $this->_id_value;
     }
 
@@ -75,7 +76,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
             return NULL;
         }
     }
-    
+
     protected function getLinkedFields($table_name, $field_to_select) {
         $res = $this->getFieldsValuesFromId($field_to_select, $table_name, $this->_id_value);
         if (getNumRows($res) > 0) {
@@ -101,7 +102,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
     /*     * ********************* FUNCTIONS STATIC ******************************** */
 
     /**
-     * 
+     *
      * @param value $id
      * @return null|\object_paleofire
      */
@@ -111,7 +112,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
     }
 
      /**
-     * 
+     *
      * @param value $id
      * @return null|\object_paleofire
      */
@@ -120,7 +121,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
         return deleteIntoTableFromId($class_paleo::TABLE_NAME, $class_paleo::ID, $id_value);
     }
     /**
-     * 
+     *
      * @param sql where $where_clause
      * @return null|\object_paleofire
      */
@@ -144,10 +145,10 @@ abstract class ObjectPaleofire extends DatabaseTable {
                 return NULL;
             }
         }
-        
-        return self::$_liste_objectPaleofire[$filter];        
+
+        return self::$_liste_objectPaleofire[$filter];
     }*/
-    
+
     public static function getObjectPaleofireFromWhere($where_clause) {
             $class_paleo = get_called_class();
             $result_get_object = getFieldsFromTables(SQL_ALL, $class_paleo::TABLE_NAME, $where_clause);
@@ -193,7 +194,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
     }
 
     /**
-     * 
+     *
      * @param sql where $where_clause
      * @return null|\array
      */
@@ -215,7 +216,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
     }
 
     /**
-     * 
+     *
      * @param sql where $where_clause
      * @return null|\array
      */
@@ -364,14 +365,14 @@ abstract class ObjectPaleofire extends DatabaseTable {
             $query = "SELECT " . $class::ID;
             $query .= " FROM " . $class::TABLE_NAME;
             $query .= " WHERE " . $class::ID . " = " . $id;
-            
+
             $result = queryToExecute($query, "$query -");
             // on ne devrait pas avoir plus d'une ligne
             if ($result->num_rows == 1) $retour = true;
         }
         return $retour;
     }
-    
+
     /*     * ****************** OTHERS FUNCTIONS ********************************* */
 
     public function toString() {
@@ -435,10 +436,10 @@ abstract class ObjectPaleofire extends DatabaseTable {
         return array_values;
     }
 
-    
+
     protected static $_allObjectsByID = null;
     public static function getStaticList() {
-        
+
         $called_class = get_called_class();
         if ($called_class::$_allObjectsByID == null){
             $result_get_object = getFieldsFromTables(SQL_ALL, $called_class::TABLE_NAME);
@@ -454,7 +455,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
         }
         return $called_class::$_allObjectsByID;
     }
-    
+
     public static function getObjectFromStaticList($key){
         $called_class = get_called_class();
         $list = $called_class::getStaticList();
@@ -467,7 +468,7 @@ abstract class ObjectPaleofire extends DatabaseTable {
         }
         else return null;
     }
-    
+
     public static function getNameFromStaticList($key){
         $called_class = get_called_class();
         $list = $called_class::getStaticList();
@@ -475,7 +476,16 @@ abstract class ObjectPaleofire extends DatabaseTable {
         if ($key != null && key_exists($key, $list)) return $list[$key][$called_class::NAME];
         else return null;
     }
-    
+
+    public static function getUnitFromStaticList($key){
+        $called_class = get_called_class();
+        $list = $called_class::getStaticList();
+        //$list = self::getStaticList();
+        if ($key != null && key_exists($key, $list)) return $list[$key][$called_class::UNIT];
+        else return null;
+    }
+
+
     public static function updateStaticList(){
         self::$_allObjectsByID = null;
     }

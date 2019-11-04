@@ -1,0 +1,45 @@
+.new-badge {
+  padding: 1px 9px 2px;
+  font-size: 12.025px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #ffffff;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+.new-badge:hover {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.new-badge-error {
+  background-color: #b94a48;
+}
+.new-badge-error:hover {
+  background-color: #953b39;
+}
+.new-badge-warning {
+  background-color: #f89406;
+}
+.new-badge-warning:hover {
+  background-color: #c67605;
+}
+.new-badge-success {
+  background-color: #468847;
+}
+.new-badge-success:hover {
+  background-color: #356635;
+}
+.new-badge-info {
+  background-color: #3a87ad;
+}
+.new-badge-info:hover {
+  background-color: #2d6987;
+}
+.new-badge-inverse {
+  background-color: #333333;
+}
+.new-badge-inverse:hover {
+  background-color: #1a1a1a;
+}

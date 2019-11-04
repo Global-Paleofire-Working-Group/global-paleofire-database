@@ -1,8 +1,8 @@
 <?php
-/* 
- * fichier Pages/CDA/publication_list.php 
- *  
- */ 
+/*
+ * fichier Pages/CDA/publication_list.php
+ *
+ */
 if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSION['gcd_user_role'] != WebAppRoleGCD::VISITOR) {
     require_once './Models/Publi.php';
     require_once './Models/Site.php';
@@ -12,13 +12,13 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
         $id = $_GET['pub_id'];
         $pub = Publi::getObjectPaleofireFromId($id);
 
-        if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) { 
+        if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) {
 ?>
     <div class="btn-toolbar" role="toolbar">
         <a role="button" style="float:right" class="btn btn-default btn-xs" href="index.php?p=ADA/edit_publi&id=<?php echo $pub->getIdValue();?>">
             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
         </a>
-<?php 
+<?php
             // only superadministrator can delete a publication
             if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR){
                 // deletion is possible if the publication is not bind to a site or charcoal
@@ -28,14 +28,14 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
         <a role="button" style="float:right" class="btn btn-default btn-xs" data-toggle="modal" data-whatever="[&quot;'.$pub->getIdValue().'&quot;]" data-target="#dialog-paleo">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
         </a>
-<?php 
+<?php
                     }
                 }
             }
 ?>
     </div>
 <?php
-        } 
+        }
 ?>
 
     <h3 class="paleo">Publication<small> GCD code <?php echo $pub->getIdValue();?></small></h3>
@@ -50,16 +50,16 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
             </div>
         </div>
     </div>
-    
+
     <h4> Site(s) referenced by publication :</h4>
     <div class="list-group">
-<?php 
+<?php
         $obj_list = Site::getSitesReferencedByPublication($pub->getIdValue());
         if ($obj_list != NULL){
             foreach($obj_list as $obj){
                 // affichage d'un site
 ?>
-        <a href="index.php?p=CDA/site_view&site_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+        <a href="index.php?p=CDA/site_view_proxy_fire&site_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1"><?php echo $obj->getName(); ?></h5>
                 <small>
@@ -75,14 +75,14 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
 <?php
             }
         }
-    
+
         echo '<h4> Charcoal(s) referenced by publication : (link on core view)</h4>';
         $obj_list = Core::getCoresWithCharcoalsReferencedByPublication($pub->getIdValue());
         if ($obj_list != NULL){
             foreach($obj_list as $obj){
                 // affichage d'un core
 ?>
-        <a href="index.php?p=CDA/core_view&core_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+        <a href="index.php?p=CDA/core_view_proxy_fire&core_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1"><?php echo $obj->getName(); ?></h5>
                 <small>
@@ -98,7 +98,7 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
     } else {
         echo '<div class="alert alert-info"><strong>Error</strong>Unknown identifier.</div>';
     }
-    ?>    
+    ?>
     </div>
 <script type="text/javascript">
 $(function(){

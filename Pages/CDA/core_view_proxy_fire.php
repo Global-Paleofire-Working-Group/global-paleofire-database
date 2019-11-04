@@ -1,15 +1,15 @@
 <?php
 /*
- * fichier Pages/CDA/core_view.php
+ * fichier Pages/CDA/core_view_proxy_fire.php
  *
  */
-function cmpDepths($charcoalA, $charcoalB){
-    if ($charcoalA["ID_CHARCOAL_UNITS"] > $charcoalB["ID_CHARCOAL_UNITS"]){
+function cmpDepths($proxyFireA, $proxyFireB){
+    if ($proxyFireA["ID_PROXY_FIRE_MEASUREMENT_UNIT"] > $proxyFireB["ID_PROXY_FIRE_MEASUREMENT_UNIT"]){
             return 1;
-    } else if ($charcoalA["ID_CHARCOAL_UNITS"] < $charcoalB["ID_CHARCOAL_UNITS"]){
+    } else if ($proxyFireA["ID_PROXY_FIRE_MEASUREMENT_UNIT"] < $proxyFireB["ID_PROXY_FIRE_MEASUREMENT_UNIT"]){
         return -1;
-    } else if ($charcoalA["ID_CHARCOAL_UNITS"] == $charcoalB["ID_CHARCOAL_UNITS"]){
-        if ($charcoalA["DEPTHS_LIST_DECODE"][0][2] > $charcoalB["DEPTHS_LIST_DECODE"][0][2])
+    } else if ($proxyFireA["ID_PROXY_FIRE_MEASUREMENT_UNIT"] == $proxyFireB["ID_PROXY_FIRE_MEASUREMENT_UNIT"]){
+        if ($proxyFireA["DEPTHS_LIST_DECODE"][0][2] > $proxyFireB["DEPTHS_LIST_DECODE"][0][2])
         return 1;
     }
     return -1;
@@ -48,7 +48,7 @@ if (isset($_SESSION['started'])) {
         ?>
 
         <div class="btn-toolbar" role="toolbar">
-            <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/site_view&gcd_menu=CDA&site_id=<?php echo $core->getSiteId() ?>">
+            <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/site_view_proxy_fire&gcd_menu=CDA&site_id=<?php echo $core->getSiteId() ?>">
                 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                 Go to site : <?php echo $site_name; ?>
             </a>
@@ -83,7 +83,7 @@ if (isset($_SESSION['started'])) {
         <ul class="nav nav-tabs" role="tablist">
             <li class="active"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Description</a></li>
             <li ><a href="#age" aria-controls="age" role="tab" data-toggle="tab">Age model</a></li>
-            <li><a href="#charcoals" aria-controls="charcoals" role="tab" data-toggle="tab">Charcoal</a></li>
+            <li><a href="#proxy_fire" aria-controls="proxy_fire" role="tab" data-toggle="tab">Fire Proxy</a></li>
             <li ><a href="#data_quality" aria-controls="data_quality" role="tab" data-toggle="tab">Charts of data quality</a></li>
             <li ><a href="#publication" aria-controls="publicaton" role="tab" data-toggle="tab">Publication</a></li>
         </ul>
@@ -327,13 +327,12 @@ if (isset($_SESSION['started'])) {
                                             <th></th>
                                         </tr>
                         <?php
-                        $result_ages = $age_model->getDatesInfo();
 
+                        $result_ages = $age_model->getDatesInfo();
                         $tabPourGraph = [];
                         $tabPourGraph1 = [];
                         $tabPourGraph2 = [];
                         while ($values = fetchAssoc($result_ages)) {
-
                             //var_dump($values);
                             $calibration_method = null;
                             $calibration_version = null;
@@ -399,7 +398,7 @@ if (isset($_SESSION['started'])) {
                             echo "</tr>";
                         }
 
-                        $estimatedAges = $age_model->getEstimatedAges();
+                        $estimatedAges = $age_model->getProxyFireEstimatedAges();
                         $unitpourGraph = "";
 
                         $units = NULL;
@@ -411,7 +410,7 @@ if (isset($_SESSION['started'])) {
                             }
                             $tooltip = "'Depth: ".$values["depth"]." Estimated age: ".$values["age"]."(+".$values["pos_err"]."/-".$values["neg_err"].")";
                             if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR) || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR)){
-                                $tooltip .= " Charcoals quantity : ".$values["quantity"]." ".$values["units"];
+                                $tooltip .= " Fire proxy quantity : ".$values["quantity"]." ".$values["units"];
                             }
                             $tooltip .= "'";
                             $tabPourGraph[] = "[".$values["depth"].", null, ".$values["age"].",".$tooltip."]";
@@ -422,7 +421,7 @@ if (isset($_SESSION['started'])) {
                             if ($values["pos_err"] != NULL || $values["neg_err"] != NULL) $error = " (".$error.") ";
                             $tooltip = "'Estimated age: ".$values["age"].$error."- Charcoals quantity (".$values["units"].") : ".$values["quantity"]."'";
                             $tabPourGraph1[$units][] = "[".$values["quantity"].", ".$values["age"].",".$tooltip."]";
-                            $tooltip = "'Depth: ".$values["depth"] ." - Charcoals quantity (".$values["units"].") : ".$values["quantity"]."'";
+                            $tooltip = "'Depth: ".$values["depth"] ." - Fire proxy quantity (".$values["units"].") : ".$values["quantity"]."'";
                             $tabPourGraph2[$units][] = "[".$values["quantity"].", ".$values["depth"].",".$tooltip."]";
                             $unitpourGraph=$values["units"];
                         }
@@ -444,23 +443,23 @@ if (isset($_SESSION['started'])) {
             </div>
             <?php } // foreach ($core->getAllAgeModel() as $age_model) {?>
           </div>
-          <div class="tab-pane" id="charcoals">
+          <div class="tab-pane" id="proxy_fire">
                <?php
 
-               $listeCharcoals = Charcoal::getCharcoalsFromCoreOrderedByUnits($core_id);
+               $listeProxyFire = ProxyFireData::getProxyFireFromCoreOrderedByUnits($core_id);
 
-              if(count($listeCharcoals) > 0){
+              if(count($listeProxyFire) > 0){
                 if(isset($_SESSION['gcd_user_role'])){
                     if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) {
                         echo '<div class="btn-toolbar" role="toolbar" align="right">
                                 <a role="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#dialog-paleo" data-whatever="[&quot;changestatuscharcoals&quot;,&quot;'.$core_id.'&quot;,&quot;'.$core->getName().'&quot;]">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    Change status for all charcoals
+                                    Change status for all fire proxy
                                 </a>';
                         if($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR){
                             echo '<a role="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#dialog-paleo" data-whatever="[&quot;delcharcoals&quot;,&quot;'.$core_id.'&quot;]">
                                       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                      Delete all charcoals
+                                      Delete all fire proxy
                                   </a>';
                         }
                         echo '</div>';
@@ -473,18 +472,17 @@ if (isset($_SESSION['started'])) {
               $units = NULL;
               $tabSerie = [];
 
-              $charcoalsTable = NULL;
-
+              $proxyFireTable = NULL;
               // on décode le tableau json de depths pour pouvoir fair un tri avec une fonction de comparaison
-              for($i = 0; $i < count($listeCharcoals); $i++){
-                $listeCharcoals[$i]["DEPTHS_LIST_DECODE"] = json_decode("[".$listeCharcoals[$i]["DEPTH_LIST"]."]");
+              for($i = 0; $i < count($listeProxyFire); $i++){
+                $listeProxyFire[$i]["DEPTHS_LIST_DECODE"] = json_decode("[".$listeProxyFire[$i]["DEPTH_LIST"]."]");
               }
-              usort($listeCharcoals, "cmpDepths");
+              usort($listeProxyFire, "cmpDepths");
 
-              if ($listeCharcoals != NULL){
-                foreach ($listeCharcoals as $charcoal){
-                    if ($units != $charcoal["ID_CHARCOAL_UNITS"]){
-                        $units = $charcoal["ID_CHARCOAL_UNITS"];
+              if ($listeProxyFire != NULL){
+                foreach ($listeProxyFire as $proxyFire){
+                    if ($units != $proxyFire["ID_PROXY_FIRE_MEASUREMENT_UNIT"]){
+                        $units = $proxyFire["ID_PROXY_FIRE_MEASUREMENT_UNIT"];
                         $numSerie ++;
 
                         if ($numSerie > 1) {
@@ -492,25 +490,29 @@ if (isset($_SESSION['started'])) {
                             echo '</div></div></div>'; //fin div panel-info, fin div col-md-12  fin div row
                         }
 
-                        $libUnitéGraph = CharcoalUnits::getNameFromStaticList($charcoal["ID_CHARCOAL_UNITS"]);
+                        $libUnitéGraph = ProxyFireMeasurementUnit::getNameFromStaticList($proxyFire["ID_PROXY_FIRE_MEASUREMENT_UNIT"]);
                         $tabSerie[$libUnitéGraph] = $numSerie;
+                        //$tabSerie[$proxyFire["UNIT_VALUE"]] =$numSerie;
 
                         echo '<div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-info">
-                                        <div class="panel-heading"><h1 class="panel-title"> Quantity ('.htmlentities($libUnitéGraph, ENT_QUOTES, "UTF-8").')</h1></div>
+                                        <div class="panel-heading"><h1 class="panel-title"> Fire proxy : <b>'.htmlentities($proxyFire["PROXY_FIRE_TYPE"], ENT_QUOTES, "UTF-8").'</b></h1><h1 class="panel-title"> Quantity : <b>'.htmlentities($proxyFire["UNIT_VALUE"], ENT_QUOTES, "UTF-8").'</b> ('.htmlentities($proxyFire["UNIT_INFO"], ENT_QUOTES, "UTF-8").')</h1></div>
                                         <div id="chart_quantity_age'.$core_id.$numSerie.'"></div>
                                         <div id="chart_quantity_depth'.$core_id.$numSerie.'"></div>
-                                        <button type="button" class="btn btn-info" onclick="displayOrHide(this, tableCharcoals'.$numSerie.');">
-                                        Show the charcoals table
+                                        <button type="button" class="btn btn-info" onclick="displayOrHide(this, tableProxyFire'.$numSerie.');">
+                                        Show the fire proxy table table
                                         </button>
                                       ';
 
-                        echo '<table class="table table-bordered table-condensed table-responsive" style="display:none" id="tableCharcoals'.$numSerie.'">';
+                        echo '<table class="table table-bordered table-condensed table-responsive" style="display:none" id="tableProxyFire'.$numSerie.'">';
                         echo '<tr>
                             <th>Name</th>
-                            <th>Size</th>
-                            <th>Method</th>';
+                            <th>Size min</th>
+                            <th>Size max</th>
+                            <th>Size value</th>
+                            <th>Method Treatment</th>
+                            <th>Method Estimation</th>';
 
                         if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)
                             || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)
@@ -529,7 +531,7 @@ if (isset($_SESSION['started'])) {
 
                         if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)
                             || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)
-                            || ($data_contributor != NULL && $charcoal["ID_CONTACT"] == $data_contributor->getIdValue())){
+                            || ($data_contributor != NULL && $proxyFire["ID_CONTACT"] == $data_contributor->getIdValue())){
                             echo '<th>Update</th>';
                             echo '<th style="width:60px;"></th>';
                             echo '<th>Status</th>';
@@ -537,34 +539,46 @@ if (isset($_SESSION['started'])) {
 
                         echo '</tr>';
                     }
-                    // display charcoals if status is validated or waiting
+                    // display fire proxy if status is validated or waiting
                     // OR if the connected person is the contributor of the date or an adminitrator or super administrator
-                    if((Status::isValid($charcoal['ID_STATUS']) || Status::isWaiting($charcoal['ID_STATUS']))
+                    if((Status::isValid($proxyFire['ID_STATUS']) || Status::isWaiting($proxyFire['ID_STATUS']))
                             || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)
                                     || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR
-                                    || ($data_contributor != NULL && $charcoal["ID_CONTACT"] == $data_contributor->getIdValue()))){
+                                    || ($data_contributor != NULL && $proxyFire["ID_CONTACT"] == $data_contributor->getIdValue()))){
 
-                        $label_units = CharcoalUnits::getNameFromStaticList($charcoal["ID_CHARCOAL_UNITS"]);
-                        echo '<tr style="font-size:85%" id="trc'.$charcoal["ID_CHARCOAL"].'">';
-                        echo "<td>".$charcoal["SAMPLE_NAME"]."</td>";
-                        if($charcoal["CHARCOAL_SIZE_VALUE"] == NULL){
-                            $charcoal_size = CharcoalSize::getObjectFromStaticList($charcoal["ID_CHARCOAL_SIZE"]);
-                            // c'est des données issues des anciennes base de données, on affiche juste le ID_CHARCOAL_SIZE
-                            // et on affichage la size convertie en cm3 (si elle n'est pas déjà en cm3)
-                            if (strstr($charcoal_size->getName(), "cm")){
-                                echo "<td>". htmlentities($charcoal_size->getName(), ENT_QUOTES, "UTF-8")."</td>";
-                            } else {
-                                echo "<td>". htmlentities($charcoal_size->getName(), ENT_QUOTES, "UTF-8")." (&asymp;". htmlentities($charcoal_size->getConvertedValueFor1cm3())."cm<sup>3</sup>)</td>";
-                            }
-                        } else {
-                            echo "<td>".$charcoal["CHARCOAL_SIZE_VALUE"]." ".htmlentities(CharcoalSize::getNameFromStaticList($charcoal["ID_CHARCOAL_SIZE"]), ENT_QUOTES, "UTF-8")."</td>";
-                        }
+                        $label_units = ProxyFireMeasurementUnit::getNameFromStaticList($proxyFire["ID_PROXY_FIRE_MEASUREMENT_UNIT"]);
+                        echo '<tr style="font-size:85%" id="trc'.$proxyFire["ID_PROXY_FIRE_DATA"].'">';
+                        echo "<td>".$proxyFire["SAMPLE_NAME"]."</td>";
+                        $proxyFire_size_min = $proxyFire["PROXY_FIRE_PARTICLE_SIZE_MIN"];
+                        $proxyFire_size_max = $proxyFire["PROXY_FIRE_PARTICLE_SIZE_MAX"];
+                        // if($proxyFire["PROXY_FIRE_SIZE_VALUE"] == NULL){
+                        //     $proxyFire_size_min = $proxyFire["PROXY_FIRE_PARTICLE_SIZE_MIN"];
+                        //     $proxyFire_size_max = $proxyFire["PROXY_FIRE_PARTICLE_SIZE_MAX"];
+                        //     // c'est des données issues des anciennes base de données, on affiche juste le ID_CHARCOAL_SIZE
+                        //     // et on affichage la size convertie en cm3 (si elle n'est pas déjà en cm3)
+                        //     echo "<td>". htmlentities($proxyFire_size_min, ENT_QUOTES, "UTF-8")."</td>";
+                        //     echo "<td>". htmlentities($proxyFire_size_max, ENT_QUOTES, "UTF-8")."</td>";
+                        //     // if (strstr($proxyFire_size_min->getName(), "cm")){
+                        //     //     echo "<td>". htmlentities($proxyFire_size_min->getName(), ENT_QUOTES, "UTF-8")."</td>";
+                        //     //     echo "<td>". htmlentities($proxyFire_size_min->getName(), ENT_QUOTES, "UTF-8")."</td>";
+                        //     // } else {
+                        //     //     echo "<td>". htmlentities($proxyFire_size_min->getName(), ENT_QUOTES, "UTF-8")." (&asymp;". htmlentities($proxyFire_size_min->getConvertedValueFor1cm3())."cm<sup>3</sup>)</td>";
+                        //     // }
+                        // } else {
+                        //     // echo "<td>".$proxyFire["PROXY_FIRE_SIZE_VALUE"]." ".htmlentities(ProxyFireData::getNameFromStaticList($ProxyFire["PROXY_FIRE_SIZE_VALUE"]), ENT_QUOTES, "UTF-8")."</td>";
+                        //     echo "<td>".$proxyFire["PROXY_FIRE_SIZE_VALUE"]." ".htmlentities($proxyFire["PROXY_FIRE_SIZE_VALUE"], ENT_QUOTES, "UTF-8")."</td>";
+                        // }
 
-                        echo "<td>". htmlentities(CharcoalMethod::getNameFromStaticList($charcoal["ID_CHARCOAL_METHOD"]), ENT_QUOTES, "UTF-8")."</td>";
+                        echo "<td>". htmlentities($proxyFire_size_min, ENT_QUOTES, "UTF-8")."</td>";
+                        echo "<td>". htmlentities($proxyFire_size_max, ENT_QUOTES, "UTF-8")."</td>";
+                        echo "<td>". htmlentities($proxyFire["PROXY_FIRE_SIZE_VALUE"], ENT_QUOTES, "UTF-8")."</td>";
+                        echo "<td>". htmlentities(ProxyFireMethodTreatment::getNameFromStaticList($proxyFire["ID_PROXY_FIRE_METHOD_TREATMENT"]), ENT_QUOTES, "UTF-8")."</td>";
+                        echo "<td>". htmlentities(ProxyFireMethodestimation::getNameFromStaticList($proxyFire["ID_PROXY_FIRE_METHOD_ESTIMATION"]), ENT_QUOTES, "UTF-8")."</td>";
+                        //echo "<td>". htmlentities(CharcoalMethod::getNameFromStaticList($charcoal["ID_CHARCOAL_METHOD"]), ENT_QUOTES, "UTF-8")."</td>";
                         if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)
                                 || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)
                                 || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR)){
-                            echo "<td>".$charcoal["QUANTITY"]."</td>";
+                            echo "<td>".$proxyFire["QUANTITY"]."</td>";
                         }
                         echo "<td>".htmlentities($label_units, ENT_QUOTES, "UTF-8")."</td>";
                         //var_dump($label_units);
@@ -577,8 +591,8 @@ if (isset($_SESSION['started'])) {
                         $age_err_neg = "";
                         $age_err_pos = "";
 
-                        if ($charcoal["DEPTHS_LIST_DECODE"] != null){
-                            foreach($charcoal["DEPTHS_LIST_DECODE"] as $depth){
+                        if ($proxyFire["DEPTHS_LIST_DECODE"] != null){
+                            foreach($proxyFire["DEPTHS_LIST_DECODE"] as $depth){
                                 switch($depth[0]){
                                     case 1 : $depthUp = $depth; break;
                                     case 2 : $depthDo = $depth; break;
@@ -614,12 +628,12 @@ if (isset($_SESSION['started'])) {
                         echo "<td>".$age_estimated." ".$error."</td>";
 
                         // on récupère la version de la bdd où le charcoal a été ajouté
-                        echo "<td>". DataBaseVersion::getNameFromStaticList($charcoal["ID_DATABASE"])."</td>";
+                        echo "<td>". DataBaseVersion::getNameFromStaticList($proxyFire["ID_DATABASE"])."</td>";
 
                         // on récupère les auteurs
                         $text_authors = "";
-                        if ($charcoal['AUTHORS_LIST'] != NULL){
-                          $author_list = explode(",", $charcoal['AUTHORS_LIST']);
+                        if ($proxyFire['AUTHORS_LIST'] != NULL){
+                          $author_list = explode(",", $proxyFire['AUTHORS_LIST']);
                           if ($author_list != NULL){
                               foreach($author_list as $author){
                                   $contact = Contact::getObjectFromStaticList($author);
@@ -631,41 +645,41 @@ if (isset($_SESSION['started'])) {
                         echo "<td>".$text_authors."</td>";
 
                         // on récupère le contributeur
-                        $contact = Contact::getObjectFromStaticList($charcoal["ID_CONTACT"]);
+                        $contact = Contact::getObjectFromStaticList($proxyFire["ID_CONTACT"]);
                         if ($contact != null)
-                            echo "<td>".$contact->getFirstName()." ".$contact->getLastName()." ". $charcoal["CREATION_DATE"]."</td>";
+                            echo "<td>".$contact->getFirstName()." ".$contact->getLastName()." ". $proxyFire["CREATION_DATE"]."</td>";
                         else echo "<td></td>";
 
                         if (isset($_SESSION['gcd_user_role']) && (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)
                                 || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR
-                                || ($data_contributor != NULL && $charcoal["ID_CONTACT"] == $data_contributor->getIdValue())))){
+                                || ($data_contributor != NULL && $proxyFire["ID_CONTACT"] == $data_contributor->getIdValue())))){
 
                             // display last person who made an update
-                            $contact = Contact::getObjectFromStaticList($charcoal["ID_LATEST_CONTACT"]);
+                            $contact = Contact::getObjectFromStaticList($proxyFire["ID_LATEST_CONTACT"]);
                             if ($contact != null)
-                                echo "<td>".$contact->getFirstName()." ".$contact->getLastName()." ". $charcoal["UPDATE_DATE"]."</td>";
+                                echo "<td>".$contact->getFirstName()." ".$contact->getLastName()." ". $proxyFire["UPDATE_DATE"]."</td>";
                             else echo "<td></td>";
 
                             // display toolbar to modify and delete
                             echo '<td><div class="btn-group" role="toolbar">';
 
-                            echo '<a role="button" class="btn btn-default btn-xs" aria-disabled="true" href="index.php?p=ADA/add_charcoal&id='.$charcoal["ID_CHARCOAL"].'">
+                            echo '<a role="button" class="btn btn-default btn-xs" aria-disabled="true" href="index.php?p=ADA/add_proxy_fire&id='.$proxyFire["ID_PROXY_FIRE_DATA"].'">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
                             if($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR){
-                                echo '<a role="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#dialog-paleo" data-whatever="[&quot;delcharcoal&quot;,&quot;'.$charcoal["ID_CHARCOAL"].'&quot;,&quot;'.$charcoal["SAMPLE_NAME"].'&quot;,&quot;'.$core_id.'&quot;]">
+                                echo '<a role="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#dialog-paleo" data-whatever="[&quot;delcharcoal&quot;,&quot;'.$proxyFire["ID_PROXY_FIRE_DATA"].'&quot;,&quot;'.$proxyFire["SAMPLE_NAME"].'&quot;,&quot;'.$core_id.'&quot;]">
                                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>';
                             }
                             echo '</div></td>';
 
                             // display status
-                            if(Status::isValid($charcoal["ID_STATUS"])){
-                                echo '<td class="bg-success paleo-status">'. Status::getNameFromStaticList($charcoal["ID_STATUS"])."</td>";
-                            } else if (Status::isWaiting($charcoal["ID_STATUS"])){
-                                echo '<td class="bg-warning paleo-status">'. Status::getNameFromStaticList($charcoal["ID_STATUS"])."</td>";
-                            } else if (Status::isDenied($charcoal["ID_STATUS"])) {
-                                echo '<td class="bg-danger paleo-status">'. Status::getNameFromStaticList($charcoal["ID_STATUS"])."</td>";
+                            if(Status::isValid($proxyFire["ID_STATUS"])){
+                                echo '<td class="bg-success paleo-status">'. Status::getNameFromStaticList($proxyFire["ID_STATUS"])."</td>";
+                            } else if (Status::isWaiting($proxyFire["ID_STATUS"])){
+                                echo '<td class="bg-warning paleo-status">'. Status::getNameFromStaticList($proxyFire["ID_STATUS"])."</td>";
+                            } else if (Status::isDenied($proxyFire["ID_STATUS"])) {
+                                echo '<td class="bg-danger paleo-status">'. Status::getNameFromStaticList($proxyFire["ID_STATUS"])."</td>";
                             } else {
-                                echo '<td class="paleo-status">'. Status::getNameFromStaticList($charcoal["ID_STATUS"])."</td>";
+                                echo '<td class="paleo-status">'. Status::getNameFromStaticList($proxyFire["ID_STATUS"])."</td>";
                             }
                         }
 
@@ -678,6 +692,8 @@ if (isset($_SESSION['started'])) {
                 // fin du tableau
                 echo '</table>';
                 echo '</div></div></div>'; //fin div panel-info, fin div col-md-12  fin div row
+
+
               }// end if
               ?>
           </div>
@@ -693,19 +709,20 @@ if (isset($_SESSION['started'])) {
                   <div class="row">
                     <?php
 
-                    $objCharcoalUnits = CharcoalUnits::getDataQuality($core_id);
-                    $objRepCharcoalUnits = CharcoalUnits::getRepartition($core_id);
+                    $objProxyFireUnits = ProxyFireMeasurementUnit::getDataQuality($core_id);
+                    $objRepProxyFireUnits = ProxyFireMeasurementUnit::getRepartition($core_id);
 
                     $tabTableAAfficher = Array(
                         "status" => Array("Status", Status::getDataQuality($core_id), "status", Status::getRepartition($core_id), 1),
                         "database" => Array("Database version", DataBaseVersion::getDataQuality($core_id), "database version", DataBaseVersion::getRepartition($core_id), 1),
-                        "charcoalSize" => Array("Charcoal size", CharcoalSize::getDataQuality($core_id), "charcoal size", CharcoalSize::getRepartition($core_id), 0),
+                        // "charcoalSize" => Array("Charcoal size", CharcoalSize::getDataQuality($core_id), "charcoal size", CharcoalSize::getRepartition($core_id), 0),
                         "dataSource" => Array("Data source", DataSource::getDataQuality($core_id), "data source", DataSource::getRepartition($core_id), 0),
                         "pub" => Array("Publication", Publi::getDataQuality($core_id), "publication", Publi::getRepartition($core_id), 0),
-                        "charcoalMethod" => Array("Charcoal method", CharcoalMethod::getDataQuality($core_id), "charcoal method", CharcoalMethod::getRepartition($core_id), 0),
+                        "proxyFireMethodTreatment" => Array("Fire proxy method treatment", proxyFireMethodTreatment::getDataQuality($core_id), "Fire proxy method treatment", ProxyFireMethodTreatment::getRepartition($core_id), 0),
+                        "proxyFireMethodEstimation" => Array("Fire proxy method estimation", proxyFireMethodEstimation::getDataQuality($core_id), "Fire proxy method estimation", ProxyFireMethodestimation::getRepartition($core_id), 0),
                         "dateType" => Array("Date type", DateType::getDataQuality($core_id), "date type", DateType::getRepartition($core_id), 0),
-                        "matDated" => Array("Material dated", MatDated::getDataQuality($core_id), "material dated", MatDated::getRepartition($core_id), 0),
-                        "charcoalUnits" => Array("Charcoal units", CharcoalUnits::getDataQuality($core_id), "charcoal units", CharcoalUnits::getRepartition($core_id), 0)
+                        // "matDated" => Array("Material dated", MatDated::getDataQuality($core_id), "material dated", MatDated::getRepartition($core_id), 0),
+                        "proxyFireMeasurementUnit" => Array("Fire proxy measurement unit", ProxyFireMeasurementUnit::getDataQuality($core_id), "Fire proxy measurement unit", ProxyFireMeasurementUnit::getRepartition($core_id), 0)
                     );
 
                     foreach($tabTableAAfficher as $key => $elt){
@@ -826,7 +843,7 @@ if (isset($_SESSION['started'])) {
           ?>
          }
 
-         // affichage des charcoals
+         // affichage des Fire proxy
         function drawCharcoalChart1(data, numSerie, unit) {
             var options1 = {
                 chart: {'title': 'Quantity_Age', 'subtitle': ' '},
@@ -900,12 +917,12 @@ if (isset($_SESSION['started'])) {
           <?php
           if (isset($tabPourGraph1)){
             foreach($tabPourGraph1 as $unit=>$data){
-              echo "\n".'drawCharcoalChart1(['.$data.'],'.$tabSerie[$unit].',"'.$unit.'");';
+              echo "\n".'drawCharcoalChart1(['.$data.'],'.$tabSerie[$unit].',"'.$proxyFire["UNIT_VALUE"].'");';
             }
           }
           if (isset($tabPourGraph2)){
             foreach($tabPourGraph2 as $unit=>$data){
-              echo "\n".'drawCharcoalChart2(['.$data.'],'.$tabSerie[$unit].',"'.$unit.'");';
+              echo "\n".'drawCharcoalChart2(['.$data.'],'.$tabSerie[$unit].',"'.$proxyFire["UNIT_VALUE"].'");';
             }
           }
           ?>
@@ -955,11 +972,11 @@ if (isset($_SESSION['started'])) {
                     modal.find('.modal-body').html('<h3>Confirm the deletion of the following age model?</h3><p>' + recipient[2] + '</p><p>' + recipient[3] + '<p>');
                     modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_age_model&gcd_menu=ADA&id=" + recipient[1]);
                 } else if (recipient[0] == 'delcharcoal'){
-                    modal.find('.modal-body').html('<h3>Confirm the deletion of the following charcoal?</h3><p>' + recipient[2]);
-                    modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_charcoal&gcd_menu=ADA&id=" + recipient[1] + "&id_core=" + recipient[3]);
+                    modal.find('.modal-body').html('<h3>Confirm the deletion of the following fire proxy?</h3><p>' + recipient[2]);
+                    modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_proxy_fire&gcd_menu=ADA&id=" + recipient[1] + "&id_core=" + recipient[3]);
                 } else if (recipient[0] == 'delcharcoals'){
-                    modal.find('.modal-body').html('<h3>Confirm the deletion of all charcoals ?</h3>');
-                    modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_charcoal&gcd_menu=ADA&id_core=" + recipient[1]);
+                    modal.find('.modal-body').html('<h3>Confirm the deletion of all fire proxy ?</h3>');
+                    modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_proxy_fire&gcd_menu=ADA&id_core=" + recipient[1]);
                 } else if (recipient[0] == 'delcore'){
                     modal.find('.modal-body').html('<h3>Confirm the deletion of the following core ?</h3><p><?php echo $core->getName(); ?></p>');
                     modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_core&id=<?php echo $core->getIdValue(); ?>");
@@ -979,7 +996,7 @@ if (isset($_SESSION['started'])) {
                         }
                     ?>
                     var tabStatus = eval(<?php echo json_encode($tabStatus); ?>);
-                    modal.find('.modal-body').html('<h2>Select the new status for all charcoals of core ' + recipient[2] + ' : </h2>'
+                    modal.find('.modal-body').html('<h2>Select the new status for all fire proxy of core ' + recipient[2] + ' : </h2>'
                                                         + "<select id='select_status'><?php echo $options; ?></select>");
 
                     modal.find('#dialog-btn-yes').click(function(){
@@ -1029,10 +1046,10 @@ if (isset($_SESSION['started'])) {
     function displayOrHide(anchor, elt){
         if ($(elt).is(":visible")){
             $(elt).hide();
-            $(anchor).html('<span class="glyphicon glyphicon-eye" aria-hidden="true"></span>Show the charcoals table');
+            $(anchor).html('<span class="glyphicon glyphicon-eye" aria-hidden="true"></span>Show the fire proxy table');
         } else {
             $(elt).show();
-            $(anchor).html('<span class="glyphicon glyphicon-eye" aria-hidden="true"></span>Hide the charcoals table');
+            $(anchor).html('<span class="glyphicon glyphicon-eye" aria-hidden="true"></span>Hide the fire proxy table');
         }
     }
     </script>

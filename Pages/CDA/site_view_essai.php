@@ -1,15 +1,15 @@
 <?php
-/* 
- * fichier Pages/CDA/site_view.php 
- *  
- */ 
+/*
+ * fichier Pages/CDA/site_view.php
+ *
+ */
 
 if (isset($_SESSION['started'])) {
     require_once './Models/Site.php';
     require_once './Models/Sample.php';
 
     $_link_resolver = "http://dx.doi.org/";
-    
+
     $array_emails = array();
     ?>
 
@@ -25,7 +25,7 @@ if (isset($_SESSION['started'])) {
 
         <div class="row">
             <div class="col-md-9">
-                <h3>Site 
+                <h3>Site
                     <?php
                           echo $site->getName()."<small> GCD code: ".$site->getIdValue();
                           // on affiche le old gcd code seulement pour les administrateurs
@@ -36,11 +36,11 @@ if (isset($_SESSION['started'])) {
                     ?>
                 </h3>
             </div>
-            <?php 
+            <?php
             // affichage d'un menu pour modifier les sites
             // pour l'instant seul un administrateur peut modifier un site
             // les sites ne sont pas rattaché à un utilisateur particulier
-                if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)) { 
+                if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)) {
             ?>
             <div class="col-md-3">
                 <div class="btn-toolbar" role="toolbar" align="right">
@@ -50,13 +50,13 @@ if (isset($_SESSION['started'])) {
                     </a>
                 </div>
             </div>
-            <?php 
-                } // FIN if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR) 
+            <?php
+                } // FIN if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)
             ?>
         </div>
-        
+
         <div role="tabpanel" id="tabSite" style="height:300px">
-            
+
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
               <li class="active"><a href="#geography" aria-controls="geography" role="tab" data-toggle="tab">Geography</a></li>
@@ -84,18 +84,18 @@ if (isset($_SESSION['started'])) {
                             <dt>Regional vegetation</dt>
                             <dd><?php echo ($site->getRegionalVeg() != null) ? $site->getRegionalVeg()->getName() : "no value"; ?></dd>
                             <dt>Basin size</dt>
-                            <dd><?php echo ($site->_basin_size_value != null) ? $site->_basin_size_value.'</br>' : ''; 
+                            <dd><?php echo ($site->_basin_size_value != null) ? $site->_basin_size_value.'</br>' : '';
                             echo ($site->_basin_size_id != null) ? BasinSize::getNameFromStaticList($site->_basin_size_id): "no value"; ?>
                             </dd>
                             <dt>Flow type</dt>
                             <dd><?php echo ($site->_flow_type_id != null) ? FlowType::getNameFromStaticList($site->_flow_type_id) : "no value"; ?></dd>
                             <dt>Catch size</dt>
-                            <dd><?php echo ($site->_catch_size_value != null) ? $site->_catch_size_value.'</br>' : ''; 
+                            <dd><?php echo ($site->_catch_size_value != null) ? $site->_catch_size_value.'</br>' : '';
                                 echo ($site->_catch_size_id != null) ? CatchSize::getNameFromStaticList($site->_catch_size_id) : "no value"; ?></dd>
                             <dt>Land description</dt>
                             <dd><?php echo ($site->_site_land_id != null) ? LandsDesc::getNameFromStaticList($site->_site_land_id) : "no value"; ?></dd>
                           </dl>
-                       
+
                             <div id="map_site" style="width:auto"></div>
                         </div>
                       </div>
@@ -112,7 +112,7 @@ if (isset($_SESSION['started'])) {
                 </div>-->
               <div class="tab-pane" id="publications">
                 <?php
-                    
+
                     foreach ((array)($site->getPubliReferencedBySite()) as $publi) {
                         //echo "XXXXXXX<p>".$publi["pub_citation"];
                         echo " <p>".$publi["pub_citation"];
@@ -134,7 +134,7 @@ if (isset($_SESSION['started'])) {
                            $coord = null;
                     foreach($site->getListeCoreEtCumuls() as $core){
                         ?>
-                    
+
                             <dt>Name</dt>
                             <dd><?php echo '<td>'.$core[Core::NAME]."</td>";?></dd>
                             <dt>Country</dt>
@@ -148,13 +148,13 @@ if (isset($_SESSION['started'])) {
                             <dt>Regional vegetation</dt>
                             <dd><?php echo ($site->getRegionalVeg() != null) ? $site->getRegionalVeg()->getName() : "no value"; ?></dd>
                             <dt>Basin size</dt>
-                            <dd><?php echo ($site->_basin_size_value != null) ? $site->_basin_size_value.'</br>' : ''; 
+                            <dd><?php echo ($site->_basin_size_value != null) ? $site->_basin_size_value.'</br>' : '';
                             echo ($site->_basin_size_id != null) ? BasinSize::getNameFromStaticList($site->_basin_size_id): "no value"; ?>
                             </dd>
                             <dt>Flow type</dt>
                             <dd><?php echo ($site->_flow_type_id != null) ? FlowType::getNameFromStaticList($site->_flow_type_id) : "no value"; ?></dd>
                             <dt>Catch size</dt>
-                            <dd><?php echo ($site->_catch_size_value != null) ? $site->_catch_size_value.'</br>' : ''; 
+                            <dd><?php echo ($site->_catch_size_value != null) ? $site->_catch_size_value.'</br>' : '';
                                 echo ($site->_catch_size_id != null) ? CatchSize::getNameFromStaticList($site->_catch_size_id) : "no value"; ?></dd>
                             <dt>Land description</dt>
                             <dd><?php echo ($site->_site_land_id != null) ? LandsDesc::getNameFromStaticList($site->_site_land_id) : "no value"; ?></dd>
@@ -162,7 +162,7 @@ if (isset($_SESSION['started'])) {
                           <?php
                     }
                     ?>
-                       
+
                             <div id="map_site" style="width:auto"></div>
                         </div>
                       </div>
@@ -170,7 +170,7 @@ if (isset($_SESSION['started'])) {
                 ?>
             </div>
           </div>
-    
+
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script>
         var gcdIcon_OK = './images/marker_red.png';
@@ -206,12 +206,12 @@ if (isset($_SESSION['started'])) {
             var marker_info = "";
             marker_info += "<div id='contentInfoWindow' >";
             marker_info += "<b>" + all_cores[prop][0] + "</b><br/>";
-            marker_info += "<a href=\"index.php?p=CDA/core_view&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
+            marker_info += "<a href=\"index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
             marker_info += "</div>";
             var object = {'lat': all_cores[prop][1], 'lon': all_cores[prop][2], 'title': all_cores[prop][0], 'info': marker_info};
             tMarker[i] = object;
             i++;
-            
+
             latlngbounds.extend(new google.maps.LatLng(all_cores[prop][1],all_cores[prop][2]));
         }
         var nb = tMarker.length;
@@ -235,12 +235,12 @@ if (isset($_SESSION['started'])) {
                 oInfo.open(this.getMap(), this);
             });
         }
-        
+
         map_global_site.setCenter(latlngbounds.getCenter());
-        //map_global_site.fitBounds(latlngbounds); 
-        
+        //map_global_site.fitBounds(latlngbounds);
+
 
     </script>
-    <?php 
-    } 
+    <?php
+    }
 }

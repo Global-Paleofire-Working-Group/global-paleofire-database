@@ -1,5 +1,5 @@
 <?php
- /* 
+ /*
  * fichier Pages/CDA/search.php
  */
 require_once './Models/Site.php';
@@ -22,14 +22,14 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
                 // SITE
                 $name = SITE::getNameFromStaticList($recherche);
                 if ($name != NULL) {
-                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view&site_id='.$recherche.'" target="_blank">
+                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view_proxy_fire&site_id='.$recherche.'" target="_blank">
                             Site : '.$name.' ID : '.$recherche.
                         '</a>';
                 }
                 // CORE
                 $res = Core::getArrayFieldsValueFromWhere(array(CORE::ID, CORE::NAME), CORE::ID." = ".$recherche);
                 if ($res != NULL) {
-                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/core_view&core_id='.$res[0][CORE::ID].'" target="_blank">
+                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/core_view_proxy_fire&core_id='.$res[0][CORE::ID].'" target="_blank">
                             Core : '.$res[0][CORE::NAME].' ID : '.$res[0][CORE::ID].
                         '</a>';
                 }
@@ -66,7 +66,7 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
                 echo '<h4>'.count($res).' site(s) found</h4>';
                 echo '<div class="list-group">';
                 foreach($res as $row){
-                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view&site_id='.$row[SITE::ID].'" target="_blank">
+                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view_proxy_fire&site_id='.$row[SITE::ID].'" target="_blank">
                             ['.$row[SITE::ID].'] '.$row[SITE::NAME].
                         '</a>';
                 }
@@ -79,7 +79,7 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
                 echo '<h4>'.count($res).' core(s) found</h4>';
                 echo '<div class="list-group">';
                 foreach($res as $row){
-                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/core_view&core_id='.$row[CORE::ID].'" target="_blank">
+                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/core_view_proxy_fire&core_id='.$row[CORE::ID].'" target="_blank">
                             ['.$row[CORE::ID].'] '.$row[CORE::NAME].
                         '</a>';
                 }
@@ -113,7 +113,7 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
                 }
                 echo '</div>';
             }else echo '<h4> No contact found</h4>';
-            
+
             // USER (login)
             if ($_SESSION['gcd_user_role'] != WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] != WebAppRoleGCD::SUPERADMINISTRATOR){
                 $results = WebAppUserGCD::searchUser($recherche_text);
@@ -135,20 +135,20 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
                 echo '<h4>'.count($results).' site(s) found (search in field country)</h4>';
                 echo '<div class="list-group">';
                 foreach($results as $row){
-                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view&site_id='.$row[SITE::ID].'" target="_blank">
+                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view_proxy_fire&site_id='.$row[SITE::ID].'" target="_blank">
                             ['.$row[SITE::ID].'] Site : '.$row[SITE::NAME].', Country : '.str_replace($recherche_text, $row[COUNTRY::NAME], '<span class="text-primary font-weight-bold">'.$recherche_text.'</span>').
                         '</a>';
                 }
                 echo '</div>';
             }//else echo '<h4> No sites found</h4>';
-            
+
             // REGION (name)
             $results = REGION::getSitesBySearchOnRegion($recherche_text);
             if (!empty($results)){
                 echo '<h4>'.count($results).' site(s) found (search in field region)</h4>';
                 echo '<div class="list-group">';
                 foreach($results as $row){
-                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view&site_id='.$row[SITE::ID].'" target="_blank">
+                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/site_view_proxy_fire&site_id='.$row[SITE::ID].'" target="_blank">
                             ['.$row[SITE::ID].'] Site : '.$row[SITE::NAME].', Country : '. $row[COUNTRY::NAME] .', Region : '.str_replace($recherche_text, $row[REGION::NAME], '<span class="text-primary font-weight-bold">'.$recherche_text.'</span>').
                         '</a>';
                 }
@@ -175,33 +175,33 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
                 echo '<h4>'.count($results).' note(s) found</h4>';
                 echo '<div class="list-group">';
                 foreach($results as $obj){
-                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/core_view&core_id='.$obj->getCoreId().'" target="_blank">
+                    echo '<a class="list-group-item list-group-item-action" href="index.php?p=CDA/core_view_proxy_fire&core_id='.$obj->getCoreId().'" target="_blank">
                             ['.$obj->getIdValue().'] Note : '.$obj->getName().
                         '</a>';
                 }
                 echo '</div>';
             }else echo '<h4> No note found</h4>';
-            
+
         } else {
             echo '<div class="alert alert-info">Please, enter a text in the field "Search"</div>';
         }
     } else {
         echo '<div class="alert alert-info">Please, enter a text in the field "Search"</div>';
-    }    
+    }
 } else {
     echo '<div class="alert alert-info"><strong>Access denied</strong> You have to log in to access this page.</div>';
 }
-    
+
 
 function testPost($post_var) {
-        return (isset($_POST[$post_var])) 
-                    && $_POST[$post_var] != NULL 
-                    && $_POST[$post_var] != 'NULL' 
+        return (isset($_POST[$post_var]))
+                    && $_POST[$post_var] != NULL
+                    && $_POST[$post_var] != 'NULL'
                     && trim(delete_antiSlash($_POST[$post_var])) != "";
 }
 
 // remplace l'ensemble des lettres accentuées d'une chaîne de caractères en caractères non accentués
-function oteAccents($str, $encoding='utf-8')   {   
+function oteAccents($str, $encoding='utf-8')   {
 
     $str = htmlentities($str, ENT_NOQUOTES, $encoding);
     $str = preg_replace('#&([A-za-z])(?:acute|grave|cedil|circ|orn|ring|slash|th|tilde|uml);#', '\1', $str);

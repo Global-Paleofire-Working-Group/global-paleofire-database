@@ -7,13 +7,19 @@ $path = $_SERVER["DOCUMENT_ROOT"] . GLOBAL_RACINE . 'Models';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 $path = './Library';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-require_once '../../Models/user/WebAppRoleGCD.php';
-require_once '../../Models/user/WebAppPermGCD.php';
-require_once '../../Models/user/WebAppUserGCD.php';
+
+require_once (REP_MODELS."/user/WebAppRoleGCD.php");
+require_once (REP_MODELS."/user/WebAppPermGCD.php");
+require_once (REP_MODELS."/user/WebAppUserGCD.php");
+require_once (REP_LIB."data_securisation.php");
+
+// require_once '../../Models/user/WebAppRoleGCD.php';
+// require_once '../../Models/user/WebAppPermGCD.php';
+// require_once '../../Models/user/WebAppUserGCD.php';
 include_once 'Site.php';
 include_once 'connect_database.php';
 include_once 'database.php';
-require_once('../../Library/data_securisation.php');
+// require_once('../../Library/data_securisation.php');
 
 if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR) || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR)){
     $isAdmin = false;
@@ -75,14 +81,14 @@ if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESS
                 if (isset($_GET['tmin'])) $interval_time_min = $_GET['tmin'];
                 if (isset($_GET['tmax'])) $interval_time_max = $_GET['tmax'];
 
+
                 // récupération des données
-                $objRes = Site::getDataForExport($id_region, $id_country, $id_site, $fields, $fieldsSample, $fieldsDateInfo, $interval_time_min, $interval_time_max, $isAdmin);
+                $objRes = Site::getDataForExportProxyFire($id_region, $id_country, $id_site, $fields, $fieldsSample, $fieldsDateInfo, $interval_time_min, $interval_time_max, $isAdmin);
                 if ($objRes != null) creationArchiveZip($objRes);
             } else {
                 // todo renvoie d'un msg d'erreur ?
             }
         }
-
         else if ($action == 'export' && isset($_GET['ids'])) {
             $tabIds = json_decode($_GET['ids']);
             $fields = null;
@@ -96,10 +102,8 @@ if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESS
             if (isset($_GET['tmin'])) $interval_time_min = $_GET['tmin'];
             if (isset($_GET['tmax'])) $interval_time_max = $_GET['tmax'];
             // récupération des données
-            $objRes = Site::getDataForExportbyCoreIDS($tabIds, $fields, $fieldsSample, $fieldsDateInfo, $interval_time_min, $interval_time_max, $isAdmin);
+            $objRes = Site::getDataProxyFireForExportbyCoreIDS($tabIds, $fields, $fieldsSample, $fieldsDateInfo, $interval_time_min, $interval_time_max, $isAdmin);
             if ($objRes != null) creationArchiveZip($objRes);
-
-
         }
     }
     else if (isset($_POST['action']))
@@ -121,7 +125,8 @@ if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESS
             if (isset($_POST['tmax'])) $interval_time_max = $_POST['tmax'];
 
             // récupération des données
-            $objRes = Site::getDataForExportbyCoreIDS($tabIds, $fields, $fieldsSample, $fieldsDateInfo, $interval_time_min, $interval_time_max, $isAdmin);
+            //$objRes = Site::getDataForExportbyCoreIDS($tabIds, $fields, $fieldsSample, $fieldsDateInfo, $isAdmin);
+            $objRes = Site::getDataProxyFireForExportbyCoreIDS($tabIds, $fields, $fieldsSample, $fieldsDateInfo, $interval_time_min, $interval_time_max, $isAdmin);
             if ($objRes != null) creationArchiveZip($objRes);
         }
     }

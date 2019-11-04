@@ -49,10 +49,11 @@ if (isset($_SESSION['started'])) {
             $tabIcon[$id] = [$icon_unpublished_without_charcoals];
         }
     }
-    $totalCharcoal = Charcoal::countPaleofireObjects();
+    $totalProxyFire = ProxyFireData::countPaleofireObjects();
+
     ?>
 
-    <h4>The database contains : <?php echo $total; ?> cores, <?php echo $totalCharcoal; ?> charcoal.</h4>
+    <h4>The database contains : <?php echo $total; ?> cores, <?php echo $totalProxyFire; ?> charcoal's fire proxy samples </h4>
     <div id="map_global_site"></div>
     <div id="legend"><h5>Legend</h5></div>
 	<?php
@@ -110,7 +111,7 @@ if (isset($_SESSION['started'])) {
             marker_info += "Elevation : " + all_sites_with_coord_json[key][3] + "<br/>";
             marker_info += "Type : " + all_sites_with_coord_json[key][6] + "<br/>";
             marker_info += "Country : " + all_sites_with_coord_json[key][5] + "<br/>";
-            marker_info += "<a href=\"index.php?p=CDA/site_view&site_id=" + all_sites_with_coord_json[key][4] + "\">View data site...</a>";
+            marker_info += "<a href=\"index.php?p=CDA/site_view_proxy_fire&site_id=" + all_sites_with_coord_json[key][4] + "\">View data site...</a>";
             marker_info += "</div>";
             marker_info += "</div>";
             tabMarkerInfo[key] = marker_info;

@@ -1,8 +1,8 @@
 <?php
-/* 
- * fichier Pages/ADA/add_note_core.php 
- * 
- */ 
+/*
+ * fichier Pages/ADA/add_note_core.php
+ *
+ */
 if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR) || $_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))) {
     require_once './Models/NoteCore.php';
     require_once './Models/Site.php';
@@ -13,9 +13,9 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     $max_length_str = 50;
     $max_length_text = 300;
     $listeSiteEtCore = NULL;
-    
+
     connectionBaseInProgress();
-    
+
     if (!isset($success_form)) {
         $success_form = "";
     }
@@ -35,14 +35,14 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     } else if (isset($_GET['id'])){
         $obj = NoteCore::getObjectPaleofireFromId($_GET['id']);
         //if ($obj == null) // todo redirection
-    } else { 
+    } else {
         $obj = new NoteCore();
     }
-    
+
     if (isset($_POST['submitAdd'])) {
         $error_form = array();
         $success_form = false;
-        
+
         $errors = null;
 
         //affectation avec les données postées dans le formulaire
@@ -59,13 +59,13 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         } else {
             $errors[] = "What must be filled";
         }
-        
+
         if (testPost(NoteCore::ID_CORE)) {
-            $obj->setCoreId($_POST[NoteCore::ID_CORE]);            
+            $obj->setCoreId($_POST[NoteCore::ID_CORE]);
         } else {
             $errors[] = "A core must be selected";
         }
-        
+
         // on récupère le contributeur (personne connecté actuellement)
         $user_id = $_SESSION['gcd_user_id'];
         $contact_contributeur = WebAppUserGCD::getContactId($user_id);
@@ -74,14 +74,14 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         } else {
             $errors[] = "Error your user account is not linked to a contact";
         }
-        
+
         // la date du jour sera récupéré juste avant la création de l'objet en base
         //$obj->setCoreNoteDate(date("Y-m-d"));
         if (empty($errors)) {
             // on tente d'enregistrer la note
             $errors = $obj->save();
         }
-        
+
         if (empty($errors)){
 
             echo '<div class="alert alert-success"><strong>Success !</strong> Thanks for your contribution.</div>';
@@ -89,24 +89,24 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
             echo '<div class="alert alert-danger"><strong>Error recording !</strong></br>'.implode('</br>', $errors)."</div>";
         }
         echo '<div class="btn-toolbar" role="toolbar" align="left">
-            <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/core_view&gcd_menu=CDA&core_id='.$obj->getCoreId().'">
+            <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id='.$obj->getCoreId().'">
                 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                 Go back to core page
             </a>
         </div>';
     }
-    
+
     if ((!isset($_POST['submitAdd'])) || !empty($errors)) {
         // si on arrive sur la page la première fois
         // ou si le formulaire a été soumis mais que des erreurs empêchent l'enregistement
         // le formulaire est affiché
- 
+
         if (isset($_GET['id'])) {
            echo '<h1>Editing note</h1>';
         } else {
            echo '<h1>Add a new note about a core</h1>';
         }
-    ?>  
+    ?>
             <!-- Formulaire de saisie d'une note-->
             <form action="" class="form_paleofire" name="formAdd" method="post" id="formAdd" >
                 <!-- Cadre pour la note-->
@@ -144,22 +144,22 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                             echo "<input type = 'submit' name = 'submitAdd' value = 'Save' />";
                         }
                     ?>
-					<input name="cancelAdd" onclick="redirection('index.php?p=CDA/core_view&gcd_menu=CDA&core_id=<?php echo $obj->getCoreId(); ?>')" value="Cancel" type="button">
-                </p> 
+					<input name="cancelAdd" onclick="redirection('index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id=<?php echo $obj->getCoreId(); ?>')" value="Cancel" type="button">
+                </p>
             </form>
             <?php
-        } 
+        }
     }
 
     function testPost($post_var) {
-        return (isset($_POST[$post_var])) 
-                    && $_POST[$post_var] != NULL 
-                    && $_POST[$post_var] != 'NULL' 
+        return (isset($_POST[$post_var]))
+                    && $_POST[$post_var] != NULL
+                    && $_POST[$post_var] != 'NULL'
                     && trim(delete_antiSlash($_POST[$post_var])) != "";
     }
     ?>
 <script type="text/javascript">
-<?php                         
+<?php
     echo 'var tabCore = '. json_encode($listeSiteEtCore).';';
 ?>
 $('#ID_SITE').change(
@@ -178,7 +178,7 @@ $('#ID_SITE').change(
         echo '$("#ID_SITE").change();';
         echo '$("#ID_CORE").val("'.$param_id_core.'");';
     }
-    
+
     if (isset($obj) && $obj->getCoreId() != null){
         $param_core = Core::getObjectPaleofireFromId($obj->getCoreId());
         $param_id_site = $param_core->getSiteID();
@@ -186,5 +186,5 @@ $('#ID_SITE').change(
         echo '$("#ID_SITE").change();';
         echo '$("#ID_CORE").val("'.$obj->getCoreId().'");';
     }
-?>    
-</script>   
+?>
+</script>

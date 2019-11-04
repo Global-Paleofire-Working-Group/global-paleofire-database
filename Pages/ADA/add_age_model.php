@@ -1,14 +1,14 @@
 <?php
-/* 
- * fichier Pages/ADA/add_age_model.php 
- * 
- */ 
+/*
+ * fichier Pages/ADA/add_age_model.php
+ *
+ */
 if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR) || $_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))) {
     require_once (REP_MODELS."Site.php");
     require_once (REP_MODELS."DateInfo.php");
     require_once (REP_MODELS."AgeModel.php");
     require_once (REP_LIB."PaleofireHtmlTools.php");
-   
+
     if (!isset($success_form)) {
         $success_form = "";
     }
@@ -16,7 +16,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     if (!isset($new_site)) {
         $new_site = new Site();
     }
-    
+
     $id = null;
     if (isset($_GET['id'])){
         $id = $_GET['id'];
@@ -41,22 +41,22 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
 
     if (isset($_POST['submitAdd'])) {
         $success_form = false;
-        
+
         //$new_obj = new AgeModel();
         $errors = null;
-        
+
         if (testPost(Site::ID) && Site::idExistsInDatabase($_POST[Site::ID])) {
             $id_site = $_POST[Site::ID];
         } else {
             $errors[] = "A site must be selected";
         }
-        
+
         if (testPost(Core::ID) && Core::idExistsInDatabase($_POST[Core::ID])) {
             $id_core = $_POST[Core::ID];
         } else {
             $errors[] = "A core must be selected";
         }
-        
+
         if (testPost(AgeModel::NAME)) {
             if (!AgeModel::getAllIdName("AGE_MODEL_VERSION like '" . $_POST[AgeModel::NAME] . "'")){
                 $version = $_POST[AgeModel::NAME];
@@ -72,12 +72,12 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         } else {
             $errors[] = "A method must be selected";
         }
-        
+
         $id_modeller = null;
         if (testPost(AgeModel::ID_CONTACT)) {
             $id_modeller = $_POST[AgeModel::ID_CONTACT];
         }
-        
+
         //si c'est un contributeur qui entre la données, cette dernière sera mise en attente de validation par un administrateur
         //si c'est un administrateur qui entre la données, cette dernière sera automatiquemenbt validée
         if (isset($_SESSION['gcd_user_role']) && (($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)||($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))){
@@ -85,33 +85,33 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         }
         else {
             $new_obj->setStatusId(0); //la donnée apparaîtra dans la liste données à valider
-        } 
-               
-        
+        }
+
+
         if (empty($errors)) {
             // on tente d'enregistrer le modèle d'age
-            
+
             $new_obj->_core_id = $id_core;
             $new_obj->_contact_id = $id_modeller;
             $new_obj->setAgeModelMethod($id_method);
             $new_obj->setNameValue(utf8_decode($version));
-                   
+
             $errors = $new_obj->save();
         }
-        
-        if (empty($errors)){                    
+
+        if (empty($errors)){
             echo '<div class="alert alert-success"><strong>Success !</strong> Thanks for your contribution.</div>';
         } else {
             echo '<div class="alert alert-danger"><strong>Error recording !</strong></br>'.implode('</br>', $errors)."</div>";
         }
         echo '<div class="btn-toolbar" role="toolbar" align="left">
-            <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/core_view&gcd_menu=CDA&core_id='.$new_obj->_core_id.'">
+            <a role="button" class="btn btn-default btn-xs" href="index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id='.$new_obj->_core_id.'">
                 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                 Go back to core page
             </a>
         </div>';
     }
-    
+
     if ((((!isset($_POST['submitAdd'])) || !empty($errors)))&&(!isset($_POST['deleteAdd']))) {//
         // si on arrive sur la page la première fois
         // ou si le formulaire a été soumis mais que des erreurs empêchent l'enregistement
@@ -122,7 +122,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     }   else {
         echo '<h1>Add a new age model</h1>';
     }
-        ?>     
+        ?>
             <!-- Formulaire de saisie d'un modèle d'age-->
             <form action="" class="form_paleofire" name="formAddSite" method="post" id="formAddSite" >
                 <!-- Cadre pour les métadonnées d'un modèle d'age !-->
@@ -174,7 +174,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
 
                 <!-- Boutons du formulaire !-->
                 <p class="submit">
-                    <?php 
+                    <?php
                     if ($id == null){
                         echo "<input type = 'submit' name = 'submitAdd' value = 'Add' />";
                     } else {
@@ -185,23 +185,23 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                     }
                     //<input type = 'button' name = 'cancelAdd' onclick=\"redirection('index.php?p=".$redirection."')\" value = 'Cancel' />
                     ?>
-                </p> 
+                </p>
             </form>
             <?php
-        } 
+        }
     }
-    
+
 
     function testPost($post_var) {
-        return (isset($_POST[$post_var])) 
-                    && $_POST[$post_var] != NULL 
-                    && $_POST[$post_var] != 'NULL' 
+        return (isset($_POST[$post_var]))
+                    && $_POST[$post_var] != NULL
+                    && $_POST[$post_var] != 'NULL'
                     && trim(delete_antiSlash($_POST[$post_var])) != "";
     }
-    
+
     ?>
 <script type="text/javascript">
-    <?php      
+    <?php
         if (isset($listeSiteEtCore)){
             echo 'var tabCore = '. json_encode($listeSiteEtCore).';';
         }
@@ -216,14 +216,14 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
         }
         $('#ID_CORE').change();
     });
-    
+
     $('#ID_CORE').change(
     function(){
         if ($('#name_agemodel').val() == ""){
             $('#name_agemodel').val('age_model_'+$('#ID_CORE option:selected').text()+'_');
         }
     });
-    
+
     <?php
     if (isset($new_obj) && $new_obj->_core_id != null){
         $core = CORE::getObjectPaleofireFromId($new_obj->_core_id);
@@ -236,4 +236,3 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
     ?>
 </script>
 <?php
-    

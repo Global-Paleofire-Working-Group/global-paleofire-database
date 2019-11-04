@@ -1,13 +1,13 @@
 <?php
-/* 
- * fichier Pages/CDA/contact_view.php 
- *  
- */ 
+/*
+ * fichier Pages/CDA/contact_view.php
+ *
+ */
 if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSION['gcd_user_role'] != WebAppRoleGCD::VISITOR) {
     require_once './Models/Contact.php';
     require_once './Models/Affiliation.php';
     require_once './Models/Core.php';
-   
+
     $id = null;
     if (isset($_GET['contact_id']) && is_numeric($_GET['contact_id'])) {
         $id = $_GET['contact_id'];
@@ -65,22 +65,22 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
 
             if ($contact->getAffiliation() != null) {
                $affil = Affiliation::getObjectFromStaticList($contact->getAffiliation());
-               echo '<dt>Affiliation : </dt><dd>'.$affil->getName().'</dd>';         
-            }                
-            echo '</dl>';                       
-            echo '</div>'; 
+               echo '<dt>Affiliation : </dt><dd>'.$affil->getName().'</dd>';
+            }
+            echo '</dl>';
+            echo '</div>';
             echo '</div>';
             echo '</div>';
             ?>
 
-            <?php 
+            <?php
             if ($listIsContributor != NULL){
                 echo '<h4> Has contributed to :</h4>';
                 echo '<div class="list-group">';
-                foreach($listIsContributor as $obj){ 
+                foreach($listIsContributor as $obj){
                 // affichage d'un core
             ?>
-                <a href="index.php?p=CDA/core_view&core_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="index.php?p=CDA/core_view_proxy_fire&core_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1"><?php echo $obj->getName(); ?></h5>
                         <small>
@@ -96,14 +96,14 @@ if (isset($_SESSION['started']) && isset($_SESSION['gcd_user_role']) && $_SESSIO
             }
             ?>
 
-            <?php 
+            <?php
             if ($listIsAuthor != NULL){
                 echo '<h4> Is author of :</h4>';
                 echo '<div class="list-group">';
-                foreach($listIsAuthor as $obj){ 
+                foreach($listIsAuthor as $obj){
                 // affichage d'un site
                 ?>
-                <a href="index.php?p=CDA/core_view&core_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="index.php?p=CDA/core_view_proxy_fire&core_id=<?php echo $obj->getIdValue(); ?>" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1"><?php echo $obj->getName(); ?></h5>
                         <small>

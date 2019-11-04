@@ -1,7 +1,7 @@
 <?php
-/* 
- * fichier Pages/login.php 
- * 
+/*
+ * fichier Pages/login.php
+ *
  */
 
 require_once(REP_LIB."data_securisation.php");
@@ -70,18 +70,18 @@ if (isset($_SESSION['started'])) {
                 if (strlen($email) < $max_length_login){
                     // on vérifie que le mail n'est pas déjà lié à un compte en base
                         $listeMailExiste = Contact::getAll(NULL, NULL, CONTACT::EMAIL."=".sql_varchar($email));
-					$nbMailExiste=count($listeMailExiste);                                       
+					$nbMailExiste=count($listeMailExiste);
 					$nbUserExiste =0;
 					foreach($listeMailExiste as $mailExiste){
 						connectionBaseInProgress();
-						$mi=$mailExiste->getIDValue();                                              
+						$mi=$mailExiste->getIDValue();
 						connectionBaseWebapp();
-						$usersExists = WebAppUserGCD::getListUserForAContact($mi);                                              
-                                                $nbUserExiste += count($usersExists);                                                
-                                              
+						$usersExists = WebAppUserGCD::getListUserForAContact($mi);
+                                                $nbUserExiste += count($usersExists);
+
 					}
-					
-			connectionBaseInProgress();														
+
+			connectionBaseInProgress();
                     if ($nbUserExiste == 0){
                         //création de l'url pour enregistrer le compte
                         if (ENVIRONNEMENT == "SERVEUR-PROD"){
@@ -94,19 +94,19 @@ if (isset($_SESSION['started'])) {
                         $paramCrypt = cryptography::encryptAES($param);
                         $url .= $paramCrypt;
                         // si on est en prod envoi d'un mail
-                        
+
                         if (ENVIRONNEMENT == "SERVEUR-PROD"){
                                 $headers ='From: no-reply@paleofire.org'."\n";
                                 $headers .='Content-Type: text/html; charset="iso-8859-1"'."\n";
                                 $headers .='Content-Transfer-Encoding: 8bit';
-                                
+
                                 $body = file_get_contents('./Pages/template_confirm_mail.html');
                                 $body = str_replace('$url', $url, $body);
-                                
+
                                 $subject = '[www.paleofire.org] Confirm your email to create an account on www.paleofire.org';
-                                
+
                                 mail($email, $subject, $body, $headers);
-                                
+
                                 echo '<div class="alert alert-success"><strong>Success !</strong> An email has just been sent to check the address. Click on the link in the email to continue registration</div>';
 
                         } else {
@@ -120,7 +120,7 @@ if (isset($_SESSION['started'])) {
                 } else {
                     $error_login .= "The mail must be less than ". $max_length_login;
                 }
-                
+
             } else {
                 $error_login .= "The email must be entered";
             }
@@ -145,22 +145,22 @@ if (isset($_SESSION['started'])) {
                         $paramCrypt = cryptography::encryptAES($param);
                         $url .= $paramCrypt;
                         // si on est en prod envoi d'un mail
-                        
+
                         if (ENVIRONNEMENT == "DEV-LOCAL"){
                             echo "<script type='text/javascript'>redirection (\"".$url."\");</script>";
-                        
+
                         } else {
                                 $headers ='From: no-reply@paleofire.org'."\n";
                                 $headers .='Content-Type: text/html; charset="iso-8859-1"'."\n";
                                 $headers .='Content-Transfer-Encoding: 8bit';
-                                
+
                                 $body = file_get_contents('./Pages/template_new_password.html');//xli à revoir
                                 $body = str_replace('$url', $url, $body);
-                                
+
                                 $subject = '[www.paleofire.org] Password recovery on www.paleofire.org';
-                                
+
                                 mail($email, $subject, $body, $headers);
-                                
+
                                 echo '<div class="alert alert-success"><strong>Success !</strong> An email has just been sent to you. Click on the link in the email to enter a new password.</div>';
 
                         }
@@ -168,11 +168,11 @@ if (isset($_SESSION['started'])) {
                 } else {
                     $error_login .= "The mail must be less than ". $max_length_login;
                 }
-                
+
             } else {
                 $error_login .= "The email must be entered";
             }
-            
+
         }
         if ($error_login != ""){
             echo '<div class="alert alert-danger"><strong>Error !</strong></br>'.$error_login."</div>";
@@ -195,7 +195,7 @@ if (isset($_SESSION['started'])) {
                                         <label for="inputtext2">Password</label>
                                         <input id="inputtext2" type="password" name="password" value="" />
                                     </p>
-                                    <p class="submit"> 
+                                    <p class="submit">
                                         <input id="inputsubmit1" type="submit" name="boutonLogin" value="Submit" />
                                     </p>
                                 </fieldset>
@@ -212,12 +212,12 @@ if (isset($_SESSION['started'])) {
                                     <label for="inputtext1">Email</label>
                                     <input id="inputtext1" type="text" name="email" value="" />
                                 </p>
-                                <p class="submit"> 
+                                <p class="submit">
                                     <input id="inputsubmit1" type="submit" name="boutonRegister" value="Register" />
                                 </p>
                             </fieldset>
                         </form>
-                    </fieldset>    
+                    </fieldset>
                     <fieldset class="cadre">
                         <legend>Recover password</legend>
                         <form id="register" method="post" class="form_paleofire" action="index.php?p=login">
@@ -226,7 +226,7 @@ if (isset($_SESSION['started'])) {
                                     <label for="inputtext1">Email</label>
                                     <input id="inputtext1" type="text" name="email" value="" />
                                 </p>
-                                <p class="submit"> 
+                                <p class="submit">
                                     <input id="inputsubmit1" type="submit" name="boutonRecoverpwd" value="Recover" />
                                 </p>
                             </fieldset>
@@ -239,13 +239,12 @@ if (isset($_SESSION['started'])) {
             // todo // à reprendre pour faire la redirection autrement qu'en javascript
             //header("Location: /index.php");
             //exit();
-            // Connexion réussie, redirection vers l'accueil	
+            // Connexion réussie, redirection vers l'accueil
             echo "<script type='text/javascript'>redirection ('index.php');</script>";
         }
-    } 
+    }
 } else {
     // Au cas ou cette page php soit appelée en dehors de l'index, on redirige vers la page d'accueil cette fois-ci bien inclue dans l'index
     require (GLOBAL_RACINE_PALEOFIRE . "config.php");
     echo "<script type='text/javascript' src='" . GLOBAL_RACINE_PALEOFIRE . "Library/paleofire.js'>redirection ('" . GLOBAL_RACINE_PALEOFIRE . "index.php');</script>";
 }
-

@@ -56,12 +56,11 @@ if (isset($_SESSION['started'])) {
                 "cb_wd"=>"Water depth",
                 "cb_cd"=>"Coring date");
 
-            $tabCBSamples = Array("cb_cs"=>"Charcoal size",
-                    "cb_ds" => "Data source",
-                    "cb_cm" => "Charcoal method",
-                    "cb_pcu" => "Prefered charcoal unit",
-                    "cb_db" => "Database version",
-                    "cb_am" => "Estimated age and age model");
+            $tabCBSamples = Array("cb_ds" => "Data source",
+                    "cb_cm" => "Proxy Fire method treatment",
+                    "cb_pcu" => "Prefered proxy fire measurement unit",
+                    "cb_db" => "Database version");
+                    //"cb_am" => "Estimated age and age model");
 
             $tabCBDateInfo = Array("cb_dt" => "Date type",
                     "cb_md" => "Material dated",
@@ -116,7 +115,7 @@ if (isset($_SESSION['started'])) {
         </div>
     </fieldset>
     <fieldset class="cadre">
-        <legend style="width:300px">Choose a time interval <span class="new-badge new-badge-error">new version</span> (between -60 and 1500000 years)</legend>
+        <legend style="width:300px">Choose a time interval (between -60 and 1500000 years)</legend>
           <p class="interval_time">
             <label for="interval_time">Interval time (yr cal BP)</label>
             <input id="interval_time_min" type="number" name="interval_time_min" min=-60 max=1500000 placeholder="Minimum value" value=-60 required>
@@ -197,7 +196,7 @@ if (isset($_SESSION['started'])) {
                 );
                 var fields_dateinfo = JSON.stringify(tab_fields_dateinfo);
 
-                var url = "Pages/EDA/ajax.php";
+                var url = "Pages/EDA/ajax_proxy_fire.php";
 
                 url += "?action=export";
                 url += "&ids=" + ids;
@@ -237,7 +236,7 @@ if (isset($_SESSION['started'])) {
             marker_info += "Elevation : " + all_sites_with_coord_json[prop][3] + "<br/>";
             marker_info += "Type : " + all_sites_with_coord_json[prop][6] + "<br/>";
             marker_info += "Country : " + all_sites_with_coord_json[prop][5] + "<br/>";
-            marker_info += "<a href=\"index.php?p=CDA/site_view&gcd_menu=CDA&site_id=" + all_sites_with_coord_json[prop][4] + "\">View data site...</a>";
+            marker_info += "<a href=\"index.php?p=CDA/site_view_proxy_fire&gcd_menu=CDA&site_id=" + all_sites_with_coord_json[prop][4] + "\">View data site...</a>";
             marker_info += "</div>";
 
             var oMarker = new google.maps.Marker({

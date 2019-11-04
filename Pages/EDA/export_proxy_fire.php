@@ -73,12 +73,11 @@ if (isset($_SESSION['started'])) {
                 "cb_wd"=>"Water depth",
                 "cb_cd"=>"Coring date");
 
-            $tabCBSamples = Array("cb_cs"=>"Charcoal size",
-                    "cb_ds" => "Data source",
-                    "cb_cm" => "Charcoal method",
-                    "cb_pcu" => "Prefered charcoal unit",
-                    "cb_db" => "Database version",
-                    "cb_am" => "Estimated age and age model");
+            $tabCBSamples = Array("cb_ds" => "Data source",
+                    "cb_cm" => "Proxy fire method treatment",
+                    "cb_pcu" => "Prefered proxy fire measurement unit",
+                    "cb_db" => "Database version");
+                    // "cb_am" => "Estimated age and age model");
 
             $tabCBDateInfo = Array("cb_dt" => "Date type",
                     "cb_md" => "Material dated",
@@ -141,9 +140,9 @@ if (isset($_SESSION['started'])) {
         </div>
     </fieldset>
     <fieldset class="cadre">
-        <legend style="width:300px">Choose a time interval (between -60 and 1500000 years)</legend>
+        <legend style="width:500px">Choose a time interval (between -60 and 1500000 years)</legend>
           <p class="interval_time">
-            <label for="interval_time">Interval time (yr)</label>
+            <label for="interval_time">Interval time (yr cal BP)</label>
             <input id="interval_time_min" type="number" name="interval_time_min" min=-60 max=1500000 placeholder="Minimum value" value=-60 required>
             <input id="interval_time_max" type="number" name="interval_time_max" min=-60 max=1500000 placeholder="Maximum value" value=1500000 required><br>
           </p>
@@ -165,7 +164,7 @@ if (isset($_SESSION['started'])) {
         function(){
             $("#err").hide();
             $("#err").text("");
-            var url = "Pages/EDA/ajax.php";
+            var url = "Pages/EDA/ajax_proxy_fire.php";
             url += "?action=country&region=" + $('#select_region').val();
 
             var selectCountry = $("#select_country").empty();
@@ -184,7 +183,7 @@ if (isset($_SESSION['started'])) {
         function(){
             $("#err").hide();
             $("#err").text("");
-            var url = "Pages/EDA/ajax.php";
+            var url = "Pages/EDA/ajax_proxy_fire.php";
             url += "?action=site&country=" + $('#select_country').val();
             var selectSite = $("#select_site").empty();
             $.getJSON(url, function(result){
@@ -228,7 +227,7 @@ if (isset($_SESSION['started'])) {
             );
             var fields_dateinfo = JSON.stringify(tab_fields_dateinfo);
 
-            var url = "Pages/EDA/ajax.php";
+            var url = "Pages/EDA/ajax_proxy_fire.php";
 
 
             url += "?action=export";

@@ -1,7 +1,7 @@
 <?php
-/* 
+/*
  * fichier \Models\AgeModel.php
- * 
+ *
  */
 
 include_once("ObjectPaleofire.php");
@@ -29,6 +29,8 @@ class AgeModel extends ObjectPaleofire {
     public $_age_model_notes;
     public $_contact_id;
 
+    protected static $_allObjectsByID = null;
+
     /**
      * Constucteur de la classe
      * */
@@ -47,7 +49,7 @@ class AgeModel extends ObjectPaleofire {
     }
 
     /**
-     * 
+     *
      * @param LandsDesc $land ($id or AgeModelMethod Object)
      */
     public function setAgeModelMethod($age_model) {
@@ -65,12 +67,12 @@ class AgeModel extends ObjectPaleofire {
     public function setContactId($contact_id) {
         $this->_contact_id = $contact_id;
     }
-    
+
     public function setStatusId($status_id) {
         $this->_age_model_id_status = $status_id;
     }
-    
-    
+
+
 
     public function addAgeModelNote(NoteAgeModel $note) {
         $this->_age_model_notes[] = $note;
@@ -83,11 +85,11 @@ class AgeModel extends ObjectPaleofire {
     public function getAgeModelNotes() {
         return $this->_age_model_notes;
     }
-    
+
     public function getStatusId() {
         return $this->_age_model_id_status;
     }
-    
+
     public function create($avecTransaction = TRUE) {
         $insert_errors = array();
         $object_exists = $this->exists();
@@ -119,9 +121,9 @@ class AgeModel extends ObjectPaleofire {
             if ($this->getContactId() != NULL) {
                 $column_values[self::ID_CONTACT] = $this->getContactId();
             }
-            
+
             if ($this->_age_model_id_status != NULL) {
-                 $column_values[self::ID_STATUS] = $this->getStatusId();                     
+                 $column_values[self::ID_STATUS] = $this->getStatusId();
             }
 
             if (empty($insert_errors)) {
@@ -150,7 +152,7 @@ class AgeModel extends ObjectPaleofire {
         }
         return $insert_errors;
     }
-    
+
         public function save() {
         $insert_errors = array();
         $obj_exists = ($this->getIdValue() == null)?false:true;
@@ -250,17 +252,17 @@ class AgeModel extends ObjectPaleofire {
             FROM r_has_age
             join tr_age_units on r_has_age.id_age_units = tr_age_units.id_age_units and tr_age_units.age_units_calornot = 1
             JOIN t_date_info on r_has_age.ID_DATE_INFO = t_date_info.ID_DATE_INFO
-            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE 
+            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE
             JOIN t_depth on t_sample.ID_SAMPLE = t_depth.ID_SAMPLE_IF_DEFAULT
             WHERE r_has_age.ID_AGE_MODEL = ".$age_model_id."
                 )tabCalibratedAge
-            left join 
+            left join
             (
-            SELECT AGE_VALUE as not_cal_age, AGE_POSITIVE_ERROR as not_cal_pos_err, AGE_NEGATIVE_ERROR as not_cal_neg_err,r_has_age.ID_AGE_UNITS, r_has_age.ID_DATE_INFO, t_sample.ID_SAMPLE, t_depth.DEPTH_VALUE 
+            SELECT AGE_VALUE as not_cal_age, AGE_POSITIVE_ERROR as not_cal_pos_err, AGE_NEGATIVE_ERROR as not_cal_neg_err,r_has_age.ID_AGE_UNITS, r_has_age.ID_DATE_INFO, t_sample.ID_SAMPLE, t_depth.DEPTH_VALUE
             FROM r_has_age
             join tr_age_units on r_has_age.id_age_units = tr_age_units.id_age_units and tr_age_units.age_units_calornot = 0
             JOIN t_date_info on r_has_age.ID_DATE_INFO = t_date_info.ID_DATE_INFO
-            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE 
+            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE
             JOIN t_depth on t_sample.ID_SAMPLE = t_depth.ID_SAMPLE_IF_DEFAULT
             WHERE r_has_age.ID_AGE_MODEL = ".$age_model_id."
                 )tabNotCalibratedAge
@@ -275,51 +277,51 @@ class AgeModel extends ObjectPaleofire {
             FROM r_has_age
             join tr_age_units on r_has_age.id_age_units = tr_age_units.id_age_units and tr_age_units.age_units_calornot = 1
             JOIN t_date_info on r_has_age.ID_DATE_INFO = t_date_info.ID_DATE_INFO
-            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE 
+            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE
             JOIN t_depth on t_sample.ID_SAMPLE = t_depth.ID_SAMPLE_IF_DEFAULT
             WHERE r_has_age.ID_AGE_MODEL = ".$age_model_id."
                 )tabCalibratedAge
-            right join 
+            right join
             (
-            SELECT AGE_VALUE as not_cal_age, AGE_POSITIVE_ERROR as not_cal_pos_err, AGE_NEGATIVE_ERROR as not_cal_neg_err,r_has_age.ID_AGE_UNITS, r_has_age.ID_DATE_INFO, t_sample.ID_SAMPLE, t_depth.DEPTH_VALUE 
+            SELECT AGE_VALUE as not_cal_age, AGE_POSITIVE_ERROR as not_cal_pos_err, AGE_NEGATIVE_ERROR as not_cal_neg_err,r_has_age.ID_AGE_UNITS, r_has_age.ID_DATE_INFO, t_sample.ID_SAMPLE, t_depth.DEPTH_VALUE
             FROM r_has_age
             join tr_age_units on r_has_age.id_age_units = tr_age_units.id_age_units and tr_age_units.age_units_calornot = 0
             JOIN t_date_info on r_has_age.ID_DATE_INFO = t_date_info.ID_DATE_INFO
-            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE 
+            JOIN t_sample on t_sample.ID_SAMPLE = t_date_info.ID_SAMPLE
             JOIN t_depth on t_sample.ID_SAMPLE = t_depth.ID_SAMPLE_IF_DEFAULT
             WHERE r_has_age.ID_AGE_MODEL = ".$age_model_id."
                 )tabNotCalibratedAge
                     ON tabCalibratedAge.id_sample = tabNotCalibratedAge.id_sample
             ORDER BY tabCalibratedAge.cal_depth)
-            
+
         ";*/
-        
-        $query = "select * from
-                (select ID_DATE_INFO, DATE_LAB_NUMBER, ID_DATE_TYPE, ID_SAMPLE, ID_DATE_COMMENT, ID_STATUS, CONCAT('[', GROUP_CONCAT(AGE SEPARATOR ','), ']') as AGES 
-                from 
-                    (select t_date_info.ID_DATE_INFO, t_date_info.DATE_LAB_NUMBER, t_date_info.ID_DATE_TYPE, t_date_info.ID_SAMPLE, 
-                        t_date_info.ID_DATE_COMMENT, t_date_info.ID_STATUS, CONCAT('[', COALESCE(ID_AGE_UNITS, 'null'),',', 
-                        AGE_VALUE,',', COALESCE(AGE_POSITIVE_ERROR, 'null'),',', COALESCE(AGE_NEGATIVE_ERROR,'null') ,',', 
+
+        $query = "SELECT * from
+                (select ID_DATE_INFO, DATE_LAB_NUMBER, ID_DATE_TYPE, ID_SAMPLE, ID_DATE_COMMENT, ID_STATUS, CONCAT('[', GROUP_CONCAT(AGE SEPARATOR ','), ']') as AGES
+                from
+                    (select t_date_info.ID_DATE_INFO, t_date_info.DATE_LAB_NUMBER, t_date_info.ID_DATE_TYPE, t_date_info.ID_SAMPLE,
+                        t_date_info.ID_DATE_COMMENT, t_date_info.ID_STATUS, CONCAT('[', COALESCE(ID_AGE_UNITS, 'null'),',',
+                        AGE_VALUE,',', COALESCE(AGE_POSITIVE_ERROR, 'null'),',', COALESCE(AGE_NEGATIVE_ERROR,'null') ,',',
                         COALESCE(ID_CALIBRATION_METHOD,'null'),',', COALESCE(ID_CALIBRATION_VERSION, 'null'), ']') as AGE
-                    from t_date_info 
-                    join r_has_age on t_date_info.ID_DATE_INFO = r_has_age.ID_DATE_INFO 
+                    from t_date_info
+                    join r_has_age on t_date_info.ID_DATE_INFO = r_has_age.ID_DATE_INFO
                     where r_has_age.id_age_model = ".$age_model_id."
                     ) tDateInfoWithAge
                 group by ID_DATE_INFO, DATE_LAB_NUMBER, ID_DATE_TYPE, ID_SAMPLE, ID_DATE_COMMENT, ID_STATUS
                 ) tDateInfoWithTabAges
             join t_sample on tDateInfoWithTabAges.id_sample = t_sample.ID_SAMPLE
             join t_depth on t_sample.ID_SAMPLE = t_depth.ID_SAMPLE_IF_DEFAULT";
-        
+
         return queryToExecute($query);
     }
-    
+
     public function getEstimatedAges(){
         $age_model_id = $this->getIdValue();
 
-        $query ="select est_age_cal_bp as age, est_age_positive_error as pos_err, 
-            est_age_negative_error as neg_err, depth_value as depth, quantity, charcoal_units_name as units 
-            from r_has_estimated_age 
-            join t_depth on t_depth.id_depth = r_has_estimated_age.id_depth 
+        $query ="select est_age_cal_bp as age, est_age_positive_error as pos_err,
+            est_age_negative_error as neg_err, depth_value as depth, quantity, charcoal_units_name as units
+            from r_has_estimated_age
+            join t_depth on t_depth.id_depth = r_has_estimated_age.id_depth
             join t_sample on t_sample.id_sample = t_depth.id_related_sample
             join t_charcoal on t_charcoal.id_sample = t_sample.id_sample
             join r_has_charcoal_quantity on r_has_charcoal_quantity.id_charcoal = t_charcoal.id_charcoal
@@ -330,26 +332,44 @@ class AgeModel extends ObjectPaleofire {
         ";
         return queryToExecute($query);
     }
-    
+
+    public function getProxyFireEstimatedAges(){
+        $age_model_id = $this->getIdValue();
+
+        $query ="select est_age_cal_bp as age, est_age_positive_error as pos_err,
+            est_age_negative_error as neg_err, depth_value as depth, quantity, PROXY_FIRE_MEASUREMENT_UNIT_NAME as units
+            from r_has_estimated_age
+            join t_depth on t_depth.id_depth = r_has_estimated_age.id_depth
+            join t_sample on t_sample.id_sample = t_depth.id_related_sample
+            join t_proxy_fire_data on t_proxy_fire_data.id_sample = t_sample.id_sample
+            join r_has_proxy_fire_data_quantity on r_has_proxy_fire_data_quantity.ID_PROXY_FIRE_DATA = t_proxy_fire_data.ID_PROXY_FIRE_DATA
+            join t_proxy_fire_measurement_unit on t_proxy_fire_measurement_unit.id_proxy_fire_measurement_unit = r_has_proxy_fire_data_quantity.id_proxy_fire_measurement_unit
+            where r_has_estimated_age.id_age_model = ".$age_model_id."
+            and t_depth.id_depth_type = 3
+            order by units, depth
+        ";
+        return queryToExecute($query);
+    }
+
     public function getQueryAges() {
         $age_model_id = $this->getIdValue();
-        
-        /*$query = "SELECT `AGE_VALUE`, AGE_POSITIVE_ERROR, AGE_NEGATIVE_ERROR,ID_AGE_UNITS, `ID_CALIBRATION_METHOD`,`ID_CALIBRATION_VERSION`, r_has_age.`ID_AGE_MODEL`, r_has_age.`ID_DATE_INFO`, t_core.ID_CORE, t_sample.ID_SAMPLE, t_depth.DEPTH_VALUE 
+
+        /*$query = "SELECT `AGE_VALUE`, AGE_POSITIVE_ERROR, AGE_NEGATIVE_ERROR,ID_AGE_UNITS, `ID_CALIBRATION_METHOD`,`ID_CALIBRATION_VERSION`, r_has_age.`ID_AGE_MODEL`, r_has_age.`ID_DATE_INFO`, t_core.ID_CORE, t_sample.ID_SAMPLE, t_depth.DEPTH_VALUE
 
         FROM r_has_age, t_age_model, t_core, t_date_info, t_sample
 
-        INNER JOIN t_depth on t_depth.ID_SAMPLE_IF_DEFAULT = t_sample.ID_SAMPLE 
+        INNER JOIN t_depth on t_depth.ID_SAMPLE_IF_DEFAULT = t_sample.ID_SAMPLE
 
-        WHERE r_has_age.ID_AGE_MODEL =".$age_model_id." 
-        and t_age_model.ID_AGE_MODEL = r_has_age.ID_AGE_MODEL 
-        and t_age_model.ID_CORE = t_core.ID_CORE 
+        WHERE r_has_age.ID_AGE_MODEL =".$age_model_id."
+        and t_age_model.ID_AGE_MODEL = r_has_age.ID_AGE_MODEL
+        and t_age_model.ID_CORE = t_core.ID_CORE
         and t_date_info.ID_DATE_INFO = r_has_age.ID_DATE_INFO
         and  t_sample.ID_CORE = t_core.ID_CORE and t_date_info.ID_SAMPLE = t_sample.ID_SAMPLE
         ORDER BY t_depth.DEPTH_VALUE";*/
         return queryToExecute($query);
     }
-    
-    
+
+
     public static $_allAgeModelByID = null;
     public static function getAllAgeModelByID() {
         if (self::$_allAgeModelByID == null){
@@ -372,7 +392,7 @@ class AgeModel extends ObjectPaleofire {
         }
         return self::$_allAgeModelByID;
     }
-    
+
     public static function getAgeModelByID($id){
         $liste = self::getallAgeModelByID();
         if (array_key_exists($id, $liste)){
@@ -381,8 +401,8 @@ class AgeModel extends ObjectPaleofire {
             return null;
         }
     }
-    
-    
+
+
     private static $_allIdAgeModelByIdCore = null;
     public static function getAllIdAgeModelByIdCore() {
         if (self::$_allIdAgeModelByIdCore == null){
@@ -422,5 +442,5 @@ class AgeModel extends ObjectPaleofire {
         }
         return $list;
     }
-    
+
 }

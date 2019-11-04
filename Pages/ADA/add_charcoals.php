@@ -1,7 +1,7 @@
 <?php
 /*
- * fichier Pages/ADA/add_charcoal.php 
- * 
+ * fichier Pages/ADA/add_charcoal.php
+ *
  */
 
 include 'PHPExcel/Classes/PHPExcel/IOFactory.php';
@@ -15,7 +15,8 @@ const COL_AUP = 'C';
 const COL_ADO = 'D';
 
 $extension = array('xls', 'xlsx');
-$pathUploadedData = REP_CHARCOALS_IMPORT;
+//$pathUploadedData = REP_CHARCOALS_IMPORT;
+$pathUploadedData = "/tmp/";
 //try{
 if (isset($_SESSION['started'])) {
     require_once './Models/Site.php';
@@ -91,7 +92,7 @@ if (isset($_SESSION['started'])) {
     echo '<div class="alert alert-danger" id="divError" hidden><strong>Error!</strong><div></div></div>';
     ?>
 
-    <h1>Add new charcoal data</h1>     
+    <h1>Add new charcoal data</h1>
     <!-- Formulaire d'intégration d'un fichier de samples -->
     <form action="" method="post" enctype="multipart/form-data" class="form_paleofire" name="formAddSite" id="formAddSite">
         <!-- Cadre pour les métadonnées du site !-->
@@ -111,7 +112,7 @@ if (isset($_SESSION['started'])) {
                 </select>
             </p>
             <p class="core_name">
-                <label for="name_core">Core name*</label>                        
+                <label for="name_core">Core name*</label>
                 <select id="<?php echo CORE::ID ?>" name="<?php echo CORE::ID ?>">
                     <option value="">Select a core</option>
                 </select>
@@ -157,14 +158,14 @@ if (isset($_SESSION['started'])) {
             <!-- Génération du modèle pour intégration des données !-->
             <p>
                 <a role="btn" class="btn btn-default" id="btnFile" href=javascript:getFileTamplate()>Download template for data integration</a>
-            </p>              
+            </p>
         </fieldset>
 
         <!-- Cadre pour la description de la série de samples!-->
         <fieldset class="cadre">
             <legend>Import samples data</legend>
 
-            <p>                        
+            <p>
                 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo FileSize ?>" aria-describedby="fileHelp"/>
                 <input type="file" name="fileToUpload" id="fileToUpload" />
                 <small id="fileHelp" class="form-text text-muted">File size must be less than <?php echo FileSize/1000000; ?> M<br/>
@@ -174,7 +175,7 @@ if (isset($_SESSION['started'])) {
         <!-- Boutons du formulaire !-->
         <p class="submit">
             <button type='submit' name='submitAdd' value='Add' class="btn btn-default">Import data</button>
-        </p> 
+        </p>
     </form>
     <?php
 } else {
@@ -200,7 +201,7 @@ function testPost($post_var) {
 }
 
 function traitementFichierExcel($file_name, $id_contributeur) {
-    // (ini_set n'est valable que pendant le script) 
+    // (ini_set n'est valable que pendant le script)
         ini_set('memory_limit', '512M');
     // si on ne rencontre aucune erreur on enregistre sinon on continue le traitement afin d'afficher
     // toutes les erreurs contenues dans le fichier à l'utilisateur
@@ -216,9 +217,9 @@ function traitementFichierExcel($file_name, $id_contributeur) {
         // récupération des données saisies dans le formulaire avant génération du template
         $values = $sheet->getCell('A2')->getValue();
         $values = json_decode($values);
-        
 
-        
+
+
         // les valeurs datasource et method peuvent être null, on teste les autres
         if ($values != null && $values->site != null && $values->core != null && $values->units != null && $values->agemethod != null) {
             // récupération de l'id du core et du site et vérification de leur existence
@@ -266,7 +267,7 @@ function traitementFichierExcel($file_name, $id_contributeur) {
                     }
                 }
             }
-            
+
             // on vérifie que les auteurs existent
             $authors = NULL;
             if ($values->authors != NULL){
@@ -277,13 +278,13 @@ function traitementFichierExcel($file_name, $id_contributeur) {
                     }
                 }
             }
-            
+
             // si il y a des erreurs dans la ligne de configuration on ne parse pas le fichier
             // tentative d'intégration malveillante ou autre donc pas d'intégration
             if (empty($errors)) {
                 // on récupère les données de la carotte pour pouvoir récupérer le nom par la suite
                 $obj_core = Core::getCoreDataFromId($core);
-                
+
                 if ($obj_core != NULL) {
                     // on récupère la version de la base de données en cours
                     $version_database = DataBaseVersion::getVersionInProgress();
@@ -307,7 +308,7 @@ function traitementFichierExcel($file_name, $id_contributeur) {
 
                     // on commence la transaction en base de données
                     beginTransaction();
-                    
+
                     // création du modèle d'age
                     $err_create = $age_model->create(false);
                     if (empty($err_create)) {
@@ -356,7 +357,7 @@ function traitementFichierExcel($file_name, $id_contributeur) {
                                 $depthDo = new Depth($depthDoVal, DepthType::DEPTH_BOTTOM);
                                 $sample->addDepth($depthDo);
 
-                                // la middle depht ne doit plus être intégrer par le fichier elle est calculée automatiquement 
+                                // la middle depht ne doit plus être intégrer par le fichier elle est calculée automatiquement
                                 // à partir des deux autre (UP et DO) qui sont obligatoire
                                 $depthMid = new Depth(($depthUp->_depth_value + $depthDo->_depth_value) / 2, DepthType::DEPTH_MIDDLE);
                                 $sample->addDepth($depthMid);
@@ -404,20 +405,20 @@ function traitementFichierExcel($file_name, $id_contributeur) {
                                 $estimated_age_do->_depth = $depthDo;
                                 //$estimated_age_do->_est_age_negative_error = $ageDoNegError;
                                 //$estimated_age_do->_est_age_positive_error = $ageDoPosError;
-                                // on calcule l'age moyen à associer à la middle depth 
+                                // on calcule l'age moyen à associer à la middle depth
                                 $estimated_age_mid = new EstimatedAge();
                                 $estimated_age_mid->_est_age = ($estimated_age_up->_est_age + $estimated_age_do->_est_age) / 2;
                                 $estimated_age_mid->_depth = $depthMid;
-                                //if ($ageUpNegError != null && $ageDoNegError != null) 
+                                //if ($ageUpNegError != null && $ageDoNegError != null)
                                 //    $estimated_age_mid->_est_age_negative_error = ($ageUpNegError + $ageDoNegError) / 2;
-                                //if ($ageUpPosError != null && $ageDoPosError != null) 
+                                //if ($ageUpPosError != null && $ageDoPosError != null)
                                 //    $estimated_age_mid->_est_age_positive_error = ($ageUpPosError + $ageDoPosError) / 2;
 
                                 $sample->addEstimatedAge($estimated_age_up);
                                 $sample->addEstimatedAge($estimated_age_do);
                                 $sample->addEstimatedAge($estimated_age_mid);
 
-                                // le sample n'est pas encore enregistré mais on commence la création du charcoal 
+                                // le sample n'est pas encore enregistré mais on commence la création du charcoal
                                 // pour pouvoir afficher les eventuelles erreurs à l'utilisateur
                                 $charcoal = new Charcoal();
                                 $charcoal->setNameValue($sample->getName());
@@ -462,7 +463,7 @@ function traitementFichierExcel($file_name, $id_contributeur) {
                                 $charcoal->_charcoal_charcoal_units_id = $units;
                                 $charcoal->_list_authors = $authors;
                                 $charcoal->_list_publications = $publis;
-                                
+
                                 // si il n'y a pas d'erreurs on tente de créer le sample
                                 if (empty($errors)) {
 
@@ -514,7 +515,7 @@ function traitementFichierExcel($file_name, $id_contributeur) {
         } else {
             LogError($e->getMessage());
             return array("Error reading excel file");
-            
+
         }
         // on annule toutes les mises à jours de la base de données
         rollBack();
@@ -549,9 +550,9 @@ echo 'var tabCore = ' . json_encode($listeSiteEtCore) . ';';
 
     $('#btnFile').click(function (event) {
         $("#divError").hide();
-        if ($('#ID_SITE').val() == null || $('#ID_SITE').val() == "" 
-                || $('#ID_CORE').val() == null || $('#ID_CORE').val() == "" 
-                || $('#addCharcoals_units').val() == null || $("#addCharcoals_units").val() == "" || $("#addCharcoals_units").val() == "NULL" 
+        if ($('#ID_SITE').val() == null || $('#ID_SITE').val() == ""
+                || $('#ID_CORE').val() == null || $('#ID_CORE').val() == ""
+                || $('#addCharcoals_units').val() == null || $("#addCharcoals_units").val() == "" || $("#addCharcoals_units").val() == "NULL"
                 || $('#addAge_method').val() == null || $('#addAge_method').val() == "" || $('#addAge_method').val() == "NULL") {
             $("#divError div").html("Site name, core name, units and age method must be selected");
             $("#divError").show();
