@@ -135,6 +135,8 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
             <link href="css/form_paleofire.css" rel="stylesheet" type="text/css" />
             <link rel="shortcut icon" href="Images/Ico.gif" />
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+	        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+	        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
 
             <script type="text/javascript" src="Library/jquery-3.2.1.min.js"></script>
             <script type="text/javascript" src="Library/bootstrap/js/bootstrap.min.js"></script>
