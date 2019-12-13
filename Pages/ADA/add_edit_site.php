@@ -545,7 +545,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
 	            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
 	            crossorigin=""></script>
 	    <script>
-		    // =========================== Init Carte Leaflet =======================================
+		    // =========================== Leaflet Map initialisation =======================================
 		    var mymap = L.map('map_addSite').setView([47.245724, 5.984663], 2)
 
 		    var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
@@ -557,10 +557,9 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
 			    id: 'osm',
 		    }).addTo(mymap);
 
-		    // =========================== Evenement au clic  =======================================
+		    // =========================== Event on click  =======================================
 		    function onMapClick(e) {
-		    	let apiurl = 'https://www.mapquestapi.com/geocoding/v1/reverse?key=MOxZkfZDCk9agm8GtJXK8KGWVwhC4kGp&location=' + e.latlng.lat + '%2C'+ e.latlng.lng + '&outFormat=json&thumbMaps=false'
-			  /*  let apiurl = 'https://api.geonames.org/countryCode?lat=' + e.latlng.lat + '&lng=' + e.latlng.lng + '&username=ykato&type=json'; */
+		    	let apiurl = 'https://www.mapquestapi.com/geocoding/v1/reverse?key=<?php echo MAPQUEST_KEY; ?>&location=' + e.latlng.lat + '%2C'+ e.latlng.lng + '&outFormat=json&thumbMaps=false'
 			    let request = new XMLHttpRequest();
 			    request.open('GET', apiurl, true);
 			    request.onload = function() {
