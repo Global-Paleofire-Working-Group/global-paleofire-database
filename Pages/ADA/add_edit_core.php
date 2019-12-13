@@ -263,169 +263,109 @@ if (isset($_SESSION['started'])) {
 
 ?>
 <!-- SCRIPT DE GESTION DE LA CARTE !-->
-<?php
-	if (GOOGLE_API_KEY != ""){
-		echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key='.GOOGLE_API_KEY.'"></script>';			
-	} else {
-            echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>';
-        } 
-?>
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	        crossorigin=""></script>
 <script>
-    //Variable pour le geocoder de Google Maps
-    var geocoder;
-    // Variable pour la carte
-    var map_addCore;
-    // coordonnées du site sélectionné
-    var latlngSelectedSite;
-    // latitude longitude d'origine
-    var latlngOrigine = new google.maps.LatLng(47.245724, 5.984663);
-    // variable pour le marqueur
-    var marker;
-    //Function d'initialisation de la carte à l'affichage
-    function initialize() {
-        var latlng = new google.maps.LatLng(47.245724, 5.984663);
-        var mapOptions = {
-            zoom: 3,
-            //center: latlng,
-            center: latlng,
-            mapTypeId: 'roadmap'
-        }
-        map_addCore = new google.maps.Map(document.getElementById("map_addCore"), mapOptions);
-        google.maps.event.addListener(map_addCore, 'click', function(mouseEvent){
-            // suppression du marker déjà sur la carte
-            if (marker != null) marker.setMap(null);
-            // récupération des nouvelles coordonnées
-            var latlng = mouseEvent.latLng;
-            $("#core_lat").val(latlng.lat());
-            $("#core_long").val(latlng.lng());
-            // affichage d'un nouveau marqueur
-            marker = new google.maps.Marker({
-                position: latlng,
-                map: map_addCore
-            });
-            verificationPays();
-        });
-        
-        <?php
-            if ($id != null){
-        ?>
-        if ($("#core_lat").val() != "" && $("#core_long").val() != ""){
-            var latlng = new google.maps.LatLng($("#core_lat").val(), $("#core_long").val());
-            // affichage d'un nouveau marqueur
-            marker = new google.maps.Marker({
-                position: latlng,
-                map: map_addCore
-            });
-            map_addCore.setCenter(latlng);
-        }
-        <?php 
-            // if ($id != null){
-            }
-        ?>
-    }
+	// =========================== Leaflet Map initialisation =======================================
+	var mymap = L.map('map_addCore', {attributionControl: false}).setView([47.245724, 5.984663], 2)
 
-    //chargement de la carte à l'initialisation de la page
-    google.maps.event.addDomListener(window, 'load', initialize);
-    geocoder = new google.maps.Geocoder();
-    
+	var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+	var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. Tiles courtesy of HOT';
+
+	L.tileLayer(osmUrl, {
+		attribution: osmAttrib,
+		maxZoom: 18,
+		id: 'osm',
+	}).addTo(mymap);
+
+	// =========================== Event on click  =======================================
+	let marker;
+	function onMapClick(e) {
+		if (marker != null) {
+			mymap.removeLayer(marker);
+		}
+		marker = new L.Marker(e.latlng);
+		mymap.addLayer(marker);
+		$("#core_lat").val(e.latlng.lat);
+		$("#core_long").val(e.latlng.lng);
+		verificationPays();
+	}
+	mymap.on('click', onMapClick);
+
+	// ============================ Zoom to country on site change  ================================
     var tabSiteCountry = jQuery.parseJSON('<?php echo json_encode(SITE::getAllSitesWithCountry());?>');
     $("#ID_SITE").change(function(){
-        // on supprime le marqueur de la carte et on vide les coordonnées
+        // Marker deleted and coordinates emptied
         $("#core_long").val('');
         $("#core_lat").val('');
-        if (marker != null) marker.setMap(null);
-        // on tente de récupérer la latitude longitude du site selectionné
-        var site = $(this).val();
-        var country = tabSiteCountry[site];
-        //geocoder = new google.maps.Geocoder();
-        geocoder.geocode({'address': country}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var ne;
-                var sw;
-                if (results != null){
-                    if (results[0].geometry.viewport != null){
-                        ne = results[0].geometry.viewport.getNorthEast();
-                        sw = results[0].geometry.viewport.getSouthWest();
-                    } else {
-                        ne = results[0].geometry.bounds.getNorthEast();
-                        sw = results[0].geometry.bounds.getSouthWest();
-                    }
-                    var latlngBounds = new google.maps.LatLngBounds(sw, ne);
-                    map_addCore.setCenter(latlngBounds.getCenter());
-                    map_addCore.panToBounds(latlngBounds);
-                    map_addCore.fitBounds(latlngBounds);
-                } else {
-                    map_addCore.setCenter(latlngOrigine);
-                    map_addCore.setZoom(1);
-                }
-            } else {
-                map_addCore.setCenter(latlngOrigine);
-                map_addCore.setZoom(1);
-            }
-        });
+        if (marker != null) mymap.removeLayer(marker);
+
+	    var site = $(this).val();
+	    var country = tabSiteCountry[site];
+
+        // On site selection, country center coordinates stored, and map centered on these coordinates
+	    let apiurl = "https://restcountries.eu/rest/v2/alpha/" + country;
+	    let request = new XMLHttpRequest();
+	    request.open('GET', apiurl, true);
+	    request.onload = function() {
+		    let data = JSON.parse(this.response);
+		    if (request.status >= 200 && request.status < 400) {
+			    let lat = data['latlng'][0];
+			    let lng = data['latlng'][1];
+			    mymap.panTo(new L.LatLng(lat, lng));
+		    }
+		    else {
+			    console.log('error');
+		    }
+	    }
+	    request.send();
     });
-    
+
+	// ============================ map moved on coordinate change  ================================
     $('#core_lat').change(function(){
-        // suppression du marker déjà sur la carte
-        if (marker != null) marker.setMap(null);
-        // récupération des nouvelles coordonnées
-        var latlng = new google.maps.LatLng($(this).val(), $("#core_long").val());
-        // affichage d'un nouveau marqueur
-        marker = new google.maps.Marker({
-            position: latlng,
-            map: map_addCore
-        });
-        map_addCore.setCenter(latlng);
+        if (marker != null) mymap.removeLayer(marker); // marker already on map deleted
+        var latlng = new L.LatLng($(this).val(), $("#core_long").val()); // new coordinates stored
+        marker = new L.Marker(latlng); // new marker created
+	    mymap.addLayer(marker).panTo(latlng);
         verificationPays();
     });
     
     $('#core_long').change(function(){
-        // suppression du marker déjà sur la carte
-        if (marker != null) marker.setMap(null);
-        // récupération des nouvelles coordonnées
-        var latlng = new google.maps.LatLng($("#core_lat").val(), $(this).val());
-        // affichage d'un nouveau marqueur
-        marker = new google.maps.Marker({
-            position: latlng,
-            map: map_addCore
-        });
-        map_addCore.setCenter(latlng);
+	    if (marker != null) mymap.removeLayer(marker); // marker already on map deleted
+	    var latlng = new L.LatLng($("#core_lat").val(), $(this).val()); // new coordinates stored
+	    marker = new L.Marker(latlng); // new marker created
+	    mymap.addLayer(marker).panTo(latlng);
         verificationPays();
     });
     
     var retourVerificationPays = true;
+
     // fonction qui vérifie que le site sélectionnées et les coordonnées sont dans le même pays
     function verificationPays(){
         $("#divErreur").hide();
-        // on récupère la position du marqueur
-        var latlng = marker.getPosition();
-        retourVerificationPays = true;
-        //function du geocoder qui recupere le pays
-        geocoder.geocode({'latLng': latlng}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var code_country = "";
-                if (results[1]) {
-                    for (var i = 0; i < results[1].address_components.length; i++)
-                    {
-                        var addr = results[1].address_components[i];
-                        if (addr.types[0] == 'country') code_country = addr.short_name;
-                    }
-                    if (code_country !=  tabSiteCountry[$('#ID_SITE').val()]){
-                        $("#divErreur div").html('Latitude and longitude must be in the same country as the site.');
-                        $("#divErreur").show();
-                        retourVerificationPays = false;
-                    }
-                } else {
-                    $("#divErreur div").html('An error occur while checking if latitude and longitude were in the same country as the site.');
-                    $("#divErreur").show();
-                    retourVerificationPays = false;
-                }
-            } else {
-                $("#divErreur div").html('An error occur while checking if latitude and longitude were in the same country as the site.');
-                $("#divErreur").show();
-                retourVerificationPays = false;
-            }
-        });
+
+	    // on récupère la position du marqueur
+	    var latlng = marker.getLatLng();
+	    retourVerificationPays = true;
+	    let apiurl = 'https://www.mapquestapi.com/geocoding/v1/reverse?key=<?php echo MAPQUEST_KEY; ?>&location=' + latlng.lat + '%2C'+ latlng.lng + '&outFormat=json&thumbMaps=false'
+	    let request = new XMLHttpRequest();
+	    request.open('GET', apiurl, true);
+	    request.onload = function() {
+		    let data = JSON.parse(this.response);
+		    if (request.status >= 200 && request.status < 400) {
+			    let code = (data['results'][0]['locations'][0]['adminArea1']);
+			    if (code !=  tabSiteCountry[$('#ID_SITE').val()]){
+				    $("#divErreur div").html('Latitude and longitude must be in the same country as the site.');
+				    $("#divErreur").show();
+				    retourVerificationPays = false;
+			    }
+		    }
+		    else {
+			    console.log('error');
+		    }
+	    }
+	    request.send();
     }
     
     // avant la soumission du formulaire on vérfie que le site et les coordonnées sont correctes
