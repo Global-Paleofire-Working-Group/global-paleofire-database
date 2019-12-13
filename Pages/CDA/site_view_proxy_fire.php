@@ -243,7 +243,7 @@ if (isset($_SESSION['started'])) {
 	        var marker_info = "";
 	        marker_info += "<div id='contentInfoWindow' >";
 	        marker_info += "<b>" + all_cores[prop][0] + "</b><br/>";
-	        marker_info += "<a href=\"index.php?p=CDA/core_view_proy_fire&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
+	        marker_info += "<a href=\"index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
 	        marker_info += "</div>";
 	        var object = {'lat': all_cores[prop][1], 'lon': all_cores[prop][2], 'title': all_cores[prop][0], 'info': marker_info};
 	        tMarker[i] = object;
