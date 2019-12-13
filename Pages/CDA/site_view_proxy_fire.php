@@ -215,80 +215,61 @@ if (isset($_SESSION['started'])) {
           </div>
 
     <!-- SCRIPT DE GESTION DE LA CARTE !-->
-	<?php
-		if (GOOGLE_API_KEY != ""){
-			echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key='.GOOGLE_API_KEY.'"></script>';
-		} else {
-                    echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>';
-                }
-	?>
+	    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	            crossorigin=""></script>
     <script>
         var gcdIcon_OK = './images/marker_red.png';
 
-        var map_global_site;
+        // =========================== Leaflet Map initialisation =======================================
+        var mymap = L.map('map_site').setView([27.888087, -42.141615], 7)
 
-        //Variable pour le geocoder de Google Maps
-        var geocoder;
+        var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+        var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. Tiles courtesy of HOT';
 
-        //Variable pour le marqueur
-        var marker;
+        L.tileLayer(osmUrl, {
+	        attribution: osmAttrib,
+	        maxZoom: 18,
+	        id: 'osm',
+        }).addTo(mymap);
 
-        /* initialisation de la fonction initMap */
-        function initMap() {
-            geocoder = new google.maps.Geocoder();
-            var latlng = new google.maps.LatLng(27.888087, -42.141615);
-            var mapOptions = {
-                zoom: 6,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            map_global_site = new google.maps.Map(document.getElementById('map_site'), mapOptions);
-        }
-        /* on va procéder à l'initialisation de la carte */
-        initMap();
-
+        //======================== Marker Popup =================================================================
         var all_cores = <?php echo json_encode($coord) ?>;
         var i = 0;
         var tMarker = new Array();
-        var latlngbounds = new google.maps.LatLngBounds();
+        var latlngbounds = L.latLngBounds();
 
         for (prop in all_cores) {
-            var marker_info = "";
-            marker_info += "<div id='contentInfoWindow' >";
-            marker_info += "<b>" + all_cores[prop][0] + "</b><br/>";
-            marker_info += "<a href=\"index.php?p=CDA/core_view_proxy_fire&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
-            marker_info += "</div>";
-            var object = {'lat': all_cores[prop][1], 'lon': all_cores[prop][2], 'title': all_cores[prop][0], 'info': marker_info};
-            tMarker[i] = object;
-            i++;
+	        var marker_info = "";
+	        marker_info += "<div id='contentInfoWindow' >";
+	        marker_info += "<b>" + all_cores[prop][0] + "</b><br/>";
+	        marker_info += "<a href=\"index.php?p=CDA/core_view_proy_fire&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
+	        marker_info += "</div>";
+	        var object = {'lat': all_cores[prop][1], 'lon': all_cores[prop][2], 'title': all_cores[prop][0], 'info': marker_info};
+	        tMarker[i] = object;
+	        i++;
 
-            latlngbounds.extend(new google.maps.LatLng(all_cores[prop][1],all_cores[prop][2]));
+	        latlngbounds.extend([all_cores[prop][1], all_cores[prop][2]]);
         }
         var nb = tMarker.length;
-        // création des markers
+        // =========================== Site Marker creation =======================================
         for (i = 0; i < nb; i++) {
-    // création marker
-            var oMarker = new google.maps.Marker({
-                'numero': i,
-                'position': new google.maps.LatLng(tMarker[i].lat, tMarker[i].lon),
-                'map': map_global_site,
-                'title': tMarker[i].title,
-                icon: gcdIcon_OK
-            });
-    // création infobulle avec texte
-            var oInfo = new google.maps.InfoWindow({maxWidth: 300
-            });
-    // événement clic sur le marker
-            google.maps.event.addListener(oMarker, 'click', function() {
-                oInfo.setContent(tMarker[this.numero].info);
-                // affichage InfoWindow
-                oInfo.open(this.getMap(), this);
-            });
+	        var coreicon = L.icon({
+		        iconUrl: gcdIcon_OK
+	        });
+	        var marker = L.marker(
+		        [tMarker[i].lat, tMarker[i].lon],
+		        {
+			        title: tMarker[i].title,
+			        icon: coreicon
+		        }
+	        ).addTo(mymap);
+	        marker.bindPopup(tMarker[i].info);
         }
+        mymap.setView(latlngbounds.getCenter());
 
-        map_global_site.setCenter(latlngbounds.getCenter());
-        //map_global_site.fitBounds(latlngbounds);
-
+        //=========================================================================================
+        
         var recipient;
         $(function(){
             $('#dialog-paleo').on('shown.bs.modal', function (event) {
