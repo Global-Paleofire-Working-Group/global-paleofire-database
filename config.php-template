@@ -111,6 +111,7 @@ if (ENVIRONNEMENT == "SERVEUR-PROD"){
 	define("BDD_USER_PERMTABLE", "gcd_paleofire_webapp.paleofire_permission");
 
 	define("GOOGLE_API_KEY", "");
+	define("MAPQUEST_KEY", "");
 }
 
 require_once REP_LIB . 'scripts.php';
