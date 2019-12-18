@@ -9,7 +9,7 @@
     </div>
     <div>
 	    <ul>
-		    <li><a href="/GCD_UploadInstructions_Maezumi.pdf">Tutorial to import data </a> by Dr S. Yoshi Maezumi</li>
+		    <p><a href="/GCD_UploadInstructions_Maezumi.pdf">Tutorial to import data </a> by Dr S. Yoshi Maezumi</p>
 	    </ul>
         <p></p>
     </div>
