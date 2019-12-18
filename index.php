@@ -312,7 +312,7 @@ $footer = "&nbsp;";
 								</li>
 							<?php }
 							if (isset($_SESSION['gcd_user_name'])) {?>
-								<li><a href="GCD_UploadInstructions_Maezumi.pdf">Help</a></li>
+								<li><a href="index.php?p=help">Help</a></li>
 							<?php } ?>
 						</ul>
 						<?php if (isset($_SESSION['gcd_user_role']) && ($_SESSION['gcd_user_role'] != WebAppRoleGCD::VISITOR)) {?>
