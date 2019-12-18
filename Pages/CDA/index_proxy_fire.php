@@ -117,11 +117,11 @@ if (isset($_SESSION['started'])) {
 
 		var icons = {
 			parking: {
-				name: 'sites with charcoals',
+				name: 'sites with data',
 				icon: '<?php echo $icon_published;?>'
 			},
 			info: {
-				name: 'Sites without charcoals',
+				name: 'Sites without data',
 				icon: '<?php echo $icon_unpublished_without_charcoals;?>'
 			}
 		};
