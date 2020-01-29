@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  fichier /index.php
+ *  fichier /index.php 
  */
 require './config.php';
 
@@ -29,7 +29,7 @@ require_once (REP_LIB."/data_securisation.php");
 // et si on est pas en https
 // on force le cryptage des pages en https
 if (ENVIRONNEMENT == "SERVEUR-PROD"){
-    if ((isset($_SESSION['gcd_user_role']) &&
+    if ((isset($_SESSION['gcd_user_role']) && 
             ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR)) ||
             $_SERVER["REQUEST_URI"] == "/index.php?p=login") {
         if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
@@ -65,13 +65,13 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
             $_SESSION['current_gcd_menu'] = "";
         }
 
-        if ($finPage == "EDA" &&
+        if ($finPage == "EDA" && 
                 (isset($_SESSION['gcd_user_role']) && $_SESSION['gcd_user_role'] != WebAppRoleGCD::SUPERADMINISTRATOR && $_SESSION['gcd_user_role'] != WebAppRoleGCD::ADMINISTRATOR && $_SESSION['gcd_user_role'] != WebAppRoleGCD::CONTRIBUTOR)){
-           $page = "home";
+           $page = "home"; 
         }
-        if ($finPage == "ADA" &&
+        if ($finPage == "ADA" && 
                 (isset($_SESSION['gcd_user_role']) && $_SESSION['gcd_user_role'] != WebAppRoleGCD::SUPERADMINISTRATOR && $_SESSION['gcd_user_role'] != WebAppRoleGCD::ADMINISTRATOR && $_SESSION['gcd_user_role'] != WebAppRoleGCD::CONTRIBUTOR)){
-           $page = "home";
+           $page = "home"; 
         }
 
         $page_undefined = false;
@@ -83,23 +83,6 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
         $_SESSION['gcd_user_role'] = WebAppRoleGCD::VISITOR;
     }
 
-    // -------redirection 404 pour anciens liens ----------//
-    //concerne les pages:
-    // CDA/site_view$ ...
-    // CDA/core_view$ ...
-    // ADA/add_charcoal& ...
-    // EDA/export_charcoals ...
-
-
-    if(preg_match('/^CDA\/(site|core)_view\$*$/', $page) || preg_match('/^ADA\/add_charcoal\&*$/', $page) || preg_match('/^^EDA\/export_charcoals*$/', $page))
-    {
-      $page = "404";
-    }
-
-    // ---------------------------------------------------//
-
-
-
     if ($page_undefined || preg_match("/\./", $page)) {
         $page = "home";
     }
@@ -108,6 +91,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== false)) {// die('Secu');
         $page = "404";
     }
+
 
     // On teste l'existence de la page
     if (!file_exists('./Pages/' . $page . '.php')) {
@@ -119,27 +103,28 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
     <!DOCTYPE HTML>
     <html>
         <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />        
 
-            <meta property="og:title" content="Global Charcoal Database" />
-            <meta property="og:site_name" content="Global Charcoal Database" />
-            <meta property="og:author" content="Global Charcoal Database" />
+            <meta property="og:title" content="Global Paleofire Database" />
+            <meta property="og:site_name" content="Global Paleofire Database" />
+            <meta property="og:author" content="Global Paleofire Database" />
             <meta property="og:language" content="en" />
 
-            <title>Global Charcoal Database</title>
+            <title>Global Paleofire Database</title>
 
 
             <link href="css/paleofire.css" rel="stylesheet" type="text/css" />
-            <link href="css/paleofire-new.css" rel="stylesheet" type="text/css" />
             <link href="Library/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
             <link href="css/form_paleofire.css" rel="stylesheet" type="text/css" />
             <link rel="shortcut icon" href="Images/Ico.gif" />
             <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+	        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+	        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
 
             <script type="text/javascript" src="Library/jquery-3.2.1.min.js"></script>
             <script type="text/javascript" src="Library/bootstrap/js/bootstrap.min.js"></script>
             <script type="text/javascript" src="Library/paleofire.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>       
         </head>
         <body>
           <?php
@@ -151,8 +136,7 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
             <div class="container" style="top:100px">
                         <div class="row">
                             <div id="header">
-                                <h1><a href="index.php">Global Charcoal Database</a></h1>
-                                <h2>by the <a href="http://gpwg.paleofire.org">Global Paleofire Working Group</a></h2><!-- by GPWG -->
+                                <h1><a href="index.php">Global PaleoFire Database</a></h1>
                                 <div id="logo_gpwg"><a href="http://gpwg.paleofire.org" alt="GPWG" title="GPWG"><img src="./images/logo/gpwg_petit.png"></a></div>
                                 <div id="splash"></div>
                             </div>
@@ -180,8 +164,7 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
                                             connectionBaseVersionned();
                                         }*/
                                         ?>
-
-                                        <li><a href="index.php?p=CDA/index_proxy_fire&gcd_menu=CDA">All cores (and sites)</a></li>
+                                        <li><a href="index.php?p=CDA/index&gcd_menu=CDA">All cores (and sites)</a></li>
                                         <li class="divider"></li>
                                         <li><a href="index.php?p=DRE/spatial_distribution&gcd_menu=DRE">Charts of spatial distribution</a></li>
                                         <li><a href="index.php?p=DRE/chrono_distribution&gcd_menu=DRE">Charts of chronological distribution</a></li>
@@ -193,32 +176,24 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
                                         if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR){
                                             connectionBaseVersionned();
                                         }
-
+                                        
                                         echo '<li class="dropdown">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Export<span class="caret"></span></a>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="index.php?p=EDA/export_proxy_fire&gcd_menu=EDA">Export from list</a></li>
-                                                    <li><a href="index.php?p=EDA/export_proxy_fire_from_map&gcd_menu=EDA">Export from map</a></li>
-                                                    <li><a href="index.php?p=EDA/export_databases&gcd_menu=EDA">Export full databases</a></li>
+                                                    <li><a href="index.php?p=EDA/export_charcoals&gcd_menu=EDA">Export from list</a></li>
+                                                    <li><a href="index.php?p=EDA/export_charcoals_from_map&gcd_menu=EDA">Export from map</a></li>
+                                                    <li><a href="index.php?p=EDA/export_databases&gcd_menu=EDA">Export full databases</a></li>  
                                                 </ul>
-                                            </li>';
-                                          }
-                                    //     echo '<li class="dropdown">
-                                    //             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Export<span class="caret"></span></a>
-                                    //             <ul class="dropdown-menu" role="menu">
-                                    //                 <li><a href="index.php?p=EDA/export_charcoals&gcd_menu=EDA">Export from list <span class="new-badge new-badge-info">modified version</span></a></li>
-                                    //                 <li><a href="index.php?p=EDA/export_charcoals_from_map&gcd_menu=EDA">Export from map <span class="new-badge new-badge-info">modified version</span></a></li>
-                                    //                 <li><a href="index.php?p=EDA/export_databases&gcd_menu=EDA">Export full databases</a></li>
-                                    //             </ul>
-                                    //         </li>';
-                                    // }
+                                            </li>';    
+                                    }
                                 ?>
-                                <?php
+                                <?php 
                                 if ((isset($_SESSION['gcd_user_role'])) && ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR ||($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))){
-
+                                        
                                     if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR){
                                         connectionBaseInProgress();
                                     }
+                                        
                                     echo '<li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Add data<span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
@@ -230,16 +205,16 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
                                             <li><a href="index.php?p=ADA/add_core&gcd_menu=ADA">Add a new core</a></li>
                                             <li><a href="index.php?p=ADA/add_note_core&gcd_menu=ADA">Add a new note about a core</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="index.php?p=ADA/add_proxy_fire&gcd_menu=ADA">Add new fire proxy data</a></li>
+                                            <li><a href="index.php?p=ADA/add_charcoals&gcd_menu=ADA">Add new charcoal data</a></li>
                                             <li><a href="index.php?p=ADA/add_age_model&gcd_menu=ADA">Add a new age model</a></li>
                                             <li><a href="index.php?p=ADA/add_date_info&gcd_menu=ADA">Add a new date info</a></li>
                                             <li><a href="index.php?p=ADA/add_note_age_model&gcd_menu=ADA">Add a new note about an age model</a></li>
                                         </ul>
                                     </li>';
-                               // }
+                               // }                                
                                 }
                                 ?>
-                                <?php
+                                <?php 
                                 if (isset($_SESSION['gcd_user_role']) && ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR ||($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))){
                                     // on récupère l'ID du user
                                     $user_id = $_SESSION['gcd_user_id'];
@@ -248,7 +223,7 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
                                     $contact_id = WebAppUserGCD::getContactId($user_id);
                                     connectionBaseInProgress(); //xli 4/4/16
 
-
+                                    
                                     echo '<li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account data<span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
@@ -258,10 +233,10 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
                                       </li>';
                                 }
                                 ?>
-
-                                <?php
+                                
+                                <?php 
                                 if (isset($_SESSION['gcd_user_role']) && (($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR)||($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))){
-                                    echo '<li class="dropdown">
+                                    echo '<li class="dropdown">  
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Edit Data<span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                             <li><a href="index.php?p=CDA/site_view_list&gcd_menu=CDA">Sites</a></li>
@@ -270,35 +245,35 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
                                             <li><a href="index.php?p=CDA/contact_list&gcd_menu=CDA">Contacts</a></li>
                                             <li><a href="index.php?p=CDA/user_view&gcd_menu=CDA">Users</a></li>
                                             <li><a href="index.php?p=CDA/publication_list&gcd_menu=CDA">Publications</a></li>
-                                            <li class="divider"></li>';
+                                            <li class="divider"></li>';                                          
                                         /*<li class="dropdown-submenu" >
                                             <a class="val_pend_data" href="#">Validate pending data <span class="caret"></span></a>
-                                            <ul class="dropdown-menu">
+                                            <ul class="dropdown-menu">                                            
                                                 <li><a href="index.php?p=Admin/validate_pending_contact&gcd_menu=ADA">Contact</a></li>
-                                                <li><a href="index.php?p=Admin/validate_pending_affiliation&gcd_menu=ADA">Affiliation</a></li>
-                                                <li><a href="index.php?p=Admin/validate_pending_publi&gcd_menu=ADA">Publication</a></li>
+                                                <li><a href="index.php?p=Admin/validate_pending_affiliation&gcd_menu=ADA">Affiliation</a></li>                                        
+                                                <li><a href="index.php?p=Admin/validate_pending_publi&gcd_menu=ADA">Publication</a></li>                                        
                                                 <li class="divider"></li>
-                                                <li><a href="index.php?p=Admin/validate_pending_site&gcd_menu=ADA">Site</a></li>
-                                                <li><a href="index.php?p=Admin/validate_pending_core&gcd_menu=ADA">Core</a></li>
-                                                <li><a href="index.php?p=Admin/validate_pending_sample&gcd_menu=ADA">Sample</a></li>
+                                                <li><a href="index.php?p=Admin/validate_pending_site&gcd_menu=ADA">Site</a></li>                                        
+                                                <li><a href="index.php?p=Admin/validate_pending_core&gcd_menu=ADA">Core</a></li>                                        
+                                                <li><a href="index.php?p=Admin/validate_pending_sample&gcd_menu=ADA">Sample</a></li>                                        
                                                 <li class="divider"></li>
-                                                <li><a href="index.php?p=Admin/validate_pending_charcoal&gcd_menu=ADA">Charcoal</a></li>
-                                                <li><a href="index.php?p=Admin/validate_pending_agemodel&gcd_menu=ADA">Age Model</a></li>
+                                                <li><a href="index.php?p=Admin/validate_pending_charcoal&gcd_menu=ADA">Charcoal</a></li>                                        
+                                                <li><a href="index.php?p=Admin/validate_pending_agemodel&gcd_menu=ADA">Age Model</a></li>                                                                                
                                             </ul>
                                         </li>';*/
-
+                                        
                                         if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR){
                                             /*
                                             echo '<li class="divider"></li>
                                             <li class="dropdown-header">for SUPERADMINISTRATOR only</li>
-                                            <li><a href="index.php?p=Admin/validate_DB&gcd_menu=ADA">Validate database</a></li>';
-
-                                             */
+                                            <li><a href="index.php?p=Admin/validate_DB&gcd_menu=ADA">Validate database</a></li>';   
+                                             
+                                             */                                 
                                         }
-                                    echo '
+                                    echo '                                    
                                     </ul>
                                     </li>';
-                                }
+                                }        
                                 ?>
                                 <?php if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR) || ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)){?>
                                 <li class="dropdown">
@@ -316,6 +291,9 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
                                         <?php } ?>
                                     </ul>
                                 </li>
+                                <?php }
+                                if (isset($_SESSION['gcd_user_name'])) {?>
+	                                <li><a href="index.php?p=help" target="_blank">Help</a></li>
                                 <?php } ?>
                               </ul>
                                 <?php if (isset($_SESSION['gcd_user_role']) && ($_SESSION['gcd_user_role'] != WebAppRoleGCD::VISITOR)) {?>
@@ -338,14 +316,15 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
 
                             </div><!-- /.navbar-collapse -->
                         </nav>
-                  </div><!-- /.container-fluid -->
+                  </div><!-- /.container-fluid -->  
                   <div id="contenu" class="row">
                     <?php include ("Pages/$page.php"); ?>
                   </div>
                 <div id="footer" class="row">
-                    All Rights Reserved (2015-2017). |
+                    All Rights Reserved (2015-<?php echo date("Y"); ?>). |
                     Contact : <a id="contact">paleofire@gmail.com</a> |
-                    <?php //<a href="index.php?p=collaborateurs">Collaborators</a> |?> <a href="index.php?p=terms_of_use">Terms of use</a>
+                    <a href="index.php?p=terms_of_use">Terms of use</a> |
+<!--	                <a href="index.php?p=contributors">Contributors</a> -->
                 </div>
             </div>
 
@@ -361,7 +340,7 @@ if (!preg_match('/^[a-zA-Z0-9\/_]*$/', $page) || (strpos($page, 'old_') !== fals
             $(this).attr("href", add);
         });
         </script>
-
+        
         <script>
 // permet d'ouvrir le sous-menu de "Validate pending data"
 $(document).ready(function(){
@@ -371,7 +350,7 @@ $(document).ready(function(){
     e.preventDefault();
   });
 });
-</script>
+</script>  
 
 </div> <!--  div container  -->
         <div class="modal fade" id="dialog-simple" tabindex="-1" role="dialog" aria-labelledby="dialogLabelError">
@@ -385,7 +364,7 @@ $(document).ready(function(){
             </div>
           </div>
         </div>
-
+        
         <div class="modal fade" id="dialog-paleo" tabindex="-1" role="dialog" aria-labelledby="dialogLabel">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -403,11 +382,12 @@ $(document).ready(function(){
             </div>
           </div>
         </body>
-    </html>
-
+    </html>  
+    
     <?php
-
+    
 /*} catch(Exception $e){
     var_dump("Error" .$e->getFile(). $e->getLine() . $e->getMessage() );
 //logError("Error" .$e->getFile(). $e->getLine() . $e->getMessage() );
 }*/
+

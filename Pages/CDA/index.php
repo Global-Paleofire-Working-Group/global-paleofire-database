@@ -7,20 +7,20 @@
 
 ?>
 <style>
-      #legend {
-        font-family: Arial, sans-serif;
-        background: #fff;
-        padding: 10px;
-        margin: 10px;
-        border: 1px solid #000;
-        width: 250px;
-      }
-      #legend h5 {
-        margin-top: 0;
-      }
-      #legend img {
-        vertical-align: middle;
-      }
+	.legend {
+		font-family: Arial, sans-serif;
+		background: #fff;
+		padding: 10px;
+		margin: 10px;
+		border: 1px solid #000;
+		width: 250px;
+	}
+	.legend h5 {
+		margin-top: 0;
+	}
+	.legend img {
+		vertical-align: middle;
+	}
     </style>
 
 <?php
@@ -29,11 +29,10 @@ if (isset($_SESSION['started'])) {
     require_once './Models/Sample.php';
     require './Library/Pagination.php';
     $array_emails = array();
-
+    
     $icon_published = "./images/marker-red.png";
-    $icon_unpublished = "./images/marker-green.png";
-    $icon_unpublished_without_charcoals = "./images/marker-grey.png";
-
+    $icon_unpublished_without_charcoals = "./images/marker-green.png";
+    
     $all_sites_with_coord = Core::getAllCoreForMap();
     $total = count($all_sites_with_coord);
 
@@ -44,124 +43,102 @@ if (isset($_SESSION['started'])) {
         if(in_array($id, $list_published_data)){
             $tabIcon[$id] = [$icon_published];
         } else if (in_array($id, $list_in_progress_data)){
-            $tabIcon[$id] = [$icon_unpublished];
+            $tabIcon[$id] = [$icon_published];
         } else {
             $tabIcon[$id] = [$icon_unpublished_without_charcoals];
         }
     }
     $totalCharcoal = Charcoal::countPaleofireObjects();
     ?>
-
+    
     <h4>The database contains : <?php echo $total; ?> cores, <?php echo $totalCharcoal; ?> charcoal.</h4>
-    <div id="map_global_site"></div>
-    <div id="legend"><h5>Legend</h5></div>
-	<?php
-		if (GOOGLE_API_KEY != ""){
-                    echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key='.GOOGLE_API_KEY.'"></script>';
-                    //  JdT 14/06/2019 mail from Fabbrice Mendes et Anne-Laure Daniau du 14/06/2019 à 10h58
-                    //echo '<script async defer src="https://maps.googleapis.com/maps/api/js?key='.GOOGLE_API_KEY.'&callback=initMap" type="text/javascript"></script>';
+	<div id="map_leaflet"></div>
 
-		} else {
-                    echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>';
-                }
-	?>
-    <script>
-        var map_global_site;
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	        crossorigin=""></script>
+	<script>
+		// =========================== Leaflet map creation =======================================
+		var mymap = L.map('map_leaflet').setView([27.888087, -42.141615], 2);
 
-        //Variable pour le geocoder de Google Maps
-        var geocoder;
+		var osmUrl='http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png';
+		var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. Tiles courtesy of OSM France';
 
-        //Variable pour le marqueur
-        //var marker;
+		L.tileLayer(osmUrl, {
+			attribution: osmAttrib,
+			maxZoom: 18,
+			id: 'osm',
+		}).addTo(mymap);
 
-        /* initialisation de la fonction initMap */
-        function initMap() {
-            geocoder = new google.maps.Geocoder();
-            var latlng = new google.maps.LatLng(27.888087, -42.141615);
-            var mapOptions = {
-                zoom: 2,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            map_global_site = new google.maps.Map(document.getElementById('map_global_site'), mapOptions);
-        }
-        /* on va procéder à l'initialisation de la carte */
-        initMap();
+		// =========================== Get site points =======================================
+		all_sites_with_coord_json = <?php echo json_encode($all_sites_with_coord) ?>;
+		all_sites_for_icon = <?php echo json_encode($tabIcon); ?>;
+		var arrayByCoord = new Array();
+		var tabMarkerInfo = new Array();
 
-        all_sites_with_coord_json = <?php echo json_encode($all_sites_with_coord) ?>;
-        all_sites_for_icon = <?php echo json_encode($tabIcon); ?>;
-        var arrayByCoord = new Array();
-        var tabMarkerInfo = new Array();
+		for (key in all_sites_with_coord_json) {
+			if (arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]] != null){
+				arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]]++;
+				all_sites_with_coord_json[key][1] = parseFloat(all_sites_with_coord_json[key][1]) + (0.001 * arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]]);
+			} else {
+				arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]] = 0;
+			}
 
-        for (key in all_sites_with_coord_json) {
-            if (arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]] != null){
-                arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]]++;
-                all_sites_with_coord_json[key][1] = parseFloat(all_sites_with_coord_json[key][1]) + (0.001 * arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]]);
-            } else {
-                arrayByCoord[all_sites_with_coord_json[key][1]+all_sites_with_coord_json[key][2]] = 0;
-            }
+			// =========================== Pop-up creation =======================================
+			var marker_info = "";
+			marker_info += "<div id='contentInfoWindow' >";
+			marker_info += "<b>" + all_sites_with_coord_json[key][0] + "</b><br/>";
+			marker_info += "<br/>";
+			marker_info += "Latitude : " + all_sites_with_coord_json[key][1] + ", ";
+			marker_info += "Longitude : " + all_sites_with_coord_json[key][2] + "<br/>";
+			marker_info += "Elevation : " + all_sites_with_coord_json[key][3] + "<br/>";
+			marker_info += "Type : " + all_sites_with_coord_json[key][6] + "<br/>";
+			marker_info += "Country : " + all_sites_with_coord_json[key][5] + "<br/>";
+			marker_info += "<a href=\"index.php?p=CDA/site_view&site_id=" + all_sites_with_coord_json[key][4] + "\">View data site...</a>";
+			marker_info += "</div>";
+			marker_info += "</div>";
+			tabMarkerInfo[key] = marker_info;
 
-            var marker_info = "";
-            marker_info += "<div id='contentInfoWindow' >";
-            marker_info += "<b>" + all_sites_with_coord_json[key][0] + "</b><br/>";
-            marker_info += "<br/>";
-            marker_info += "Latitude : " + all_sites_with_coord_json[key][1] +", ";
-            marker_info += "Longitude : " + all_sites_with_coord_json[key][2] + "<br/>";
-            marker_info += "Elevation : " + all_sites_with_coord_json[key][3] + "<br/>";
-            marker_info += "Type : " + all_sites_with_coord_json[key][6] + "<br/>";
-            marker_info += "Country : " + all_sites_with_coord_json[key][5] + "<br/>";
-            marker_info += "<a href=\"index.php?p=CDA/site_view&site_id=" + all_sites_with_coord_json[key][4] + "\">View data site...</a>";
-            marker_info += "</div>";
-            marker_info += "</div>";
-            tabMarkerInfo[key] = marker_info;
-            // création marker
-            var oMarker = new google.maps.Marker({
-                'numero':key,
-                'position': new google.maps.LatLng(all_sites_with_coord_json[key][1], all_sites_with_coord_json[key][2]),
-                'map': map_global_site,
-                'title': all_sites_with_coord_json[key][0],
-                'icon': all_sites_for_icon[key][0]
-            });
+			// =========================== Marker creation =======================================
+			var coreicon = L.icon({
+				iconUrl: all_sites_for_icon[key][0]
+			});
 
-            // création infobulle avec texte
-            var oInfo = new google.maps.InfoWindow({maxWidth: 300});
-            // événement clic sur le marker
-            google.maps.event.addListener(oMarker, 'click', function() {
-                oInfo.setContent(tabMarkerInfo[this.numero]);
-                // affichage InfoWindow
-                oInfo.open(this.getMap(), this);
-            });
-        }
+			var marker = L.marker(
+				[all_sites_with_coord_json[key][1], all_sites_with_coord_json[key][2]],
+				{
+					title: all_sites_with_coord_json[key][0],
+					icon: coreicon
+				}
+			).addTo(mymap);
+			marker.bindPopup(marker_info);
+		}
 
-        var icons = {
-          parking: {
-            name: 'sites',
-            icon: '<?php echo $icon_published;?>'
-          },
-          library: {
-            name: 'sites with missing information - please edit!',
-            icon: '<?php echo $icon_unpublished;?>'
-          },
-          info: {
-            name: 'Identified site - Please contribute!',
-            icon: '<?php echo $icon_unpublished_without_charcoals;?>'
-          }
-        };
+		var icons = {
+			parking: {
+				name: 'sites with data',
+				icon: '<?php echo $icon_published;?>'
+			},
+			info: {
+				name: 'Sites without data',
+				icon: '<?php echo $icon_unpublished_without_charcoals;?>'
+			}
+		};
 
-
-        var legend = document.getElementById('legend');
-        for (var key in icons) {
-          var type = icons[key];
-          var name = type.name;
-          var icon = type.icon;
-          var div = document.createElement('div');
-          div.innerHTML = '<img src="' + icon + '"> ' + name;
-          legend.appendChild(div);
-        }
-
-        map_global_site.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(legend);
-
-
-    </script>
+		// =========================== Legend creation =======================================
+		let legend = L.control({position: 'bottomleft'});
+		legend.onAdd = function(map){
+			let div = L.DomUtil.create('div', 'legend');
+			div.innerHTML += '<h5>Legend</h5>'
+			for(let key in icons) {
+				let type = icons[key];
+				let name = type.name;
+				let icon = type.icon;
+				div.innerHTML += '<div><img src="' + icon +  '" />' + name + '</div>'
+			}
+			return div;
+		};
+		legend.addTo(mymap)
+	</script>
     <?php
 }
