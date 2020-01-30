@@ -15,29 +15,29 @@
 	<div class="container-fluid">
 		<div class="row">
 			<!-- <div style="margin: 0 auto; width: 72%"> -->
-			<div style="margin: 0 auto; width: 45%">
-				<a href="https://mshe.univ-fcomte.fr/" target="_blank">
-					<div class="logo"><p> <img src="./images/logo/mshe.jpg" title="https://mshe.univ-fcomte.fr/" height=60 alt=""/></p></div></a>
+			<div class="col-md-6 center-block" style="float: none">
+				<a href="http://www.univ-fcomte.fr/" target="_blank">
+					<div class="logo"><p> <img src="./images/logo/ufc.png" title="http://www.univ-fcomte.fr/" height=60 alt=""/> </p></div></a>
 				<a href="http://www.pages.unibe.ch/" target="_blank">
 					<div class="logo"><p> <img src="./images/logo/PAGES.jpg" title="http://www.pages.unibe.ch/" height=60 alt=""/></p></div></a>
 				<a href="https://www.huma-num.fr/" target="_blank">
 					<div class="logo"><p> <img src="./images/logo/huma-num.jpg" title="https://www.huma-num.fr/" height=60 alt=""/></p></div></a>
-				<a href="http://www.oasu.fr/" target="_blank">
-					<div class="logo"><p> <img src="./images/logo/oasu.png" title="http://www.oasu.fr/" height=60 alt=""/> </p></div></a>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-8 center-block" style="float: none">
+			<div class="col-md-7 center-block" style="float: none">
+				<a href="https://mshe.univ-fcomte.fr/" target="_blank">
+					<div class="logo"><p> <img src="./images/logo/mshe.jpg" title="https://mshe.univ-fcomte.fr/" height=30 alt=""/></p></div></a>
 				<a href="http://www.cnrs.fr/" target="_blank">
-					<div class="logo"><p> <img src="./images/logo/CNRS.png" title="http://www.cnrs.fr/" height=35 alt=""/> </p></div></a>
-				<a href="http://www.univ-fcomte.fr/" target="_blank">
-					<div class="logo"><p> <img src="./images/logo/ufc.png" title="http://www.univ-fcomte.fr/" height=35 alt=""/> </p></div></a>
-				<a href="https://www.u-bordeaux.fr/" target="_blank">
-					<div class="logo"><p> <img src="./images/logo/ubordeaux.jpg" title="https://www.u-bordeaux.fr/" height=35 alt=""/> </p></div></a>
+					<div class="logo"><p> <img src="./images/logo/cnrs.png" title="http://www.cnrs.fr/" height=35 alt=""/> </p></div></a>
 				<a href="https://www.umontreal.ca/" target="_blank">
 					<div class="logo"><p> <img src="./images/logo/umontreal.png" title="https://www.umontreal.ca/" height=35 alt=""/> </p></div></a>
 				<a href="http://chrono-environnement.univ-fcomte.fr/" target="_blank">
 					<div class="logo"><p> <img src="./images/logo/chrono_environnement.png" title="http://chrono-environnement.univ-fcomte.fr/" height=35 alt=""/> </p></div></a>
+				<a href="http://www.oasu.fr/" target="_blank">
+					<div class="logo"><p> <img src="./images/logo/oasu.png" title="http://www.oasu.fr/" height=35 alt=""/> </p></div></a>
+				<a href="https://theta.obs-besancon.fr/" target="_blank">
+					<div class="logo"><p> <img src="./images/logo/osutheta.jpg" title="https://theta.obs-besancon.fr/" height=35 alt=""/> </p></div></a>
 				<a href="https://www.bourgognefranchecomte.fr/" target="_blank">
 					<div class="logo"><p> <img src="./images/logo/BFC.jpg" title="https://www.bourgognefranchecomte.fr/" height=35 alt=""/> </p></div></a>
 			</div>
