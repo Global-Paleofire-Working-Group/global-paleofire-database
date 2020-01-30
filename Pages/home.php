@@ -29,7 +29,7 @@
 				<a href="https://mshe.univ-fcomte.fr/" target="_blank">
 					<div class="logo"><p> <img src="./images/logo/mshe.jpg" title="https://mshe.univ-fcomte.fr/" height=30 alt=""/></p></div></a>
 				<a href="http://www.cnrs.fr/" target="_blank">
-					<div class="logo"><p> <img src="./images/logo/cnrs.png" title="http://www.cnrs.fr/" height=35 alt=""/> </p></div></a>
+					<div class="logo"><p> <img src="./images/logo/CNRS.png" title="http://www.cnrs.fr/" height=35 alt=""/> </p></div></a>
 				<a href="https://www.umontreal.ca/" target="_blank">
 					<div class="logo"><p> <img src="./images/logo/umontreal.png" title="https://www.umontreal.ca/" height=35 alt=""/> </p></div></a>
 				<a href="http://chrono-environnement.univ-fcomte.fr/" target="_blank">
