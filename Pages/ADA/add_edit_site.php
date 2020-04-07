@@ -216,14 +216,14 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                     $errors[] = "Select a status";
             }
         } else {   
-            //si c'est un contributeur ou un administrateur qui entre la données, cette dernière sera mise en attente de validation par un administrateur
+            /*si c'est un contributeur ou un administrateur qui entre la données, cette dernière sera mise en attente de validation par un administrateur
             //si c'est un superadministrateur qui entre la données, cette dernière sera automatiquemenbt validée
-            //if (isset($_SESSION['gcd_user_role']) && ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)){
+            //if (isset($_SESSION['gcd_user_role']) && ($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR)){ */
                 $new_site->setStatusId(1); // la donnée est validée
-            //}
+            /*}
             //else {
             //    $new_site->setStatusId(0); //la donnée apparaîtra dans la liste données à valider
-            //}
+            //} */
         }                             
         
         if (empty($errors)) {
@@ -297,91 +297,29 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
             }
         ?>
         <!-- SCRIPT DE GESTION DE LA CARTE !-->
-		<?php
-			if (GOOGLE_API_KEY != ""){
-				echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key='.GOOGLE_API_KEY.'"></script>';			
-			} else {
-                            echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>';
-                        } 
-		?>
 
         <script>
-            //Variable pour le geocoder de Google Maps
-            var geocoder;
-            //Variable pour la carte
-            var map_addSite;
-            //Variable pour les infos de la carte
-            var infowindow = new google.maps.InfoWindow();
-            //Variable pour le marqueur
-            var marker;
-            //Function d'initialisation de la carte à l'affichage
-            function initialize() {
-                geocoder = new google.maps.Geocoder();
-                var latlng = new google.maps.LatLng(47.245724, 5.984663);
+	        /* tableau contenant les infos des pays */
+	        var monTableauJS = <?php echo json_encode($data_countries); ?> ;
 <?php 
     if (isset($new_site->_site_country) && $new_site->_site_country->_country_iso_alpha2 != null) { 
-        echo 'displaydatacountry("'.$new_site->_site_country->_country_iso_alpha2.'")';
+        echo 'displaydatacountry("'.$new_site->_site_country->_country_iso_alpha2.'", monTableauJS);';
     } else {
-        echo 'displaydatacountry("NULL")';
+        echo 'displaydatacountry("NULL", monTableauJS);';
     }
 ?>
 
-                var mapOptions = {
-                    zoom: 2,
-                    center: latlng,
-                    mapTypeId: 'roadmap'
-                } 
-
-                map_addSite = new google.maps.Map(document.getElementById("map_addSite"), mapOptions);
-                google.maps.event.addListener(map_addSite, 'click', function(mouseEvent){
-                    var latlng = mouseEvent.latLng;
-
-                    //function du geocoder qui recupere le pays
-                    geocoder.geocode({'latLng': latlng}, function(results, status) {
-
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            var getCountry = "";
-                            for (var i = 0; i < results[1].address_components.length; i++)
-                            {
-                                var addr = results[1].address_components[i];
-                                if (addr.types[0] == 'country')
-                                    getCountry = addr.short_name;
-                            }
-                            if (results[1]) {
-                                displaydatacountry(getCountry);
-                            } else {
-                                map_addSite.setZoom(1);
-                                alert('No results found, please select a country in the liste below or a marine region');
-                                //Mise à jour du formulaire en saisie manuelle car pas de pays
-                                $("#select_region").show();
-                                displaydatacountry('NULL');
-                            }
-                        } else {
-                            map_addSite.setZoom(1);
-                            alert('No results found, please select a country in the liste below or a marine region');
-                            //Mise à jour du formulaire en saisie manuelle car pas de pays
-                            displaydatacountry('NULL');
-                            $("#select_region").show();
-                        }
-                    });
-                });
-            }
-
-            //chargement de la carte à l'initialisation de la page
-            google.maps.event.addDomListener(window, 'load', initialize);
-            // tableau contenant les infos des pays
-            var monTableauJS = <?php echo json_encode($data_countries) ?>;
-            //Fonction qui affiche les données liées au pays lorsqu'il est selectionné sans reload de la page
-            function displaydatacountry(currentcountry) {
+            /*Fonction qui affiche les données liées au pays lorsqu'il est selectionné sans reload de la page*/
+            function displaydatacountry(currentcountry =null, tab ={}) {
                 $("#addSite_country").val(currentcountry);
                 $("#info_country").show();
-                $("#country_region").val(monTableauJS[currentcountry]);
+                $("#country_region").val(tab[currentcountry]);
             }
             
             function gestionMarine(elt){
                 if (elt.checked) {
                     $("#info_marine").show();
-                    displaydatacountry('NULL');
+                    displaydatacountry('NULL', monTableauJS);
                 }
                 else $("#info_marine").hide();
             }
@@ -404,7 +342,7 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
                 </p>
                 <p>
                     <label for="addSite_country">Country</label>
-                    <select name = '<?php echo Site::ID_COUNTRY; ?>' id = 'addSite_country' onchange="displaydatacountry($(this).val())">
+                    <select name = '<?php echo Site::ID_COUNTRY; ?>' id = 'addSite_country' onchange="displaydatacountry($(this).val(), monTableauJS)">
                         <option value = 'NULL'>Select a value</option>
                         <?php
                         $result_all_objects = Country::getArrayFieldsValueFromWhere(array(Country::COUNTRY_ISO_ALPHA2, Country::NAME));
@@ -603,6 +541,43 @@ if (isset($_SESSION['started']) && (isset($_SESSION['gcd_user_role']) && (($_SES
               ?>
             </p> 
         </form>
+	    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	            crossorigin=""></script>
+	    <script>
+		    // =========================== Leaflet Map initialisation =======================================
+		    var mymap = L.map('map_addSite').setView([47.245724, 5.984663], 2)
+
+		    var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+		    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. Tiles courtesy of HOT';
+
+		    L.tileLayer(osmUrl, {
+			    attribution: osmAttrib,
+			    maxZoom: 18,
+			    id: 'osm',
+		    }).addTo(mymap);
+
+		    // =========================== Event on click  =======================================
+		    function onMapClick(e) {
+		    	let apiurl = 'https://www.mapquestapi.com/geocoding/v1/reverse?key=<?php echo "MOxZkfZDCk9agm8GtJXK8KGWVwhC4kGp"; ?>&location=' + e.latlng.lat + '%2C'+ e.latlng.lng + '&outFormat=json&thumbMaps=false'
+			    let request = new XMLHttpRequest();
+			    request.open('GET', apiurl, true);
+			    request.onload = function() {
+				    let data = JSON.parse(this.response);
+				    if (request.status >= 200 && request.status < 400) {
+					    let code = (data['results'][0]['locations'][0]['adminArea1']);
+					    displaydatacountry(code, monTableauJS);
+				    }
+				    else {
+					    console.log('error');
+				    }
+			    }
+			    request.send();
+
+		    }
+		    mymap.on('click', onMapClick);
+		    //=========================================================================================
+	    </script>
         <?php
         }   
     }

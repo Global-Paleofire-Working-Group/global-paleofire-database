@@ -753,13 +753,10 @@ if (isset($_SESSION['started'])) {
           
     <?php // script google pour les geochart et les piechart ?>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <?php // script google maps
-    if (GOOGLE_API_KEY != "") {
-        echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key='.GOOGLE_API_KEY.'"></script>';
-    } else {
-        echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>';
-    }
-    ?>
+
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+            crossorigin=""></script>
     <?php // affichage piechart puis geochart ?>
     <script type="text/javascript">
         
@@ -915,28 +912,31 @@ if (isset($_SESSION['started'])) {
         }
       
         var gcdIcon_OK = './images/marker_red.png';
-        var latlng = new google.maps.LatLng(<?php echo $core->_latitude; ?>, <?php echo $core->_longitude; ?>);
-        var map_core;
-        /* initialisation de la fonction initMap */
-        function initMap() {
-            var mapOptions = {
-                zoom: 8,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            map_core = new google.maps.Map(document.getElementById('map_core'), mapOptions);
+        // =========================== Leaflet map initialisation =======================================
+        var latlng = [<?php echo $core->_latitude; ?>, <?php echo $core->_longitude; ?>];
 
-            var marker = new google.maps.Marker({
-                position: latlng,
-                map: map_core,
-                icon: gcdIcon_OK
-            });
+        var mymap = L.map('map_core').setView(latlng, 7)
 
-            marker.setMap(map_core);
-        }
-        /* on va procéder à l'initialisation de la carte */
-        initMap();
-        
+        var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+        var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. Tiles courtesy of HOT';
+
+        L.tileLayer(osmUrl, {
+	        attribution: osmAttrib,
+	        maxZoom: 18,
+	        id: 'osm',
+        }).addTo(mymap);
+
+        var coreicon = L.icon({
+	        iconUrl: gcdIcon_OK
+        });
+
+        var marker = L.marker(
+	        latlng,
+	        {icon: coreicon}
+        ).addTo(mymap);
+        //=========================================================================================
+
+
         $(function(){
             $('#dialog-paleo').on('shown.bs.modal', function (event) {
                 

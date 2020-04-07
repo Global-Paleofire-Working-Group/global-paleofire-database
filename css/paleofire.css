@@ -159,8 +159,9 @@ ul.linklist li.first
   height: 250px; width: 300px;
 }
 
-#map_global_site{
+#map_leaflet {
     height: 500px;
+    width: 100%;
 }
 
 #contentInfoWindow{

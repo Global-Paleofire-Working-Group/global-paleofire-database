@@ -198,130 +198,111 @@ if (isset($_SESSION['started'])) {
           </div>
     
     <!-- SCRIPT DE GESTION DE LA CARTE !-->
-	<?php
-		if (GOOGLE_API_KEY != ""){
-			echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key='.GOOGLE_API_KEY.'"></script>';			
-		} else {
-                    echo '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>';
-                }
-	?>
-    <script>
-        var gcdIcon_OK = './images/marker_red.png';
+	    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	            crossorigin=""></script>
+	    <script>
+		    var gcdIcon_OK = './images/marker_red.png';
 
-        var map_global_site;
+		    // =========================== Leaflet Map initialisation =======================================
+		    var mymap = L.map('map_site').setView([27.888087, -42.141615], 7)
 
-        //Variable pour le geocoder de Google Maps
-        var geocoder;
+		    var osmUrl='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+		    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. Tiles courtesy of HOT';
 
-        //Variable pour le marqueur
-        var marker;
+		    L.tileLayer(osmUrl, {
+			    attribution: osmAttrib,
+			    maxZoom: 18,
+			    id: 'osm',
+		    }).addTo(mymap);
 
-        /* initialisation de la fonction initMap */
-        function initMap() {
-            geocoder = new google.maps.Geocoder();
-            var latlng = new google.maps.LatLng(27.888087, -42.141615);
-            var mapOptions = {
-                zoom: 6,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            map_global_site = new google.maps.Map(document.getElementById('map_site'), mapOptions);
-        }
-        /* on va procéder à l'initialisation de la carte */
-        initMap();
+		    //======================== Marker Popup =================================================================
+		    var all_cores = <?php echo json_encode($coord) ?>;
+		    var i = 0;
+		    var tMarker = new Array();
+		    var latlngbounds = L.latLngBounds();
 
-        var all_cores = <?php echo json_encode($coord) ?>;
-        var i = 0;
-        var tMarker = new Array();
-        var latlngbounds = new google.maps.LatLngBounds();
+		    for (prop in all_cores) {
+			    var marker_info = "";
+			    marker_info += "<div id='contentInfoWindow' >";
+			    marker_info += "<b>" + all_cores[prop][0] + "</b><br/>";
+			    marker_info += "<a href=\"index.php?p=CDA/core_view&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
+			    marker_info += "</div>";
+			    var object = {'lat': all_cores[prop][1], 'lon': all_cores[prop][2], 'title': all_cores[prop][0], 'info': marker_info};
+			    tMarker[i] = object;
+			    i++;
 
-        for (prop in all_cores) {
-            var marker_info = "";
-            marker_info += "<div id='contentInfoWindow' >";
-            marker_info += "<b>" + all_cores[prop][0] + "</b><br/>";
-            marker_info += "<a href=\"index.php?p=CDA/core_view&gcd_menu=CDA&core_id=" + all_cores[prop][3] + "\">View data core...</a>";
-            marker_info += "</div>";
-            var object = {'lat': all_cores[prop][1], 'lon': all_cores[prop][2], 'title': all_cores[prop][0], 'info': marker_info};
-            tMarker[i] = object;
-            i++;
-            
-            latlngbounds.extend(new google.maps.LatLng(all_cores[prop][1],all_cores[prop][2]));
-        }
-        var nb = tMarker.length;
-        // création des markers
-        for (i = 0; i < nb; i++) {
-    // création marker
-            var oMarker = new google.maps.Marker({
-                'numero': i,
-                'position': new google.maps.LatLng(tMarker[i].lat, tMarker[i].lon),
-                'map': map_global_site,
-                'title': tMarker[i].title,
-                icon: gcdIcon_OK
-            });
-    // création infobulle avec texte
-            var oInfo = new google.maps.InfoWindow({maxWidth: 300
-            });
-    // événement clic sur le marker
-            google.maps.event.addListener(oMarker, 'click', function() {
-                oInfo.setContent(tMarker[this.numero].info);
-                // affichage InfoWindow
-                oInfo.open(this.getMap(), this);
-            });
-        }
-        
-        map_global_site.setCenter(latlngbounds.getCenter());
-        //map_global_site.fitBounds(latlngbounds); 
-        
-        var recipient;
-        $(function(){
-            $('#dialog-paleo').on('shown.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                recipient = button.data('whatever');
-                var modal = $(this);
-                        
-                if (recipient[0] === 'addpubli'){
-                    modal.find('.modal-title').html('<p>Add a publication<p>');
-                    modal.find('.modal-body').html('<h3>Select a publication to link to site <?php echo $site->getName(); ?> </h3>\n');
+			    latlngbounds.extend([all_cores[prop][1], all_cores[prop][2]]);
+		    }
+		    var nb = tMarker.length;
+		    // =========================== Site Marker creation =======================================
+		    for (i = 0; i < nb; i++) {
+			    var coreicon = L.icon({
+				    iconUrl: gcdIcon_OK
+			    });
+			    var marker = L.marker(
+				    [tMarker[i].lat, tMarker[i].lon],
+				    {
+					    title: tMarker[i].title,
+					    icon: coreicon
+				    }
+			    ).addTo(mymap);
+			    marker.bindPopup(tMarker[i].info);
+		    }
+		    mymap.setView(latlngbounds.getCenter());
 
-                    // todo // remplacer par de l'ajax
-                    var tabPubli = <?php echo getTabJavascriptHTML(Publi::ID.'[]', 'addSite_publi', 'Publi', null, null, 5, 20); ?>;
-    
-                    var select = $('<select style="max-width:100%;width:550px" id="selectAddPubli" name="selectAddPubli"></select>');
-                    if(select.prop) {
-                      var options = select.prop('options');
-                    }
-                    else {
-                      var options = select.attr('options');
-                    }
-                    
-                    $.each(tabPubli, function(index, elt) {
-                        
-                        options[options.length] = new Option(elt.label, elt.id);
-                    });
-                    
-                    var divselect = $('<div style="width:550px;max-width:100%;"></div>').append(select);
-                    modal.find('.modal-body').append(divselect);
-                    
-                    //modal.find('#dialog-btn-yes').attr('href', "javascript:getURLAddPubli();");
-                    
-                } else if (recipient[0] === 'removepubli'){
-                    modal.find('.modal-body').html('<h3>Confirm the remove from "<?php echo $site->getName(); ?>" the following publication ?</h3><p>' + $("#pub" + recipient[1]).text()  + '</p>');
-                    modal.find('#dialog-btn-yes').attr('href', "index.php?p=CDA/site_view_ajax&gcd_menu=CDA&act=rem&site=<?php echo $site->getIdValue(); ?>&publi=" + recipient[1]);
-                } else if (recipient[0] === 'delsite'){
-                    // suppression d'un site
-                    modal.find('.modal-title').html('<p class="text-danger"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Deletion<p>');
-                    modal.find('.modal-body').html('<h3>Confirm the deletion of the following site ?</h3><p><?php echo $site->getName(); ?></p>');
-                    modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_site&id=<?php echo $site->getIdValue(); ?>");
-                }
-              });
-              
-              $("#dialog-btn-yes").click(function(){
-                if (recipient[0] === 'addpubli'){
-                    $('#dialog-btn-yes').attr('href', "index.php?p=CDA/site_view_ajax&gcd_menu=CDA&act=add&site=" + <?php echo $site->getIdValue(); ?> + "&publi=" + $("#selectAddPubli").val());
-                }
-              });
-          });
-    </script>
+		    //=========================================================================================
+
+		    var recipient;
+		    $(function(){
+			    $('#dialog-paleo').on('shown.bs.modal', function (event) {
+				    var button = $(event.relatedTarget);
+				    recipient = button.data('whatever');
+				    var modal = $(this);
+
+				    if (recipient[0] === 'addpubli'){
+					    modal.find('.modal-title').html('<p>Add a publication<p>');
+					    modal.find('.modal-body').html('<h3>Select a publication to link to site <?php echo $site->getName(); ?> </h3>\n');
+
+					    // todo // remplacer par de l'ajax
+					    var tabPubli = <?php echo getTabJavascriptHTML(Publi::ID.'[]', 'addSite_publi', 'Publi', null, null, 5, 20); ?>;
+
+					    var select = $('<select style="max-width:100%;width:550px" id="selectAddPubli" name="selectAddPubli"></select>');
+					    if(select.prop) {
+						    var options = select.prop('options');
+					    }
+					    else {
+						    var options = select.attr('options');
+					    }
+
+					    $.each(tabPubli, function(index, elt) {
+
+						    options[options.length] = new Option(elt.label, elt.id);
+					    });
+
+					    var divselect = $('<div style="width:550px;max-width:100%;"></div>').append(select);
+					    modal.find('.modal-body').append(divselect);
+
+					    //modal.find('#dialog-btn-yes').attr('href', "javascript:getURLAddPubli();");
+
+				    } else if (recipient[0] === 'removepubli'){
+					    modal.find('.modal-body').html('<h3>Confirm the remove from "<?php echo $site->getName(); ?>" the following publication ?</h3><p>' + $("#pub" + recipient[1]).text()  + '</p>');
+					    modal.find('#dialog-btn-yes').attr('href', "index.php?p=CDA/site_view_ajax&gcd_menu=CDA&act=rem&site=<?php echo $site->getIdValue(); ?>&publi=" + recipient[1]);
+				    } else if (recipient[0] === 'delsite'){
+					    // suppression d'un site
+					    modal.find('.modal-title').html('<p class="text-danger"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Deletion<p>');
+					    modal.find('.modal-body').html('<h3>Confirm the deletion of the following site ?</h3><p><?php echo $site->getName(); ?></p>');
+					    modal.find('#dialog-btn-yes').attr('href', "index.php?p=ADA/del_site&id=<?php echo $site->getIdValue(); ?>");
+				    }
+			    });
+
+			    $("#dialog-btn-yes").click(function(){
+				    if (recipient[0] === 'addpubli'){
+					    $('#dialog-btn-yes').attr('href', "index.php?p=CDA/site_view_ajax&gcd_menu=CDA&act=add&site=" + <?php echo $site->getIdValue(); ?> + "&publi=" + $("#selectAddPubli").val());
+				    }
+			    });
+		    });
+	    </script>
     <?php 
     } 
 }

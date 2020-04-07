@@ -51,7 +51,7 @@
 </nav>
   
 <div class="container-fluid text-center">  
-</br> In the past decade, the Global Paleofire Working Group (GPWG) developed and analysed fire history records using the Global Charcoal Database (GCD), which advanced our understanding of the controls and impacts of fire in the Earth system on a wide range of spatial and temporal scales.
+</br> In the past decade, the Global Paleofire Working Group (GPWG) developed and analysed fire history records using the Global PaleoFire Database (GPFD), which advanced our understanding of the controls and impacts of fire in the Earth system on a wide range of spatial and temporal scales.
    
   <div class="row content">
     <div class="col-sm-6">
@@ -63,9 +63,9 @@
     </div>
     <div class="col-sm-6 "> 
     	 <br /> <br /> 
-        <p>The aim of GCD is to provide the scientific community with a global paleofire dataset for research and archiving sedimentary records of fire. </p>
+        <p>The aim of GPFD is to provide the scientific community with a global paleofire dataset for research and archiving sedimentary records of fire. </p>
  <br />
-      <b>Click below to access the GCD</b>
+      <b>Click below to access the GPFD</b>
 	  <br /> <br />
           <div id="bd_gcd"><a href="/index.php" target="_blank" alt="GCD" title="GCD"><img src="./images/logo/database.png"></a></div>
     <br /><br />
