@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Paleofire</title>
+  <title>Global Paleofire Database</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -51,7 +51,7 @@
 </nav>
   
 <div class="container-fluid text-center">  
-</br> In the past decade, the Global Paleofire Working Group (GPWG) developed and analysed fire history records using the Global PaleoFire Database (GPFD), which advanced our understanding of the controls and impacts of fire in the Earth system on a wide range of spatial and temporal scales.
+</br> In the past decade, the Global Paleofire Working Group (GPWG) developed and analysed fire history records using the Global Paleofire Database (GPD), which advanced our understanding of the controls and impacts of fire in the Earth system on a wide range of spatial and temporal scales.
    
   <div class="row content">
     <div class="col-sm-6">
@@ -63,9 +63,9 @@
     </div>
     <div class="col-sm-6 "> 
     	 <br /> <br /> 
-        <p>The aim of GPFD is to provide the scientific community with a global paleofire dataset for research and archiving sedimentary records of fire. </p>
+        <p>The aim of GPD is to provide the scientific community with a global paleofire dataset for research and archiving sedimentary records of fire. </p>
  <br />
-      <b>Click below to access the GPFD</b>
+      <b>Click below to access the GPD</b>
 	  <br /> <br />
           <div id="bd_gcd"><a href="/index.php" target="_blank" alt="GCD" title="GCD"><img src="./images/logo/database.png"></a></div>
     <br /><br />
@@ -75,7 +75,7 @@
 </div>
 
 <footer class="container-fluid text-center">
-  All Rights Reserved (2015-2017). | 
+  All Rights Reserved (2015-<?php echo date("Y"); ?>). |
   Contact : <a id="contact">paleofire@gmail.com</a> |
  
         </div>

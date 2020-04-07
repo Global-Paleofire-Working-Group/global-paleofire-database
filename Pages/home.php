@@ -3,11 +3,11 @@
 -->
 <div class="home">
     <div class="header">
-        <h3>Welcome to the Global PaleoFire Database</h3>
+        <h3>Welcome to the Global Paleofire Database</h3>
     </div>
 	<div>
-		<p>The aim of the <b>Global PaleoFire Database (GPFD)</b> is to provide the scientific community with a global paleofire dataset for research and archiving sedimentary records of fire. The GPFD is managed by the <b>Global Paleofire Working Group – <a href="http://gpwg.paleofire.org">GPWG</a></b>.
-		<p>The GPFD is funded and supported by: the <a href="http://www.pages-igbp.org"><b>PAGES</b></a> initiative and the project OREAS by Région Bourgogne - Franche-Comté in France via the <b><a href="http://chrono-environnement.univ-fcomte.fr">Chrono-environnement laboratory</a></b>.
+		<p>The aim of the <b>Global Paleofire Database (GPD)</b> is to provide the scientific community with a global paleofire dataset for research and archiving sedimentary records of fire. The GPD is managed by the <b>Global Paleofire Working Group – <a href="http://gpwg.paleofire.org">GPWG</a></b>.
+		<p>The GPD is funded and supported by: the <a href="http://www.pages-igbp.org"><b>PAGES</b></a> initiative and the project OREAS by Région Bourgogne - Franche-Comté in France via the <b><a href="http://chrono-environnement.univ-fcomte.fr">Chrono-environnement laboratory</a></b>.
 		<p>The science emerging from the <b>GPWG</b> is mainly:</p>
 		<p>- the creation of a <b>public-access database</b> and an international research community with multiple-authored papers describing observed spatiotemporal changes in fire at global and regional scales (e.g. time series and maps).</p>
 		<p>- <b>Global and regional syntheses</b> which enable the examination of broad-scale patterns in paleofire activity, creating a framework for exploring the <b>linkages among fire, Human, climate and vegetation</b> at centennial-to-multi-millennial time scales and allowing for <b>evaluation of fire model simulations</b> at regional to global scales.</p>

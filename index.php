@@ -136,7 +136,7 @@ $footer = "&nbsp;";
 		<div class="container" style="top:100px">
 			<div class="row">
 				<div id="header">
-					<h1><a href="index.php">Global PaleoFire Database</a></h1>
+					<h1><a href="index.php">Global Paleofire Database</a></h1>
 					<div id="logo_gpwg"><a href="http://gpwg.paleofire.org" alt="GPWG" title="GPWG"><img src="./images/logo/gpwg_petit.png"></a></div>
 					<div id="splash"></div>
 				</div>
