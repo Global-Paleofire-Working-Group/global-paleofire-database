@@ -58,7 +58,7 @@
         <br /> <br /> 
          The GPWG will meet the growing needs of interdisciplinary fire scientists and practitioners by developing research projects, in collaboration with stakeholders, that employ diverse data sources, a new open-access database, statistical tools, and state-of-the-art models to address questions about fire-regime variations and their feedbacks on species, ecosystems, and climate.
     <br /><br /> <b>Click below to access the GPWG</b>
-      <div id="logo_gpwg"><a href="http://gpwg.paleofire.org" target="_blank" alt="GPWG" title="GPWG"><img src="./images/logo/gpwg.png"></a></div>
+      <div id="logo_gpwg"><a href="http://ipa.paleofire.org" target="_blank" alt="GPWG" title="GPWG"><img src="./images/logo/gpwg.png"></a></div>
 
     </div>
     <div class="col-sm-6 "> 
