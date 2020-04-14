@@ -50,7 +50,7 @@ require_once (REP_LIB."/data_securisation.php");
                         </div>
                         
             </div>
-        <h2><b><font color="red">THE GPD IS UNDER MAINTENANCE - Back to normal around Friday, April 10th 2020</font></b></h2>
+        <h2><b><font color="red">THE GPD IS UNDER MAINTENANCE - Back to normal planned on Friday, April 10th 2020 17h</font></b></h2>
         <h3>Welcome to the Global Paleofire Database</h3>
         <div>
             <p>The aim of the <b>Global Paleofire Database (GPD)</b> is to provide the scientific community with a global paleofire dataset for research and archiving sedimentary records of fire. The GCD is managed by the <b>Global Paleofire Working Group – <a href="http://gpwg.paleofire.org">GPWG</a></b>.
