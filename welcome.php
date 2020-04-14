@@ -45,7 +45,7 @@
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-      <div id="img_paleo" align="center"><a href="http://www.paleofire.org" alt=PALEO title="Paleofire"><img src="./images/paleofire.jpg"></a></div>
+      <div id="img_paleo" align="center"><a href="http://paleofire.org" alt=PALEO title="Paleofire"><img src="./images/paleofire.jpg"></a></div>
     </div>
   </div>
 </nav>
@@ -58,7 +58,7 @@
         <br /> <br /> 
          The GPWG will meet the growing needs of interdisciplinary fire scientists and practitioners by developing research projects, in collaboration with stakeholders, that employ diverse data sources, a new open-access database, statistical tools, and state-of-the-art models to address questions about fire-regime variations and their feedbacks on species, ecosystems, and climate.
     <br /><br /> <b>Click below to access the GPWG</b>
-      <div id="logo_gpwg"><a href="http://ipa.paleofire.org" target="_blank" alt="GPWG" title="GPWG"><img src="./images/logo/gpwg.png"></a></div>
+      <div id="logo_gpwg"><a href="https://ipa.paleofire.org" target="_blank" alt="GPWG" title="GPWG"><img src="./images/logo/gpwg.png"></a></div>
 
     </div>
     <div class="col-sm-6 "> 
@@ -67,7 +67,7 @@
  <br />
       <b>Click below to access the GPD</b>
 	  <br /> <br />
-          <div id="bd_gcd"><a href="/index.php" target="_blank" alt="GCD" title="GCD"><img src="./images/logo/database.png"></a></div>
+          <div id="bd_gcd"><a href="/index.php" target="_blank" alt="GCD" title="GCD"><img src="./images/logo/database.png" width="200"></a></div>
     <br /><br />
 
     </div>    
