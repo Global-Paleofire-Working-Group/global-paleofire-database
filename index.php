@@ -224,6 +224,13 @@ $footer = "&nbsp;";
 								$contact_id = WebAppUserGCD::getContactId($user_id);
 								connectionBaseInProgress(); //xli 4/4/16
 
+								// affichage de la variable _SESSION
+								var_dump($_SESSION);
+								// affiche le user_id dans les logs
+								// apache_note( 'user_id', $user_id );
+								// affiche le gcd_login dans les logs
+								$gcd_login = $_SESSION['gcd_login'];
+								apache_note( 'gcd_login', $gcd_login );
 
 								echo '<li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account data<span class="caret"></span></a>
