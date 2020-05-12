@@ -225,7 +225,7 @@ $footer = "&nbsp;";
 								connectionBaseInProgress(); //xli 4/4/16
 
 								// affichage de la variable _SESSION
-								var_dump($_SESSION);
+								// var_dump($_SESSION);
 								// affiche le user_id dans les logs
 								// apache_note( 'user_id', $user_id );
 								// affiche le gcd_login dans les logs
