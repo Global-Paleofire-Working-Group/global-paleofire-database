@@ -49,10 +49,9 @@
 <body>
 
 <nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-	  <div id="img_paleo" align="center"><a href="http://paleofire.org" alt=PALEO title="Paleofire"><img src="./images/paleofire.jpg"></a></div>
+	<div class="container-fluid">
+		<div id="img_paleo" align="center"><a href="http://paleofire.org" title="Paleofire"><img src="./images/paleofire.jpg" alt="Paleofire"></a></div>
 	</div>
-  </div>
 </nav>
   
 <div class="container-fluid text-center">
@@ -63,12 +62,12 @@
 		<div class="col-sm-6 margintop">
 			<b>click below to access the International Paleofire Network (2020-…)</b>
 			<div id="logo_gpwg" class="margintop">
-				<a href="https://ipn.paleofire.org" target="_blank" alt="IPN" title="IPN">
-					<img src="./images/logo/IPN-Logo-fullred.png" width="500">
+				<a href="https://ipn.paleofire.org" target="_blank" title="IPN">
+					<img src="./images/logo/IPN-Logo-fullred.png" alt="IPN" width="500">
 				</a><br />
 				<p style="margin-top: 5em">the former GPWG blog is still available here :
-					<a href="https://oldgpwg.paleofire.org" target="_blank" alt="GPWG" title="GPWG">
-						<img src="./images/logo/gpwg.png" width="100">
+					<a href="https://oldgpwg.paleofire.org" target="_blank" title="GPWG">
+						<img src="./images/logo/gpwg.png" alt="GPWG" width="100">
 					</a>
 				</p>
 			</div>
@@ -77,8 +76,8 @@
 		<div class="col-sm-6 margintop">
 			<b>click below to access the Global Paleofire Database (2013-…)</b>
 			<div id="bd_gcd" class="margintop">
-				<a href="/index.php" target="_blank" alt="GPD" title="GPD">
-					<img src="./images/logo/database.png" width="200">
+				<a href="/index.php" target="_blank" title="GPD">
+					<img src="./images/logo/database.png" alt="GPD" width="200">
 				</a>
 			</div>
 		</div>
@@ -86,11 +85,8 @@
 </div>
 
 <footer class="container-fluid text-center">
-  All Rights Reserved (2015-<?php echo date("Y"); ?>). |
-  Contact : <a id="contact">paleofire@gmail.com</a> |
- 
-		</div>
-		<script type="text/javascript">
+	All Rights Reserved (2015-<?php echo date("Y"); ?>). | Contact : <a id="contact">paleofire@gmail.com</a> |
+	<script type="text/javascript">
 		var add = "ma";
 		add += "ilto:paleofire";
 		add += "@";
@@ -99,7 +95,7 @@
 		$("#contact").mouseover(function(){
 			$(this).attr("href", add);
 		});
-		</script>
+	</script>
 </footer>
 
 </body>
