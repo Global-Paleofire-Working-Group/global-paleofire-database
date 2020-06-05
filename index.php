@@ -112,11 +112,12 @@ $footer = "&nbsp;";
 
 		<title>Global Paleofire Database</title>
 
+		<link rel="icon" href="./images/logo/GPD.ico" />
+
 
 		<link href="css/paleofire.css" rel="stylesheet" type="text/css" />
 		<link href="Library/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="css/form_paleofire.css" rel="stylesheet" type="text/css" />
-		<link rel="shortcut icon" href="Images/Ico.gif" />
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
@@ -134,11 +135,18 @@ $footer = "&nbsp;";
 	?>
 	<div class="container" id="inner">
 		<div class="container" style="top:100px">
+<!--			<div class="row">
+				<div id="header">
+					<div id="logo_gpd"><a href="index.php" title="GPD"><img src="./images/logo/GPD-Logo-fullgrey.png" height="92" alt="GPD"></a></div>
+					<div id="logo_ipn"><a href="https://ipn.paleofire.org" title="IPN"><img src="./images/logo/IPN-Logo-fullblack.png" height="92" alt="IPN"></a></div>
+					<div id="splash" align="center"></div>
+				</div>
+			</div>-->
 			<div class="row">
 				<div id="header">
-					<h1><a href="index.php">Global Paleofire Database</a></h1>
-					<div id="logo_gpwg"><a href="https://ipa.paleofire.org" alt="IPA" title="IPA"><img src="./images/logo/gpwg_petit.png"></a></div>
-					<div id="splash"></div>
+					<div id="logo_gpd"><a href="index.php" title="GPD"><img src="./images/logo/GPD-Logo-transparent.png" height="92" alt="GPD"></a></div>
+					<div id="logo_ipn"><a href="https://ipn.paleofire.org" title="IPN"><img src="./images/logo/IPN-Logo-transparent.png" height="92" alt="IPN"></a></div>
+					<div id="splash" align="center"></div>
 				</div>
 			</div>
 			<div class="row">

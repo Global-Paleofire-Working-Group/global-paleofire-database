@@ -222,20 +222,21 @@ h1{
 }
 
 #header {
-    background: #000;
+    background: #fff;
     color: #fff;
     position:relative;
     width:auto;
     margin-bottom: 3px;
     border-radius:4px;
     height: 92px;
-    padding-left: 20px;
 }
 
  #splash {
-    background: #000 url('../images/paleofire.jpg') no-repeat;
-    height: 92px;
-    margin-left:230px;
+     background: #fff url('../images/Bandeau2.png') no-repeat;
+     height: 92px;
+     /*
+	  margin-left:183px;
+	  margin-right:205px; */
 }
 
 #header span
@@ -266,10 +267,20 @@ h1{
     color: #FCE2CA;
 }
 
-#logo_gpwg
+#logo_ipn
 {
     float:right;
-    margin-top:3px;
+    height: 92px;
+    margin-right: 10px;
+    z-index: 5;
+}
+
+#logo_gpd
+{
+    float:left;
+    height: 92px;
+    z-index: 5;
+    margin-left: 10px;
 }
 
 #menu
