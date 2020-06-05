@@ -24,6 +24,10 @@
 			background-color: #ffffff;
 		}
 
+		.link {
+			color: #2aabd2;
+		}
+
 		/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 		.row.content {height: 450px}
 
@@ -79,7 +83,7 @@
 				<a href="https://ipn.paleofire.org" target="_blank" title="IPN">
 					<img src="./images/logo/IPN-Logo-transparent.png" alt="IPN" height="100">
 				</a><br />
-				<p style="margin-top: 5em">the former GPWG blog is still available here :
+				<p style="margin-top: 5em">the former GPWG blog is still available here:
 					<a href="https://oldgpwg.paleofire.org" target="_blank" title="GPWG">
 						<img src="./images/logo/gpwg.png" alt="GPWG" width="100">
 					</a>
@@ -100,8 +104,8 @@
 
 <footer class="container">
 	<div class="col-sm-12 text-center">
-	All Rights Reserved (2015-<?php echo date("Y"); ?>). | Contact : <a id="contact">paleofire@gmail.com</a>
-		| Technology support: <a href="https://mshe.univ-fcomte.fr/">MSHE</a> - <a href="http://www.univ-fcomte.fr/les-services-administratifs/services-informatiques">DSIN</a> - <a href="https://univ-fcomte.fr/">Université de Franche-Comté</a>
+	All Rights Reserved (2015-<?php echo date("Y"); ?>). | Contact: <a id="contact" class="link">paleofire@gmail.com</a>
+		| Technology support: <a href="https://mshe.univ-fcomte.fr/" class="link">MSHE</a> - <a href="http://www.univ-fcomte.fr/les-services-administratifs/services-informatiques" class="link">DSIN</a> - <a href="https://univ-fcomte.fr/" class="link">Université de Franche-Comté</a>
 	<script type="text/javascript">
 		var add = "ma";
 		add += "ilto:paleofire";
