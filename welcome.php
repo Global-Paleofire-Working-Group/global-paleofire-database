@@ -100,7 +100,8 @@
 
 <footer class="container">
 	<div class="col-sm-12 text-center">
-	All Rights Reserved (2015-<?php echo date("Y"); ?>). | Contact : <a id="contact">paleofire@gmail.com</a> |
+	All Rights Reserved (2015-<?php echo date("Y"); ?>). | Contact : <a id="contact">paleofire@gmail.com</a>
+		| Technology support: <a href="https://mshe.univ-fcomte.fr/">MSHE</a> - <a href="http://www.univ-fcomte.fr/les-services-administratifs/services-informatiques">DSIN</a> - <a href="https://univ-fcomte.fr/">Université de Franche-Comté</a>
 	<script type="text/javascript">
 		var add = "ma";
 		add += "ilto:paleofire";
