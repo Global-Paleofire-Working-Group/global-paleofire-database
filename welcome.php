@@ -104,16 +104,25 @@
 
 <footer class="container">
 	<div class="col-sm-12 text-center">
-	All Rights Reserved (2015-<?php echo date("Y"); ?>). | Contact: <a id="contact" class="link">paleofire@gmail.com</a>
+	All Rights Reserved (2015-<?php echo date("Y"); ?>). | Contact: <a id="contact" class="link">contact@paleofire.org</a>
 		| Technology support: <a href="https://mshe.univ-fcomte.fr/" class="link">MSHE</a> - <a href="http://www.univ-fcomte.fr/les-services-administratifs/services-informatiques" class="link">DSIN</a> - <a href="https://univ-fcomte.fr/" class="link">Université de Franche-Comté</a>
+		| Admin: <a id="contact2" class="link">admin@paleofire.org</a>
 	<script type="text/javascript">
 		var add = "ma";
-		add += "ilto:paleofire";
+		add += "ilto:contact";
 		add += "@";
-		add += "gmail.com?";
+		add += "paleofire.org?";
 		add += "Subject=Contact%20from%20main%20page";
 		$("#contact").mouseover(function(){
 			$(this).attr("href", add);
+		});
+		var add2 = "ma";
+		add2 += "ilto:admin";
+		add2 += "@";
+		add2 += "paleofire.org?";
+		add2 += "Subject=Contact%20from%20main%20page";
+		$("#contact2").mouseover(function(){
+			$(this).attr("href", add2);
 		});
 	</script>
 	</div>

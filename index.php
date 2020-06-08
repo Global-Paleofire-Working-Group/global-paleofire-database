@@ -338,7 +338,7 @@ $footer = "&nbsp;";
 			</div>
 			<div id="footer" class="row">
 				All Rights Reserved (2015-<?php echo date("Y"); ?>). |
-				Contact : <a id="contact">paleofire@gmail.com</a> |
+				Contact : <a id="contact">database@paleofire.org</a> |
 				<a href="index.php?p=terms_of_use">Terms of use</a> |
 				<!--	                <a href="index.php?p=contributors">Contributors</a> -->
 			</div>
@@ -348,9 +348,9 @@ $footer = "&nbsp;";
 
 		<script type="text/javascript">
 			var add = "ma";
-			add += "ilto:paleofire";
+			add += "ilto:database";
 			add += "@";
-			add += "gmail.com?";
+			add += "paleofire.org?";
 			add += "Subject=Contact%20from%20term%20of%20use%20page";
 			$("#contact").mouseover(function(){
 				$(this).attr("href", add);
