@@ -84,7 +84,7 @@
 					<img src="./images/logo/IPN-Logo-transparent.png" alt="IPN" height="100">
 				</a><br />
 				<p style="margin-top: 5em">the former GPWG blog is still available here:
-					<a href="https://oldgpwg.paleofire.org" target="_blank" title="GPWG">
+					<a href="http://oldgpwg.paleofire.org" target="_blank" title="GPWG">
 						<img src="./images/logo/gpwg.png" alt="GPWG" width="100">
 					</a>
 				</p>
