@@ -1301,7 +1301,7 @@ WHERE t_site.ID_SITE = " . $id_site . ";";
         "cb_cm" => ["left join tr_charcoal_method cm on cm.id_charcoal_method = c.id_charcoal_method ", "cm.charcoal_method_name"],
         "cb_pcu" => ["left join tr_charcoal_units pcu on pcu.id_charcoal_units = c.id_charcoal_units ", "pcu.charcoal_units_name"],
         "cb_db" => ["left join tr_database db on db.id_database = c.id_database ", "db.gcd_access_version"],
-        "cb_am" => ["left join r_has_estimated_age r_ag on r_ag.id_sample = s.id_sample left join t_age_model as ag on ag.id_age_model = r_ag.id_age_model ", "r_ag.est_age_cal_bp, ag.age_model_version"]);
+        "cb_am" => ["left join r_has_estimated_age r_ag on d.ID_DEPTH = r_ag.ID_Depth left join t_age_model as ag on ag.id_age_model = r_ag.id_age_model ", "r_ag.est_age_cal_bp, ag.age_model_version"]);
     
     private static $tabJointuresDateInfo = Array("cb_dt" => ["left join tr_date_type dty on di.id_date_type = dty.id_date_type ", "dty.date_type_name"],
         "cb_md" => ["left join tr_mat_dated md on di.id_mat_dated = md.id_mat_dated ", "md.mat_dated_type"],

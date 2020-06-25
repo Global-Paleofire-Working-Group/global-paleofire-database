@@ -92,7 +92,8 @@ if (($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR) || ($_SESS
             
             // récupération des données
             $objRes = Site::getDataForExportbyCoreIDS($tabIds, $fields, $fieldsSample, $fieldsDateInfo, $isAdmin);
-            if ($objRes != null) creationArchiveZip($objRes);            
+            if ($objRes != null) creationArchiveZip($objRes);
+            else echo "objres is null";
         }
     } 
 }
