@@ -77,13 +77,13 @@
 	<p>The Global Paleofire Database (GPD) is to provide the scientific community with a global paleofire dataset for research, documentation and archiving.</p>
 
 	<div class="row content text-center">
-		<div class="col-sm-6 margintop">
-			<b>click below to access the International Paleofire Network</b>
+		<div class="col-sm-4 margintop">
+			<b>Click below to access to the blog of the International Paleofire Network</b>
 			<div id="logo_gpwg" class="margintop">
 				<a href="https://ipn.paleofire.org" target="_blank" title="IPN">
 					<img src="./images/logo/IPN-Logo-transparent.png" alt="IPN" height="100">
 				</a><br />
-				<p style="margin-top: 5em">the former GPWG blog is still available here:
+				<p style="margin-top: 5em">The former GPWG blog is still available here:<br /><br />
 					<a href="http://oldgpwg.paleofire.org" target="_blank" title="GPWG">
 						<img src="./images/logo/gpwg.png" alt="GPWG" width="100">
 					</a>
@@ -91,12 +91,30 @@
 			</div>
 
 		</div>
-		<div class="col-sm-6 margintop">
-			<b>click below to access the Global Paleofire Database</b>
+		<div class="col-sm-4 margintop">
+			<b>Click below to access to the International paleofire Forum</b>
+			<div id="bd_gcd" class="margintop">
+				<a href="https://discourse.paleofire.org/" target="_blank" title="Forum">
+					<img src="./images/logo/Logo-Paleofire-Orange-Full-Forum.png" alt="Forum" height="100">
+				</a><br />
+				<p style="margin-top: 5em">The cloud of the paleofire network is accessible here (limited access):<br />
+					<a href="https://cloud.paleofire.org/" target="_blank" title="Cloud">
+						<img src="./images/logo/Logo-Paleofire-Grey-Full-Cloud.png" alt="Cloud" width="100">
+					</a>
+				</p>
+			</div>
+		</div>
+		<div class="col-sm-4 margintop">
+			<b>Click below to access to the Global Paleofire Database</b>
 			<div id="bd_gcd" class="margintop">
 				<a href="/index.php" target="_blank" title="GPD">
 					<img src="./images/logo/GPD-Logo-transparent.png" alt="GPD" height="100">
-				</a>
+				</a><br />
+				<p style="margin-top: 5em">The paleofire R-package is available here:<br /><br />
+					<a href="https://cran.r-project.org/web/packages/paleofire/index.html" target="_blank" title="R-package">
+						<img src="./images/logo/Logo-Paleofire-Blue-Full-R-package.png" alt="R-package" width="100">
+					</a>
+				</p>
 			</div>
 		</div>
 	</div>

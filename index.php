@@ -145,7 +145,10 @@ $footer = "&nbsp;";
 			<div class="row">
 				<div id="header">
 					<div id="logo_gpd"><a href="index.php" title="GPD"><img src="./images/logo/GPD-Logo-transparent.png" height="92" alt="GPD"></a></div>
-					<div id="logo_ipn"><a href="https://ipn.paleofire.org" title="IPN"><img src="./images/logo/IPN-Logo-transparent.png" height="92" alt="IPN"></a></div>
+					<div id="logo_ipn">
+						<a href="https://ipn.paleofire.org" title="IPN"><img src="./images/logo/IPN-Logo-transparent.png" height="92" alt="IPN"></a>
+						<a href="https://discourse.paleofire.org" title="Forum"><img src="./images/logo/Logo-Paleofire-Orange-Full-Forum.png" height="92" alt="Forum"></a>
+					</div>
 					<div id="splash" align="center"></div>
 				</div>
 			</div>
@@ -182,7 +185,7 @@ $footer = "&nbsp;";
 							<?php
 							if (isset($_SESSION['gcd_user_role']) && ($_SESSION['gcd_user_role'] == WebAppRoleGCD::ADMINISTRATOR || $_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR ||($_SESSION['gcd_user_role'] == WebAppRoleGCD::SUPERADMINISTRATOR))){
 								if ($_SESSION['gcd_user_role'] == WebAppRoleGCD::CONTRIBUTOR){
-									connectionBaseVersionned();
+									connectionBaseInProgress();
 								}
 
 								echo '<li class="dropdown">
